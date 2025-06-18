@@ -18,7 +18,7 @@ public class MainFrame extends JFrame {
         // CardLayout을 적용할 패널 생성
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-
+        System.out.println();
         // 각 카드 패널 인스턴스 생성 및 CardLayout에 추가
         // 각 카드는 별도의 .java 파일(클래스)로 구현됩니다.
         CardPanel1 panel1 = new CardPanel1();
