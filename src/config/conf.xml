@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="">
+        <environment id="">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://13.125.215.134:3306/db"/>
+                <property name="username" value="admin"/>
+                <property name="password" value="sistkiosk"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+<!--        <mapper resource="vo/orders.xml"/>-->
+        <mapper resource="mapper/user.xml"/>
+    </mappers>
+</configuration>

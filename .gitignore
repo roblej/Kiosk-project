@@ -30,4 +30,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 
- src/config/conf.xml
+src/config/conf.xml
