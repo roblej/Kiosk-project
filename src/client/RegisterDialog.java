@@ -25,7 +25,7 @@ public class RegisterDialog extends JDialog {
     JPasswordField passField;
     JButton registerButton;
     SqlSessionFactory factory;
-
+    LoginDialog D;
     public RegisterDialog(LoginDialog D) throws IOException {
         // 초기화 코드 작성
         // 예: UI 컴포넌트 생성 및 레이아웃 설정
@@ -35,6 +35,7 @@ public class RegisterDialog extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE); // 닫기 버튼 클릭 시 대화상자 닫기
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // 수직 박스 레이아웃
+        this.D = D; // LoginDialog 인스턴스 저장
 
         user_p = new JPanel();
         userLabel = new JLabel("사용자 이름:");
@@ -104,9 +105,6 @@ public class RegisterDialog extends JDialog {
 
         this.add(panel);
 
-        Reader r = Resources.getResourceAsReader("config/conf.xml");
-        factory = new SqlSessionFactoryBuilder().build(r);
-        r.close();
         // 한번만 수행
     }
 
@@ -135,7 +133,7 @@ public class RegisterDialog extends JDialog {
 
 
             // TODO: 여기에 실제 DB 저장 로직 (MyBatis Mapper 호출 등) 구현
-            SqlSession ss = factory.openSession();
+            SqlSession ss = D.factory.openSession();
             Map<String,String> map = new HashMap<>();
             map.put("u_id", username);
             map.put("u_password", password);

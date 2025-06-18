@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class MainFrame extends JFrame {
 
@@ -39,8 +40,13 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //매장식사
                 //LoginDialog 호출
-                LoginDialog loginDialog = new LoginDialog(MainFrame.this);
-                loginDialog.setVisible(true); // 대화상자 표시
+                LoginDialog loginDialog = null;
+                try {
+                    loginDialog = new LoginDialog(MainFrame.this);
+                    loginDialog.setVisible(true); // 대화상자 표시
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
 //                cardLayout.show(cardPanel, "Panel1");
             }
         });

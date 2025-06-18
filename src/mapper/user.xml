@@ -7,4 +7,8 @@
         INSERT INTO users (u_id, u_password, u_gender, u_phone, u_birth)
         VALUES (#{u_id}, #{u_password}, #{u_gender}, #{u_phone}, #{u_birth})
     </insert>
+    <select id="login" parameterType="String" resultType="String">
+        SELECT u_password from users
+        WHERE u_id = #{u_id}
+    </select>
 </mapper>
