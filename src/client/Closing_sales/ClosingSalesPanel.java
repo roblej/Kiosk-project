@@ -13,21 +13,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Reader;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 
 public class ClosingSalesPanel extends JPanel {
 
     JToggleButton today_btn, month_btn, period_btn;
-    JPanel north_p, search_p;
+    JPanel north_p;
     JTable table;
     String[] item = {"주문번호", "가격", "수량", "할인", "총금액"};
     String[][] data;
 
-    JComboBox<String> monthbox, daybox;
-
     SqlSessionFactory factory;
     SqlSession ss;
     MainFrame f;
+
     public ClosingSalesPanel(MainFrame f) {
         this.f = f;
         north_p = new JPanel();
@@ -110,70 +114,136 @@ public class ClosingSalesPanel extends JPanel {
     }
 
     private void period_paymentAmount() {
-        search_p = new JPanel();
-        monthbox = new JComboBox<>();
-        daybox = new JComboBox<>();
-        JButton con = new JButton("확인");
-        JButton can = new JButton("취소");
+        JPanel search_p = new JPanel();
+        JPanel panel1 = new JPanel();
+        JPanel panel2 = new JPanel();
+        JPanel panel3 = new JPanel();
+
+        JComboBox<String> start_yearBox = new JComboBox<>();
+        JComboBox<String> start_monthBox = new JComboBox<>();
+        JComboBox<String> start_dayBox = new JComboBox<>();
+        JComboBox<String> end_yearBox = new JComboBox<>();
+        JComboBox<String> end_monthBox = new JComboBox<>();
+        JComboBox<String> end_dayBox = new JComboBox<>();
+
+        JButton confirm_btn = new JButton("확인");
+        JButton cancel_btn = new JButton("취소");
+
+        //연도 입력박스
+        int current_year = LocalDate.now().getYear();
+        for (int year = current_year; year >= current_year; year--){
+            start_yearBox.addItem(String.valueOf(year));
+            end_yearBox.addItem(String.valueOf(year));
+        }
 
         //월 입력박스
         for (int i = 1; i <= 12; i++) {
-            monthbox.addItem(i + "월");
+            if(i<10){
+                start_monthBox.addItem("0"+i);
+                end_monthBox.addItem("0"+i);
+            }
+            else {
+                start_monthBox.addItem(String.valueOf(i));
+                end_monthBox.addItem(String.valueOf(i));
+            }
         }
 
         //일 입력박스
         for (int j = 1; j <= 31; j++) {
-            daybox.addItem(j + "일");
+            if(j<10) {
+                start_dayBox.addItem("0"+j);
+                end_dayBox.addItem("0"+j);
+            }else {
+                start_dayBox.addItem(String.valueOf(j));
+                end_dayBox.addItem(String.valueOf(j));
+            }
         }
 
-        search_p.add(new JLabel("월 :"));
-        search_p.add(monthbox);
-        search_p.add(new JLabel("일 :"));
-        search_p.add(daybox);
-        search_p.add(con, BorderLayout.SOUTH);
-        search_p.add(can, BorderLayout.SOUTH);
 
+        panel1.add(new JLabel("[시작일]"));
+        panel1.add(new JLabel("년도 :"));
+        panel1.add(start_yearBox);
+        panel1.add(new JLabel("월 :"));
+        panel1.add(start_monthBox);
+        panel1.add(new JLabel("일 :"));
+        panel1.add(start_dayBox);
+
+
+        panel2.add(new JLabel("[종료일]"));
+        panel2.add(new JLabel("년도 :"));
+        panel2.add(end_yearBox);
+        panel2.add(new JLabel("월 :"));
+        panel2.add(end_monthBox);
+        panel2.add(new JLabel("일 :"));
+        panel2.add(end_dayBox);
+
+        panel3.add(confirm_btn);
+        panel3.add(cancel_btn);
+
+        search_p.add(panel1, BorderLayout.NORTH);
+        search_p.add(panel2);
+        search_p.add(panel3, BorderLayout.SOUTH);
 
         JDialog dialog = new JDialog();
-        dialog.setSize(400, 150);
+        dialog.setSize(400, 180);
         dialog.add(search_p);
         dialog.setVisible(true);
+        dialog.setLocationRelativeTo(null);
 
-        con.addActionListener(new ActionListener() {
+        confirm_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                String selected_syear = (String) start_yearBox.getSelectedItem(); //반환형 > object여서 캐스팅
+                String selected_smonth = (String) start_monthBox.getSelectedItem();
+                String selected_sday = (String) start_dayBox.getSelectedItem();
+                String selected_eyear = (String) end_yearBox.getSelectedItem();
+                String selected_emonth = (String) end_monthBox.getSelectedItem();
+                String selected_eday = (String) end_dayBox.getSelectedItem();
+
+
+
+                StringBuffer start_date = new StringBuffer();
+                start_date.append(selected_syear.substring(2,4));
+                start_date.append(selected_smonth);
+                start_date.append(selected_sday);
+
+                StringBuffer end_date = new StringBuffer();
+                end_date.append(selected_syear.substring(2,4));
+                end_date.append(selected_emonth);
+                end_date.append(selected_eday);
+
+                int syear = Integer.parseInt(start_date.toString());
+                int eyear = Integer.parseInt(end_date.toString());
+
+                if(syear<eyear){
+                Map<String,String> map = new HashMap<>();
+                order_VO vo = new order_VO();
+                map.put("start_date",start_date.toString());
+                map.put("end_date",end_date.toString());
+                map.put("o_number",vo.getO_number());
+                map.put("o_total_amount",vo.getO_total_amount());
+               // map.put("oi_quantity",vo.getOiv().getOi_quantity());
+               // map.put("oi_price",vo.getOiv().getOi_price());
+
+                init();
+
+                List<order_VO> list = ss.selectList("paymentAmount.period",map);
+                viewtable(list);
+                ss.close();
+                }else {
+                    JOptionPane.showMessageDialog(null,"날짜를 확인해주세요.");
+                }
             }
         });
 
-        can.addActionListener(new ActionListener() {
+        cancel_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                JOptionPane.showMessageDialog(null,"취소되었습니다.");
+                dialog.dispose();
             }
         });
 
-
-//            int res = JOptionPane.showConfirmDialog(null,
-//                "날짜를 선택하세요","날짜 선택",
-//                    JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
-//
-//            if(res==JOptionPane.OK_OPTION){
-//                int selectedMonth = monthbox.getSelectedIndex()+1;
-//                int selectedDay = daybox.getSelectedIndex()+1;
-//
-//
-//                String selectedDate = selectedMonth + "월 " + selectedDay + "일";
-//                JOptionPane.showMessageDialog(null, "선택한 날짜: " + selectedDate);
-//
-//            }else {
-//                JOptionPane.showMessageDialog(null,"취소되었습니다.");
-//            }
-
-
-//        init();
-//        List<order_VO> list = ss.selectList("paymentAmount.period");
-//        viewtable(list);
-//        ss.close();
     }
 }
