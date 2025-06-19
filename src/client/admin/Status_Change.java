@@ -27,16 +27,6 @@ public class Status_Change extends JDialog {
         });
 
         // 이벤트 감지자 등록
-        pending.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("test");
-                vo.setO_status("조리중");
-                parent.updateData(vo);
-                dispose();
-            }
-        });
-
         process.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,8 +50,7 @@ public class Status_Change extends JDialog {
     private void initComponents(){
         JPanel center_p;
         center_p = new JPanel();
-        center_p.setLayout(new GridLayout(1, 3));
-        center_p.add(pending = new JButton("조리중"));
+        center_p.setLayout(new GridLayout(1, 2));
         center_p.add(process = new JButton("처리완료"));
         center_p.add(finish = new JButton("취소"));
         this.add(center_p, BorderLayout.CENTER);
