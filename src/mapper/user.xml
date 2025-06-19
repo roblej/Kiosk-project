@@ -14,4 +14,8 @@
     <select id="getUserInfo" parameterType="String" resultType="vo.UserVO">
     SELECT * from users where u_phone LIKE CONCAT ( '%',#{phoneNumber})
     </select>
+    <update id="updateUserInfo" parameterType="vo.UserVO">
+        UPDATE users set u_id = #{u_id}, u_gender = #{u_gender}, u_phone = #{u_phone}, u_birth = #{u_birth}
+        WHERE u_id = #{u_id}
+    </update>
 </mapper>

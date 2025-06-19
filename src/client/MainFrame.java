@@ -2,7 +2,7 @@ package client;
 
 import client.Closing_sales.ClosingSalesPanel;
 import client.admin.AdminCard;
-import client.admin.AdminUserUpdatePanel;
+import client.admin.UserManagerPanel;
 import client.Login.CardPanel1;
 import client.Login.LoginDialog;
 import client.Login.LoginPanel;
@@ -46,17 +46,17 @@ public class MainFrame extends JFrame {
         // 각 카드 패널 인스턴스 생성 및 CardLayout에 추가
         // 각 카드는 별도의 .java 파일(클래스)로 구현됩니다.
         LoginPanel loginPanel = new LoginPanel(this);
-        AdminUserUpdatePanel adminUserUpdatePanel = new AdminUserUpdatePanel(this);
+        UserManagerPanel userManagerPanel = new UserManagerPanel(this);
         AdminCard adminCard = new AdminCard(this);
         ClosingSalesPanel closingSalesPanel = new ClosingSalesPanel(this);
 
 
         CardPanel1 panel1 = new CardPanel1();
-//        cardPanel.add(adminUserUpdatePanel, "adminUserUpdatePanel");
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(panel1, "Panel1"); // "Panel1"이라는 이름으로 추가
         cardPanel.add(adminCard, "AdminCard");
         cardPanel.add(closingSalesPanel, "ClosingSalesPanel"); // "ClosingSalesPanel" 이름으로 추가
+        cardPanel.add(userManagerPanel, "userManagerPanel");
         // 컨트롤 버튼 생성 (패널 전환용)
         JPanel controlPanel = new JPanel();
         JButton btn1 = new JButton("Panel 1로 이동");
