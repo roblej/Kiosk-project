@@ -1,7 +1,17 @@
 package vo;
 
-public class OrdersVO {
+public class order_VO {
+
     private String o_idx, o_number, o_total_amount, o_status, o_is_takeout, user_id;
+    private order_items_VO oiv;
+
+    public order_items_VO getOiv() {
+        return oiv;
+    }
+
+    public void setOiv(order_items_VO oiv) {
+        this.oiv = oiv;
+    }
 
     public String getO_idx() {
         return o_idx;

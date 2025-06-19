@@ -3,7 +3,7 @@ package client.admin;
 import client.MainFrame;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import vo.OrdersVO;
+import vo.order_VO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MyDialog extends JDialog {
 
-    List<OrdersVO> list;
+    List<order_VO> list;
 
     JTable table;
     JScrollPane scrollPane;
@@ -25,7 +25,7 @@ public class MyDialog extends JDialog {
     MainFrame f;
     SqlSessionFactory factory;
 
-    public MyDialog(MainFrame f, boolean modal, String[][] data, String[] o_name, SqlSessionFactory factory, List<OrdersVO> list) {
+    public MyDialog(MainFrame f, boolean modal, String[][] data, String[] o_name, SqlSessionFactory factory, List<order_VO> list) {
         super(f, modal);
         this.factory = factory;
         this.list = list;
@@ -63,7 +63,7 @@ public class MyDialog extends JDialog {
                 if(cnt == 2){
                     i = table.getSelectedRow();
                     // 알아낸 index로 OrderVO에 접근
-                    OrdersVO vo = MyDialog.this.list.get(i);
+                    order_VO vo = MyDialog.this.list.get(i);
                     Status_Change stChange = new Status_Change(MyDialog.this, true, vo);
 
                 }
@@ -73,7 +73,7 @@ public class MyDialog extends JDialog {
         this.setVisible(true);
     }
 
-    public void updateData(OrdersVO vo){
+    public void updateData(order_VO vo){
         System.out.println("updateData");
         SqlSession ss = factory.openSession();
         int cnt = ss.update("orders.update", vo);

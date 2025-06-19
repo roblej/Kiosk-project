@@ -1,5 +1,6 @@
 package client;
 
+import client.Closing_sales.ClosingSalesPanel;
 import client.admin.AdminCard;
 import client.admin.AdminUserUpdatePanel;
 import client.Login.CardPanel1;
@@ -47,11 +48,15 @@ public class MainFrame extends JFrame {
         LoginPanel loginPanel = new LoginPanel(this);
         AdminUserUpdatePanel adminUserUpdatePanel = new AdminUserUpdatePanel(this);
         AdminCard adminCard = new AdminCard(this);
+        ClosingSalesPanel closingSalesPanel = new ClosingSalesPanel(this);
+
+
         CardPanel1 panel1 = new CardPanel1();
 //        cardPanel.add(adminUserUpdatePanel, "adminUserUpdatePanel");
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(panel1, "Panel1"); // "Panel1"이라는 이름으로 추가
         cardPanel.add(adminCard, "AdminCard");
+        cardPanel.add(closingSalesPanel, "ClosingSalesPanel"); // "ClosingSalesPanel" 이름으로 추가
         // 컨트롤 버튼 생성 (패널 전환용)
         JPanel controlPanel = new JPanel();
         JButton btn1 = new JButton("Panel 1로 이동");

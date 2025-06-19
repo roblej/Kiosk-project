@@ -3,11 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="orders">
-    <select id="status" resultType="vo.OrdersVO">
+    <select id="status" resultType="vo.order_VO">
         select * from orders <!-- 오름차순 -->
     </select>
 
-    <update id="update" parameterType="vo.OrdersVO">
+    <update id="update" parameterType="vo.order_VO">
         UPDATE orders
         SET o_status = #{o_status}
         WHERE o_idx = #{o_idx}
