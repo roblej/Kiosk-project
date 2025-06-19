@@ -1,32 +1,21 @@
-package client;
+package client.Login;
 
-import client.Login.PasswordUtil;
-import org.apache.ibatis.io.Resources;
+import client.MainFrame;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginDialog extends JDialog {
     MainFrame f;
     String username,password;
-    SqlSessionFactory factory;
 
-    public LoginDialog(MainFrame f) throws IOException {
+    public LoginDialog(MainFrame f)  {
         super(f, "로그인", true); // 모달 대화상자 생성
         setSize(300, 200); // 대화상자 크기 설정
         setLocationRelativeTo(f); // 부모 프레임 중앙에 위치
         this.f = f; // MainFrame 인스턴스 저장
-
-        Reader r = Resources.getResourceAsReader("config/conf.xml");
-        factory = new SqlSessionFactoryBuilder().build(r);
-        r.close();
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,1)); // 수직 박스 레이아웃
@@ -51,7 +40,8 @@ public class LoginDialog extends JDialog {
                         // 로그인 성공 처리
                         dispose(); // 대화상자 닫기
                         //로그인 후 , 주문페이지로 이동
-                        login(username, password);
+//                        login(username, password);
+                        f.cardLayout.show(f.cardPanel, "Panel1"); // MainFrame의 cardPanel로 전환
                     }
                 });
 
@@ -109,10 +99,10 @@ public class LoginDialog extends JDialog {
 
             SqlSession ss = null;
             try {
-                if (factory == null) {
+                if (f.factory == null) {
                     throw new IllegalStateException("SqlSessionFactory가 초기화되지 않았습니다.");
                 }
-                ss = factory.openSession();
+                ss = f.factory.openSession();
 
                 // 2. 데이터베이스에서 해당 userId의 해시된 비밀번호 조회
                 // user.selectHashedPasswordById 쿼리에 사용자 ID를 파라미터로 전달

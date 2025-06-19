@@ -11,4 +11,7 @@
         SELECT u_password from users
         WHERE u_id = #{u_id}
     </select>
+    <select id="getUserInfo" parameterType="String" resultType="vo.UserVO">
+    SELECT * from users where u_phone LIKE CONCAT ( '%',#{phoneNumber})
+    </select>
 </mapper>

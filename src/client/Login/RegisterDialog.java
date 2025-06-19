@@ -1,15 +1,10 @@
-package client;
+package client.Login;
 
-import client.Login.PasswordUtil;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -123,16 +118,9 @@ public class RegisterDialog extends JDialog {
             phone = phoneField.getText(); // 전화번호 가져오기
             birth = birthField.getText(); // 생년월일 가져오기
             // 회원가입 정보 출력 (디버깅용)
-            System.out.println("회원가입 정보:");
-            System.out.println("사용자 이름: " + username);
-            System.out.println("해싱된 비밀번호 (DB 저장용): " + password); // DB에 저장될 값
-            System.out.println("성별: " + (maleRadio.isSelected() ? "M" : (femaleRadio.isSelected() ? "F" : "선택 안됨")));
-            System.out.println("전화번호: " + phoneField.getText());
-            System.out.println("생년월일: " + birthField.getText());
-
 
             // TODO: 여기에 실제 DB 저장 로직 (MyBatis Mapper 호출 등) 구현
-            SqlSession ss = D.factory.openSession();
+            SqlSession ss = D.f.factory.openSession();
             Map<String,String> map = new HashMap<>();
             map.put("u_id", username);
             map.put("u_password", password);

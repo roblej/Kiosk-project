@@ -5,7 +5,7 @@ public class UserVO {
             u_password,
             u_gender,
             u_phone,
-            u_birthdate;
+            u_birth;
 
     public String getU_id() {
         return u_id;
@@ -39,11 +39,11 @@ public class UserVO {
         this.u_phone = u_phone;
     }
 
-    public String getU_birthdate() {
-        return u_birthdate;
+    public String getU_birth() {
+        return u_birth;
     }
 
-    public void setU_birthdate(String u_birthdate) {
-        this.u_birthdate = u_birthdate;
+    public void setU_birth(String u_birth) {
+        this.u_birth = u_birth;
     }
 }
