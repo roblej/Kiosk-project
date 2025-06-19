@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+    <insert id="register" parameterType="map">
+        INSERT INTO users (u_id, u_password, u_gender, u_phone, u_birth)
+        VALUES (#{u_id}, #{u_password}, #{u_gender}, #{u_phone}, #{u_birth})
+    </insert>
+    <select id="login" parameterType="String" resultType="String">
+        SELECT u_password from users
+        WHERE u_id = #{u_id}
+    </select>
+    <select id="getUserInfo" parameterType="String" resultType="vo.UserVO">
+    SELECT * from users where u_phone LIKE CONCAT ( '%',#{phoneNumber})
+    </select>
+</mapper>
