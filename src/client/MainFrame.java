@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         setTitle("CardLayout 팀 프로젝트 예시");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 400);
+        setSize(500, 800);
         setLocationRelativeTo(null); // 화면 중앙에 배치
 
         // CardLayout을 적용할 패널 생성

@@ -18,13 +18,12 @@ public class RegisterDialog extends JDialog {
     // 이 클래스는 회원가입 관련 UI와 기능을 포함합니다.
     String username, password, gender,phone,birth;
     String rawPassword;
-    JPanel panel,birth_p,gender_p,phone_p,user_p,pass_p;
+    JPanel panel,birthPanel,genderPanel,phonePanel,userPanel,passPanel;
     JLabel userLabel, passLabel, genderLabel, phoneLabel, birthLabel;
     JRadioButton maleRadio, femaleRadio;
     JTextField phoneField, birthField, userField;
     JPasswordField passField;
-    JButton registerButton;
-    SqlSessionFactory factory;
+    JButton registerBtn;
     LoginDialog D;
     public RegisterDialog(LoginDialog D) throws IOException {
         // 초기화 코드 작성
@@ -37,23 +36,23 @@ public class RegisterDialog extends JDialog {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // 수직 박스 레이아웃
         this.D = D; // LoginDialog 인스턴스 저장
 
-        user_p = new JPanel();
+        userPanel = new JPanel();
         userLabel = new JLabel("사용자 이름:");
         userField = new JTextField(15);
-        user_p.add(userLabel);
-        user_p.add(userField);
-        user_p.add(new JLabel("   "));
-        user_p.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        userPanel.add(userLabel);
+        userPanel.add(userField);
+        userPanel.add(new JLabel("   "));
+        userPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        pass_p = new JPanel();
+        passPanel = new JPanel();
         passLabel = new JLabel("비밀번호:");
         passField = new JPasswordField(15);
-        pass_p.add(passLabel);
-        pass_p.add(passField);
-        pass_p.add(new JLabel("   "));
-        pass_p.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        passPanel.add(passLabel);
+        passPanel.add(passField);
+        passPanel.add(new JLabel("   "));
+        passPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        gender_p = new JPanel();
+        genderPanel = new JPanel();
         genderLabel = new JLabel("성별:");
         maleRadio = new JRadioButton("남성");
         femaleRadio = new JRadioButton("여성");
@@ -62,32 +61,32 @@ public class RegisterDialog extends JDialog {
         group.add(maleRadio);
         group.add(femaleRadio);
 
-//        gender_p.setLayout(new BoxLayout(gender_p, BoxLayout.X_AXIS));
-        gender_p.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        gender_p.add(genderLabel);
-        gender_p.add(maleRadio);
-        gender_p.add(femaleRadio);
-        gender_p.add(new JLabel("   "));
+//        genderPanel.setLayout(new BoxLayout(genderPanel, BoxLayout.X_AXIS));
+        genderPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        genderPanel.add(genderLabel);
+        genderPanel.add(maleRadio);
+        genderPanel.add(femaleRadio);
+        genderPanel.add(new JLabel("   "));
 
         phoneLabel = new JLabel("전화번호:");
         phoneField = new JTextField(15);
-        phone_p = new JPanel();
-        phone_p.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        phone_p.add(phoneLabel);
-        phone_p.add(phoneField);
-        phone_p.add(new JLabel("   "));
+        phonePanel = new JPanel();
+        phonePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        phonePanel.add(phoneLabel);
+        phonePanel.add(phoneField);
+        phonePanel.add(new JLabel("   "));
 
         birthLabel = new JLabel("생년월일:");
         birthField = new JTextField(15);
-        birth_p = new JPanel();
-        birth_p.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        birth_p.add(birthLabel);
-        birth_p.add(birthField);
-        birth_p.add(new JLabel("   "));
+        birthPanel = new JPanel();
+        birthPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        birthPanel.add(birthLabel);
+        birthPanel.add(birthField);
+        birthPanel.add(new JLabel("   "));
 
-        registerButton = new JButton("회원가입");
+        registerBtn = new JButton("회원가입");
 
-        registerButton.addActionListener(e -> {
+        registerBtn.addActionListener(e -> {
                     // 회원가입 처리 로직 추가
                     username = userField.getText();
                     rawPassword = new String(passField.getPassword());
@@ -96,12 +95,12 @@ public class RegisterDialog extends JDialog {
                     dispose();
                 });
 
-        panel.add(user_p);
-        panel.add(pass_p);
-        panel.add(phone_p);
-        panel.add(birth_p);
-        panel.add(gender_p);
-        panel.add(registerButton);
+        panel.add(userPanel);
+        panel.add(passPanel);
+        panel.add(phonePanel);
+        panel.add(birthPanel);
+        panel.add(genderPanel);
+        panel.add(registerBtn);
 
         this.add(panel);
 

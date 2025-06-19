@@ -17,6 +17,7 @@ public class LoginDialog extends JDialog {
     MainFrame f;
     String username,password;
     SqlSessionFactory factory;
+
     public LoginDialog(MainFrame f) throws IOException {
         super(f, "로그인", true); // 모달 대화상자 생성
         setSize(300, 200); // 대화상자 크기 설정
@@ -36,11 +37,11 @@ public class LoginDialog extends JDialog {
         JLabel passLabel = new JLabel("비밀번호:");
         JPasswordField passField = new JPasswordField(15);
 
-        JPanel btn_p = new JPanel();
-        JPanel user_p = new JPanel();
-        JPanel pass_p = new JPanel();
-        JButton btn_login = new JButton("로그인");
-        btn_login.addActionListener(e -> {
+        JPanel btnPanel = new JPanel();
+        JPanel userPanel = new JPanel();
+        JPanel passPanel = new JPanel();
+        JButton loginBtn = new JButton("로그인");
+        loginBtn.addActionListener(e -> {
                     // 로그인 처리 로직 추가
                     username = userField.getText();
                     password = new String(passField.getPassword());
@@ -66,8 +67,8 @@ public class LoginDialog extends JDialog {
                 throw new RuntimeException(ex);
             }
                 });
-        JButton btn_anonymity = new JButton("비회원주문");
-        btn_anonymity.addActionListener(e -> {
+        JButton anonBtn = new JButton("비회원주문");
+        anonBtn.addActionListener(e -> {
                     // 비회원 주문 처리 로직 추가
             //db에 비회원용 아이디 하드코딩
                 username = "";
@@ -75,24 +76,24 @@ public class LoginDialog extends JDialog {
                     dispose(); // 대화상자 닫기
                     f.cardLayout.show(f.cardPanel, "Panel1"); // 비회원 주문 후 Panel1로 이동
         });
-        user_p.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        pass_p.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        userPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        passPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        btn_p.add(btn_login);
-        btn_p.add(btn_register);
-        btn_p.add(btn_anonymity);
+        btnPanel.add(loginBtn);
+        btnPanel.add(btn_register);
+        btnPanel.add(anonBtn);
 
-        user_p.add(userLabel);
-        user_p.add(userField);
-        user_p.add(new JLabel("   "));
+        userPanel.add(userLabel);
+        userPanel.add(userField);
+        userPanel.add(new JLabel("   "));
 
-        pass_p.add(passLabel);
-        pass_p.add(passField);
-        pass_p.add(new JLabel("   "));
+        passPanel.add(passLabel);
+        passPanel.add(passField);
+        passPanel.add(new JLabel("   "));
 
-        panel.add(user_p);
-        panel.add(pass_p);
-        panel.add(btn_p);
+        panel.add(userPanel);
+        panel.add(passPanel);
+        panel.add(btnPanel);
 
         add(panel);
 
