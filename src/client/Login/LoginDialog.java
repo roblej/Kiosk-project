@@ -41,7 +41,7 @@ public class LoginDialog extends JDialog {
                         dispose(); // 대화상자 닫기
                         //로그인 후 , 주문페이지로 이동
 //                        login(username, password);
-                        f.cardLayout.show(f.cardPanel, "Panel1"); // MainFrame의 cardPanel로 전환
+                        f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
                     }
                 });
 
