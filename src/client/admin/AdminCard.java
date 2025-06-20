@@ -89,7 +89,7 @@ public class AdminCard extends JPanel {
         customBtn.addActionListener(new ActionListener() {//회원관리
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                f.cardLayout.show(f.cardPanel, "userManagerPanel");
             }
         });
 
