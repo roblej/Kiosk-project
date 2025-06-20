@@ -2,6 +2,7 @@ package client;
 
 import client.Closing_sales.ClosingSalesPanel;
 import client.admin.AdminCard;
+import client.admin.CouponManagerPanel;
 import client.admin.UserManagerPanel;
 import client.Login.CardPanel1;
 import client.Login.LoginDialog;
@@ -53,7 +54,9 @@ public class MainFrame extends JFrame {
         ClosingSalesPanel closingSalesPanel = new ClosingSalesPanel(this);
         StockCard stockCard = new StockCard(this);
         OrderPanel orderPanel = new OrderPanel();
+        CouponManagerPanel couponManagerPanel = new CouponManagerPanel(this);
         CardPanel1 panel1 = new CardPanel1();
+        cardPanel.add(couponManagerPanel, "CouponManagerPanel"); // "CouponManagerPanel" 이름으로 추가
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(orderPanel,"orderPanel");
         cardPanel.add(panel1, "Panel1"); // "Panel1"이라는 이름으로 추가

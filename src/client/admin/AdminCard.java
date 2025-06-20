@@ -74,7 +74,7 @@ public class AdminCard extends JPanel {
         couponBtn.addActionListener(new ActionListener() {//쿠폰사용내역
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                f.cardLayout.show(f.cardPanel, "CouponManagerPanel");
             }
         });
 
