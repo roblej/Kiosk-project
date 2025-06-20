@@ -3,7 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="products">
-    <select id="update_stock" resultType="Map">
-        select * from products
+    <select id="all" resultType="vo.ProductsVO">
+        SELECT * FROM products ORDER BY p_name
     </select>
+
+    <select id="search_cat" resultType="vo.ProductsVO" parameterType="Map">
+        SELECT * FROM products
+        WHERE p_category IN
+        <foreach collection="cat_list" item="cno" open="(" close=")" separator=",">
+            #{cno}
+        </foreach>
+    </select>
+
 </mapper>
