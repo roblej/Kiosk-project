@@ -4,23 +4,13 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="paymentAmount">
 
-    <resultMap id="period2" type="vo.order_items_VO">
-        <id property="oi_idx" column="oi_idx"/>
-        <result property="oi_quantity" column="oi_quantity"/>
-        <result property="oi_price" column="oi_price"/>
-    </resultMap>
-
-    <resultMap id="period1" type="vo.order_VO" >
-        <id property="o_idx" column="o_idx" />
-        <result property="o_number" column="o_number"/>
-        <result property="o_total_amount" column="o_total_amount"/>
-        <collection property="oiv" ofType="order_items_VO" resultMap="period2"/>
-    </resultMap>
-
-    <select id="period" resultMap="period1">
-        SELECT * FROM orders od left join order_items oi on
-        od.o_idx = oi.oi_idx
-        where substring(o_number,1,6) between #{start} and #{end}
+    <select id="period" resultType="vo.order_VO" parameterType="map">
+        SELECT * FROM (
+        SELECT * FROM orders
+        WHERE SUBSTRING(o_number, 1, 6) BETWEEN #{start_date} AND #{end_date}
+        AND o_status IN ('처리완료', '취소')
+        ) od INNER JOIN order_items oi ON od.o_idx = oi.oi_idx
     </select>
+
 
 </mapper>
