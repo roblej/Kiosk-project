@@ -7,7 +7,7 @@ import client.admin.UserManagerPanel;
 import client.Login.LoginDialog;
 import client.Login.LoginPanel;
 import client.admin.StockCard;
-import client.order.OrderPanel;
+import client.order.*;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
