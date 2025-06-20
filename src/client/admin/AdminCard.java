@@ -14,7 +14,6 @@ public class AdminCard extends JPanel {
     MyDialog dialog;
     MainFrame f;
 
-//    SqlSessionFactory factory;
 
     public AdminCard(MainFrame f) {
         this.f = f;
@@ -22,78 +21,79 @@ public class AdminCard extends JPanel {
 
         setLayout(new GridLayout(4, 2, 10, 10));
 
-        JButton bt1 = new JButton("오픈");
-        JButton bt2 = new JButton("마감/정산");
-        JButton bt3 = new JButton("결제관리");
-        JButton bt4 = new JButton("쿠폰사용내역");
-        JButton bt5 = new JButton("상품정보관리");
-        JButton bt6 = new JButton("회원관리");
-        JButton bt7 = new JButton("주문처리");
-        JButton bt8 = new JButton("종료");
+        JButton openBtn = new JButton("오픈");
+        JButton setBtn = new JButton("마감/정산");
+        JButton payBtn = new JButton("결제관리");
+        JButton couponBtn = new JButton("쿠폰사용내역");
+        JButton productBtn = new JButton("상품정보관리");
+        JButton customBtn = new JButton("회원관리");
+        JButton orderBtn = new JButton("주문처리");
+        JButton closeBtn = new JButton("종료");
 
-        add(bt1);
-        add(bt2);
-        add(bt3);
-        add(bt4);
-        add(bt5);
-        add(bt6);
-        add(bt7);
-        add(bt8);
+        add(openBtn);
+        add(setBtn);
+        add(payBtn);
+        add(couponBtn);
+        add(productBtn);
+        add(customBtn);
+        add(orderBtn);
+        add(closeBtn);
 
-        bt1.setFont(new Font("맑은고딕", Font.BOLD, 20));
-        bt2.setFont(new Font("맑은고딕", Font.BOLD, 20));
-        bt3.setFont(new Font("맑은고딕", Font.BOLD, 20));
-        bt4.setFont(new Font("맑은고딕", Font.BOLD, 20));
-        bt5.setFont(new Font("맑은고딕", Font.BOLD, 20));
-        bt6.setFont(new Font("맑은고딕", Font.BOLD, 20));
-        bt7.setFont(new Font("맑은고딕", Font.BOLD, 20));
-        bt8.setFont(new Font("맑은고딕", Font.BOLD, 20));
+        openBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
+        setBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
+        payBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
+        couponBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
+        productBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
+        customBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
+        orderBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
+        closeBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
 
 
         //이벤트 감지자 등록
-        bt1.addActionListener(new ActionListener() {//오픈버튼
+        openBtn.addActionListener(new ActionListener() {//오픈버튼
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "오픈시작");
                 //  int result = JOptionPane.showConfirmDialog(null, )
             }
         });
-        bt2.addActionListener(new ActionListener() {//마감/정산
+        setBtn.addActionListener(new ActionListener() {//마감/정산
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.cardLayout.show(f.cardPanel, "ClosingSalesPanel");
             }
         });
 
-        bt3.addActionListener(new ActionListener() {//결제관리
+        payBtn.addActionListener(new ActionListener() {//결제관리
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
 
-        bt4.addActionListener(new ActionListener() {//쿠폰사용내역
+        couponBtn.addActionListener(new ActionListener() {//쿠폰사용내역
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
 
-        bt5.addActionListener(new ActionListener() {//상품정보관리
+        productBtn.addActionListener(new ActionListener() {//상품정보관리
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.cardLayout.show(f.cardPanel, "StockCard");
+
+            }
+        });
+
+        customBtn.addActionListener(new ActionListener() {//회원관리
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
 
-        bt6.addActionListener(new ActionListener() {//회원관리
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-        bt7.addActionListener(new ActionListener() {//주문처리
+        orderBtn.addActionListener(new ActionListener() {//주문처리
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<order_VO> list = getData();
@@ -101,7 +101,7 @@ public class AdminCard extends JPanel {
             }
         });
 
-        bt8.addActionListener(new ActionListener() {//종료
+        closeBtn.addActionListener(new ActionListener() {//종료
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);//종료
@@ -110,8 +110,8 @@ public class AdminCard extends JPanel {
 
     }
 
-    String[][] data;
     String[] o_name = {"주문번호", "결제금액", "주문상태", "고객ID"};
+    String[][] data;
     public List<order_VO> getData(){
         SqlSession ss = f.factory.openSession();
         List<order_VO> list = ss.selectList("orders.status");
@@ -127,5 +127,7 @@ public class AdminCard extends JPanel {
         ss.close();
         return list;
     }
+
+
 
 }

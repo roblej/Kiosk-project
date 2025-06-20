@@ -6,6 +6,7 @@ import client.admin.AdminUserUpdatePanel;
 import client.Login.CardPanel1;
 import client.Login.LoginDialog;
 import client.Login.LoginPanel;
+import client.admin.StockCard;
 import client.order.OrderPanel;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -50,7 +51,7 @@ public class MainFrame extends JFrame {
         AdminUserUpdatePanel adminUserUpdatePanel = new AdminUserUpdatePanel(this);
         AdminCard adminCard = new AdminCard(this);
         ClosingSalesPanel closingSalesPanel = new ClosingSalesPanel(this);
-
+        StockCard stockCard = new StockCard(this);
         OrderPanel orderPanel = new OrderPanel();
         CardPanel1 panel1 = new CardPanel1();
 //        cardPanel.add(adminUserUpdatePanel, "adminUserUpdatePanel");
@@ -59,6 +60,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(panel1, "Panel1"); // "Panel1"이라는 이름으로 추가
         cardPanel.add(adminCard, "AdminCard");
         cardPanel.add(closingSalesPanel, "ClosingSalesPanel"); // "ClosingSalesPanel" 이름으로 추가
+        cardPanel.add(stockCard,"StockCard");
         // 컨트롤 버튼 생성 (패널 전환용)
         JPanel controlPanel = new JPanel();
         JButton btn1 = new JButton("Panel 1로 이동");
