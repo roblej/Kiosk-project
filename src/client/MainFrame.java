@@ -7,7 +7,7 @@ import client.Login.CardPanel1;
 import client.Login.LoginDialog;
 import client.Login.LoginPanel;
 import client.admin.StockCard;
-import client.order.OrderPanel;
+import client.order.*;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -52,7 +52,7 @@ public class MainFrame extends JFrame {
         AdminCard adminCard = new AdminCard(this);
         ClosingSalesPanel closingSalesPanel = new ClosingSalesPanel(this);
         StockCard stockCard = new StockCard(this);
-        OrderPanel orderPanel = new OrderPanel();
+        OrderPanel orderPanel = new OrderPanel(this);
         CardPanel1 panel1 = new CardPanel1();
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(orderPanel,"orderPanel");

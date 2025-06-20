@@ -6,4 +6,8 @@
     <select id="update_stock" resultType="Map">
         select * from products
     </select>
+
+    <select id="getCategories" resultType="String">
+        SELECT DISTINCT p_category FROM products WHERE p_category IS NOT NULL
+    </select>
 </mapper>
