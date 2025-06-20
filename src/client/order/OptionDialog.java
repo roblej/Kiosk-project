@@ -15,7 +15,7 @@ public class OptionDialog extends JDialog {
     JButton plusBtn, minusBtn;
     JButton okBtn, cancelBtn;
     int count = 1;
-    int totalPrice = 0;
+    int price = 0;
     JButton hotBtn, iceBtn;
     JPanel menuCenterPanel, countPanel, optionNorthPanel;
     JPanel northPanel, centerPanel, southPanel;
@@ -81,7 +81,7 @@ public class OptionDialog extends JDialog {
         imgLabel = new JLabel();
         imgLabel.setPreferredSize(new Dimension(80, 80));
         imgLabel.setOpaque(true);
-        imgLabel.setBackground(Color.BLACK);
+        imgLabel.setBackground(Color.gray);
         imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imgLabel.setVerticalAlignment(SwingConstants.TOP);
         imgLabel.setForeground(Color.WHITE);
@@ -92,6 +92,8 @@ public class OptionDialog extends JDialog {
         menuCenterPanel = new JPanel();
         menuCenterPanel.setLayout(new GridLayout(2, 1, 5, 5));
 
+//        String str = product.getP_name();
+//        menuLabel = new JLabel(str, SwingConstants.CENTER);
         menuLabel = new JLabel("메뉴이름", SwingConstants.CENTER);
         menuLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         menuLabel.setOpaque(true);
@@ -115,7 +117,7 @@ public class OptionDialog extends JDialog {
         northPanel.add(menuCenterPanel);
 
         // 가격
-//        priceLabel = new JLabel(product.getP_price(), SwingConstants.CENTER);
+//        priceLabel = new JLabel(price, SwingConstants.C ENTER);
         priceLabel = new JLabel("4500", SwingConstants.CENTER);
         priceLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         northPanel.add(priceLabel);
@@ -166,11 +168,10 @@ public class OptionDialog extends JDialog {
     }
 
     public void updatePrice(){
-//        totalPrice = Integer.parseInt(product.getP_price()) * count; // price 연결 시 현재 count 와 연산
-        totalPrice = 4500 * count;
+//        price = Integer.parseInt(product.getP_price()); // 값 얻어오기
+        price = 4500 * count;
+        System.out.println(price);
     }
-
-
 
     public static void main(String[] args) {
         new OptionDialog(null);
