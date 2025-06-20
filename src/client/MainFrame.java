@@ -79,9 +79,10 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //포장식사
-                cardLayout.show(cardPanel, "Panel1");
+                cardLayout.show(cardPanel, "orderPanel"); // "Panel1"을 "orderPanel"로 변경
             }
         });
+
         btn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
