@@ -14,4 +14,35 @@
     <select id="getUserInfo" parameterType="String" resultType="vo.UserVO">
     SELECT * from users where u_phone LIKE CONCAT ( '%',#{phoneNumber})
     </select>
+    <update id="updateUserInfo" parameterType="vo.UserVO">
+        UPDATE users set u_id = #{u_id}, u_gender = #{u_gender}, u_phone = #{u_phone}, u_birth = #{u_birth}
+        WHERE u_id = #{u_id}
+    </update>
 </mapper>
+
+<!--
+- 20대 사용자들이 가장 많이 주문한 상품 TOP 5를 조회하는 쿼리
+SELECT
+    p.p_name,                      - 제품명
+    SUM(oi.oi_quantity) AS total_quantity - 제품별 총 주문 수량
+FROM
+    users u - 사용자 테이블
+JOIN
+    orders o ON u.u_id = o.user_id          - users와 orders 테이블을 사용자 ID로 조인
+JOIN
+    order_items oi ON o.o_number = oi.oi_id - orders와 order_items 테이블을 주문 번호로 조인
+JOIN
+    products p ON oi.product_code = p.p_code - order_items와 products 테이블을 제품 코드로 조인
+WHERE
+    - 20대 사용자를 필터링합니다. (만 나이 기준)
+    - 예를 들어, 현재가 2025년일 경우 1996년생부터 2005년생까지가 해당됩니다.
+    YEAR(u.u_birth) BETWEEN (YEAR(NOW()) - 29) AND (YEAR(NOW()) - 20)   >>>>>>>>>29,20 숫자를 변수로넣으면 나이대 쿼리 가능
+    또는 성별로 쿼리
+    u_gender = 'F' - 성별이 여성인 경우
+    u_gender = 'M' - 성별이 남성인 경우
+GROUP BY
+    p.p_name - 제품별로 그룹화하여 수량을 합산하기 위함
+ORDER BY
+    total_quantity DESC - 총 주문 수량이 많은 순서대로 정렬
+LIMIT 100; - 상위 5개의 결과만 조회
+-->

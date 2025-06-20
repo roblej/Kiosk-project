@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="orders">
+
     <select id="status" resultType="vo.order_VO">
         select * from orders ORDER BY o_idx DESC
     </select>
@@ -12,4 +13,5 @@
         SET o_status = #{o_status}
         WHERE o_idx = #{o_idx}
     </update>
+
 </mapper>

@@ -13,12 +13,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class AdminUserUpdatePanel extends JPanel {
+public class UserManagerPanel extends JPanel {
 
-    JPanel northPanel;
-    JLabel tagLabel;
+    JPanel northPanel, southPanel;
+    JLabel searchLabel;
     JTextField inputTextField;
-    JButton searchBtn;
+    JButton searchBtn,backBtn;
 
     JTable table;
     String[] c_name = {"id", "생일", "성별","휴대폰번호"};
@@ -27,13 +27,18 @@ public class AdminUserUpdatePanel extends JPanel {
     MainFrame f; // MainFrame 인스턴스 참조
     List<UserVO> userList;
 
-    public AdminUserUpdatePanel(MainFrame f) {
+    public UserManagerPanel(MainFrame f) {
         this.f = f;
+        this.setLayout(new BorderLayout());
         northPanel = new JPanel();
-        northPanel.add(tagLabel = new JLabel("전화번호 : "));
+        northPanel.add(searchLabel = new JLabel("전화번호(뒷자리) : "));
         northPanel.add(inputTextField = new JTextField(12));
         northPanel.add(searchBtn = new JButton("검색"));
         this.add(northPanel, BorderLayout.NORTH);
+
+        southPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        southPanel.add(backBtn = new JButton("뒤로가기"));
+        this.add(southPanel, BorderLayout.SOUTH);
 
         this.add(new JScrollPane(table = new JTable()));
         table.setModel(new DefaultTableModel(data, c_name));
@@ -46,7 +51,7 @@ public class AdminUserUpdatePanel extends JPanel {
                     System.out.println("test");
                     int i = table.getSelectedRow(); // 선택된 행의 인덱스
                     UserVO vo = userList.get(i);
-
+                    UserManagerDialog dialog = new UserManagerDialog(f, UserManagerPanel.this,true, vo, userList,i);
                 }
             }
         });
@@ -58,13 +63,16 @@ public class AdminUserUpdatePanel extends JPanel {
                 if(str.length()>0){
                     search(str);
                 }else {
-                    JOptionPane.showMessageDialog(AdminUserUpdatePanel.this,"전화번호를 입력하세요");
+                    JOptionPane.showMessageDialog(UserManagerPanel.this,"전화번호를 입력하세요");
                 }
             }
         });
-//        setBounds(300, 300, 400, 300); // x, y, width, height
-        // Set the frame visibility
-//        setVisible(true);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.cardLayout.show(f.cardPanel, "AdminCard");
+            }
+        });
     }
 
     public void search(String phoneNumber){

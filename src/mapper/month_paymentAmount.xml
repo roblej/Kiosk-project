@@ -4,23 +4,27 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="paymentAmount">
 
-    <resultMap id="month2" type="vo.order_items_VO">
-        <id property="oi_idx" column="oi_idx"/>
-        <result property="oi_quantity" column="oi_quantity"/>
-        <result property="oi_price" column="oi_price"/>
-    </resultMap>
+<!--    <resultMap id="month2" type="vo.order_items_VO">-->
+<!--        <id property="oi_idx" column="oi_idx"/>-->
+<!--        <result property="oi_quantity" column="oi_quantity"/>-->
+<!--        <result property="oi_price" column="oi_price"/>-->
+<!--    </resultMap>-->
 
     <resultMap id="month1" type="vo.order_VO" >
         <id property="o_idx" column="o_idx" />
         <result property="o_number" column="o_number"/>
         <result property="o_total_amount" column="o_total_amount"/>
-        <collection property="oiv" ofType="order_items_VO" resultMap="month2"/>
+        <result property="oi_quantity" column="oi_quantity"/>
+        <result property="oi_price" column="oi_price"/>
+<!--        <collection property="oiv" ofType="order_items_VO" resultMap="month2"/>-->
     </resultMap>
 
     <select id="month" resultMap="month1">
-        SELECT * FROM orders od left join order_items oi on
+        SELECT * FROM
+        ( SELECT * FROM orders where substring(o_number,1,4) = date_format(now(),"%y%m")
+        AND o_status IN ('처리완료','취소'))
+        od left join order_items oi on
         od.o_idx = oi.oi_idx
-        where substring(o_number,1,4) = date_format(now(),"%y%m")
     </select>
 
 </mapper>
