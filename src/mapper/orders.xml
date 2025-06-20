@@ -5,7 +5,7 @@
 <mapper namespace="orders">
 
     <select id="status" resultType="vo.order_VO">
-        select * from orders
+        select * from orders ORDER BY o_idx DESC
     </select>
 
     <update id="update" parameterType="vo.order_VO">

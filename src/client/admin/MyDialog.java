@@ -17,6 +17,8 @@ import java.util.List;
 public class MyDialog extends JDialog {
 
     List<order_VO> list;
+    order_VO vo;
+    boolean cnt = true;
 
     JTable table;
     JScrollPane scrollPane;
@@ -50,6 +52,7 @@ public class MyDialog extends JDialog {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                cnt = false;
                 dispose();
             }
         });
@@ -70,6 +73,8 @@ public class MyDialog extends JDialog {
             }
         });
 
+        outoUpdateData outo = new outoUpdateData();
+        outo.start();
         this.setVisible(true);
     }
 
@@ -86,4 +91,18 @@ public class MyDialog extends JDialog {
         ss.close();
     }
 
+    public class outoUpdateData extends Thread {
+        @Override
+        public void run() {
+            while (cnt) {
+                    System.out.println("outoUpdateData");
+                    updateData(vo);
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
