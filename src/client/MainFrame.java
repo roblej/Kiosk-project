@@ -7,6 +7,7 @@ import client.Login.CardPanel1;
 import client.Login.LoginDialog;
 import client.Login.LoginPanel;
 import client.admin.StockCard;
+import client.order.OrderPanel;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -51,10 +52,11 @@ public class MainFrame extends JFrame {
         AdminCard adminCard = new AdminCard(this);
         ClosingSalesPanel closingSalesPanel = new ClosingSalesPanel(this);
         StockCard stockCard = new StockCard(this);
-
+        OrderPanel orderPanel = new OrderPanel();
         CardPanel1 panel1 = new CardPanel1();
 //        cardPanel.add(adminUserUpdatePanel, "adminUserUpdatePanel");
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
+        cardPanel.add(orderPanel,"orderPanel");
         cardPanel.add(panel1, "Panel1"); // "Panel1"이라는 이름으로 추가
         cardPanel.add(adminCard, "AdminCard");
         cardPanel.add(closingSalesPanel, "ClosingSalesPanel"); // "ClosingSalesPanel" 이름으로 추가
@@ -79,9 +81,10 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //포장식사
-                cardLayout.show(cardPanel, "Panel1");
+                cardLayout.show(cardPanel, "orderPanel"); // "Panel1"을 "orderPanel"로 변경
             }
         });
+
         btn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

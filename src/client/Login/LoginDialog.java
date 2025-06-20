@@ -41,7 +41,7 @@ public class LoginDialog extends JDialog {
                         dispose(); // 대화상자 닫기
                         //로그인 후 , 주문페이지로 이동
 //                        login(username, password);
-                        f.cardLayout.show(f.cardPanel, "Panel1"); // MainFrame의 cardPanel로 전환
+                        f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
                     }
                 });
 
@@ -59,12 +59,12 @@ public class LoginDialog extends JDialog {
                 });
         JButton anonBtn = new JButton("비회원주문");
         anonBtn.addActionListener(e -> {
-                    // 비회원 주문 처리 로직 추가
+            // 비회원 주문 처리 로직 추가
             //db에 비회원용 아이디 하드코딩
-                username = "";
-                password = "";
-                    dispose(); // 대화상자 닫기
-                    f.cardLayout.show(f.cardPanel, "Panel1"); // 비회원 주문 후 Panel1로 이동
+            username = "";
+            password = "";
+            dispose(); // 대화상자 닫기
+            f.cardLayout.show(f.cardPanel, "orderPanel"); // "orderPanel"로 이동하도록 변경
         });
         userPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         passPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
