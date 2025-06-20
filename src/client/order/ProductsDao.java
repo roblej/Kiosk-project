@@ -12,10 +12,10 @@ public class ProductsDao {
         this.factory = factory;
     }
 
-    public List<String> selectDistinctCategories() {
+    public List<String> getCategories() {
         List<String> categories = null;
         try (SqlSession session = factory.openSession()) {
-            categories = session.selectList("orders.selectDistinctCategories");
+            categories = session.selectList("products.getCategories");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -13,7 +13,7 @@ public class CategoryPanel extends JPanel {
 
         // DAO를 생성하여 DB에서 카테고리 목록을 조회합니다.
         ProductsDao productsDao = new ProductsDao(mainFrame.factory);
-        List<String> categories = productsDao.selectDistinctCategories();
+        List<String> categories = productsDao.getCategories();
 
         // 조회된 카테고리로 버튼을 생성합니다.
         if (categories != null && !categories.isEmpty()) {
