@@ -5,9 +5,12 @@
 <mapper namespace="paymentAmount">
 
     <select id="period" resultType="vo.order_VO" parameterType="map">
-        SELECT * FROM orders od right join order_items oi on
-        od.o_idx = oi.oi_idx
-        where substring(o_number,1,6) between #{start_date} and #{end_date}
+        SELECT * FROM (
+        SELECT * FROM orders
+        WHERE SUBSTRING(o_number, 1, 6) BETWEEN #{start_date} AND #{end_date}
+        AND o_status IN ('처리완료', '취소')
+        ) od INNER JOIN order_items oi ON od.o_idx = oi.oi_idx
     </select>
+
 
 </mapper>

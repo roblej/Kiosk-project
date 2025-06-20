@@ -8,24 +8,24 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import vo.order_VO;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Reader;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 
 public class ClosingSalesPanel extends JPanel {
 
     JToggleButton today_btn, month_btn, period_btn;
+    JButton back_btn;
     JPanel north_p;
     JTable table;
-    String[] item = {"주문번호", "가격", "수량", "할인", "총금액"};
+    String[] item = {"주문번호", "가격", "수량", "할인", "총금액","상태"};
     String[][] data;
 
     SqlSessionFactory factory;
@@ -39,6 +39,7 @@ public class ClosingSalesPanel extends JPanel {
         today_btn = new JToggleButton("일정산");
         month_btn = new JToggleButton("월정산");
         period_btn = new JToggleButton("기간별 정산");
+        back_btn = new JButton("뒤로");
 
         ButtonGroup group = new ButtonGroup();
         group.add(today_btn);
@@ -51,8 +52,13 @@ public class ClosingSalesPanel extends JPanel {
         this.add(north_p, BorderLayout.NORTH);
 
         this.add(new JScrollPane(table = new JTable()));
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {{
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }});
+        table.setPreferredScrollableViewportSize(new Dimension(500,600));
         table.setModel(new DefaultTableModel(data, item));
 
+        this.add(back_btn, BorderLayout.SOUTH);
 
         this.setBounds(500, 150, 500, 800);
         this.setVisible(true);
@@ -63,6 +69,8 @@ public class ClosingSalesPanel extends JPanel {
         month_btn.addActionListener(e -> month_paymentAmount());
 
         period_btn.addActionListener(e -> period_paymentAmount());
+
+        back_btn.addActionListener(e -> back_Action());
 
 //        this.addWindowListener(new WindowAdapter() {
 //            @Override
@@ -86,17 +94,52 @@ public class ClosingSalesPanel extends JPanel {
     }
 
     private void viewtable(List<order_VO> list) {
-        data = new String[list.size()][item.length];
+        data = new String[list.size()+1][item.length];
         int i = 0;
+        int total_price = 0;
+        int total_amount = 0;
+        int total_quantity = 0;
+
         for (order_VO vo : list) {
+            switch (vo.getO_status()){
+                case "처리완료":
             data[i][0] = vo.getO_number();
-            data[i][1] = vo.getOiv().getOi_price();
-            data[i][2] = vo.getOiv().getOi_quantity();
-            data[i][3] = vo.getOiv().getOptions(); //할인??
-            data[i][4] = vo.getO_total_amount();
+            int price1 = Integer.parseInt(vo.getOi_price());
+            data[i][1] = String.format("%,d",price1);
+            data[i][2] = vo.getOi_quantity();
+            data[i][3] = vo.getOptions(); //할인??
+            int amount1 = Integer.parseInt(vo.getO_total_amount());
+            data[i][4] = String.format("%,d",amount1);
+            data[i][5] = vo.getO_status();
+            total_price += price1;
+            total_quantity += Integer.parseInt(data[i][2]);
+            total_amount += amount1;
             i++;
-        }
+            break;
+                case "취소":
+                    data[i][0] = vo.getO_number();
+                    int price2 = Integer.parseInt(vo.getOi_price());
+                    data[i][1] = String.format("%,d",price2);
+                    data[i][2] = "-"+ vo.getOi_quantity();
+                    data[i][3] = vo.getOptions(); //할인??
+                    int amount2 = Integer.parseInt(vo.getO_total_amount());
+                    data[i][4] = String.format("%,d",amount2);
+                    data[i][5] = vo.getO_status();
+                    total_price += price2;
+                    total_quantity -= Integer.parseInt(data[i][2])*-1;
+                    total_amount -= amount2;
+                    i++;
+                    break;
+            }//csae문의 끝
+        }//for문의 끝
+        data[list.size()][1] = String.format("%,d",total_price);
+        data[list.size()][2] = String.format("%,d",total_quantity);
+        data[list.size()][4] = String.format("%,d",total_amount);
         table.setModel(new DefaultTableModel(data, item));
+    }//view 끝
+
+    private void back_Action(){
+        f.cardLayout.show(f.cardPanel, "AdminCard");
     }
 
     private void today_paymentAmount() {
@@ -131,7 +174,8 @@ public class ClosingSalesPanel extends JPanel {
 
         //연도 입력박스
         int current_year = LocalDate.now().getYear();
-        for (int year = current_year; year >= current_year; year--){
+
+        for (int year = current_year; year >= current_year - 10; year--){
             start_yearBox.addItem(String.valueOf(year));
             end_yearBox.addItem(String.valueOf(year));
         }
@@ -208,10 +252,12 @@ public class ClosingSalesPanel extends JPanel {
                 start_date.append(selected_smonth);
                 start_date.append(selected_sday);
 
+
                 StringBuffer end_date = new StringBuffer();
-                end_date.append(selected_syear.substring(2,4));
+                end_date.append(selected_eyear.substring(2,4));
                 end_date.append(selected_emonth);
                 end_date.append(selected_eday);
+
 
                 int syear = Integer.parseInt(start_date.toString());
                 int eyear = Integer.parseInt(end_date.toString());
@@ -223,8 +269,9 @@ public class ClosingSalesPanel extends JPanel {
                 map.put("end_date",end_date.toString());
                 map.put("o_number",vo.getO_number());
                 map.put("o_total_amount",vo.getO_total_amount());
-               // map.put("oi_quantity",vo.getOiv().getOi_quantity());
-               // map.put("oi_price",vo.getOiv().getOi_price());
+                map.put("oi_quantity",vo.getOi_quantity());
+                map.put("oi_price",vo.getOi_price());
+                map.put("o_status",vo.getO_status());
 
                 init();
 
@@ -234,16 +281,19 @@ public class ClosingSalesPanel extends JPanel {
                 }else {
                     JOptionPane.showMessageDialog(null,"날짜를 확인해주세요.");
                 }
+
+                dialog.dispose();
             }
         });
 
         cancel_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"취소되었습니다.");
                 dialog.dispose();
             }
         });
 
     }
+
+
 }
