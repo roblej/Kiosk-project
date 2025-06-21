@@ -6,4 +6,8 @@
     <select id="update_stock" resultType="Map">
         select * from products
     </select>
+
+    <select id="getname" resultType="vo.ProductsVO">
+        select * from products
+    </select>
 </mapper>

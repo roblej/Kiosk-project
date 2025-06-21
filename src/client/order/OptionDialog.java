@@ -172,8 +172,4 @@ public class OptionDialog extends JDialog {
         price = 4500 * count;
         System.out.println(price);
     }
-
-    public static void main(String[] args) {
-        new OptionDialog(null);
-    }
 }

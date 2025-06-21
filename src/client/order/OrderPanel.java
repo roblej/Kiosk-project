@@ -1,5 +1,8 @@
 package client.order; // 새로운 패키지 경로
 
+import client.MainFrame;
+import vo.ProductsVO;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,16 +12,16 @@ public class OrderPanel extends JPanel {
     private MenuPanel menuPanel;
     private CartPanel cartPanel;
 
-    public OrderPanel() {
+    public OrderPanel(MainFrame f) {
         // 1. 이 패널의 레이아웃을 BorderLayout으로 설정.
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
         // 2. 자식 패널들의 인스턴스를 생성.
         // (자식 패널들도 OrderPanel을 인식하도록 생성자를 수정.)
-        categoryPanel = new CategoryPanel(this);
-        menuPanel = new MenuPanel(this);
-        cartPanel = new CartPanel(this);
+        categoryPanel = new CategoryPanel(this, f);
+        menuPanel = new MenuPanel(this, f);
+        cartPanel = new CartPanel(this, f);
 
         // 3. MenuPanel은 내용이 많아질 수 있으므로 스크롤 가능하도록 JScrollPane에 추가.
         JScrollPane menuScrollPane = new JScrollPane(menuPanel);

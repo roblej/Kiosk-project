@@ -1,5 +1,7 @@
 package client.order; // 패키지 변경
 
+import client.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.MatteBorder;
@@ -9,7 +11,7 @@ public class CartPanel extends JPanel {
     private OrderPanel orderPanel; // MainFrame 대신 OrderPanel을 참조
 
     // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
-    public CartPanel(OrderPanel orderPanel) {
+    public CartPanel(OrderPanel orderPanel, MainFrame f) {
         this.orderPanel = orderPanel;
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(500, 220));
