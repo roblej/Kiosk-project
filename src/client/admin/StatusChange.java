@@ -1,6 +1,6 @@
 package client.admin;
 
-import vo.order_VO;
+import vo.OrderVO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,9 +10,9 @@ public class StatusChange extends JDialog {
 
     JButton pending, process, finish;
     MyDialog parent;
-    order_VO vo;
+    OrderVO vo;
 
-    public StatusChange(MyDialog parent, boolean modal, order_VO vo) {
+    public StatusChange(MyDialog parent, boolean modal, OrderVO vo) {
         super(parent, modal);
         this.parent = parent;
         this.vo = vo; // 저장

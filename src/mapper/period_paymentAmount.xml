@@ -4,13 +4,13 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="paymentAmount">
 
-    <resultMap id="period2" type="vo.order_items_VO">
+    <resultMap id="period2" type="vo.Order_itemVO">
         <id property="oi_idx" column="oi_idx"/>
         <result property="oi_quantity" column="oi_quantity"/>
         <result property="oi_price" column="oi_price"/>
     </resultMap>
 
-    <resultMap id="period1" type="vo.order_VO" >
+    <resultMap id="period1" type="vo.OrderVO" >
         <id property="o_idx" column="o_idx" />
         <result property="o_number" column="o_number"/>
         <result property="o_total_amount" column="o_total_amount"/>

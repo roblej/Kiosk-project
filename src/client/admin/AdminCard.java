@@ -1,13 +1,10 @@
 package client.admin;
 import client.MainFrame;
-import org.apache.ibatis.session.SqlSession;
-import vo.order_VO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class AdminCard extends JPanel {
 
@@ -108,9 +105,5 @@ public class AdminCard extends JPanel {
         });
 
     }
-
-
-
-
 
 }

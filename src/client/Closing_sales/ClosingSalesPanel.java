@@ -1,18 +1,15 @@
 package client.Closing_sales;
 
 import client.MainFrame;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import vo.order_VO;
+import vo.OrderVO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Reader;
 import java.util.List;
 
 public class ClosingSalesPanel extends JPanel {
@@ -81,10 +78,10 @@ public class ClosingSalesPanel extends JPanel {
         ss = f.factory.openSession();
     }
 
-    private void viewtable(List<order_VO> list) {
+    private void viewtable(List<OrderVO> list) {
         data = new String[list.size()][item.length];
         int i = 0;
-        for (order_VO vo : list) {
+        for (OrderVO vo : list) {
             data[i][0] = vo.getO_number();
             data[i][1] = vo.getOiv().getOi_price();
             data[i][2] = vo.getOiv().getOi_quantity();
@@ -97,14 +94,14 @@ public class ClosingSalesPanel extends JPanel {
 
     private void today_paymentAmount() {
         init();
-        List<order_VO> list = ss.selectList("paymentAmount.today");
+        List<OrderVO> list = ss.selectList("paymentAmount.today");
         viewtable(list);
         ss.close();
     }
 
     private void month_paymentAmount() {
         init();
-        List<order_VO> list = ss.selectList("paymentAmount.month");
+        List<OrderVO> list = ss.selectList("paymentAmount.month");
         viewtable(list);
         ss.close();
     }

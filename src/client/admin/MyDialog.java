@@ -2,8 +2,7 @@ package client.admin;
 
 import client.MainFrame;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import vo.order_VO;
+import vo.OrderVO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,7 +15,7 @@ import java.util.List;
 
 public class MyDialog extends JDialog {
 
-    List<order_VO> list;
+    List<OrderVO> list;
 
     JTable table;
     JScrollPane scrollPane;
@@ -64,7 +63,7 @@ public class MyDialog extends JDialog {
                 if(cnt == 2){
                     i = table.getSelectedRow();
                     // 알아낸 index로 OrderVO에 접근
-                    order_VO vo = MyDialog.this.list.get(i);
+                    OrderVO vo = MyDialog.this.list.get(i);
                     new StatusChange(MyDialog.this, true, vo);
 
                 }
@@ -79,7 +78,7 @@ public class MyDialog extends JDialog {
 
     }
 
-    public void updateData(order_VO vo){
+    public void updateData(OrderVO vo){
         System.out.println("updateData");
         SqlSession ss = f.factory.openSession();
         int cnt = ss.update("orders.update", vo);
@@ -94,12 +93,12 @@ public class MyDialog extends JDialog {
 
     String[] o_name = {"주문번호", "결제금액", "주문상태", "고객ID"};
     String[][] data;
-    public List<order_VO> getData(){
+    public List<OrderVO> getData(){
         SqlSession ss = f.factory.openSession();
-        List<order_VO> list = ss.selectList("orders.status");
+        List<OrderVO> list = ss.selectList("orders.status");
         data = new String[list.size()][o_name.length];
         int i = 0;
-        for (order_VO vo : list) {
+        for (OrderVO vo : list) {
             data[i][0] = vo.getO_idx();            // 주문번호
             data[i][1] = vo.getO_total_amount();   // 결제금액
             data[i][2] = vo.getO_status();         // 주문상태
@@ -116,7 +115,7 @@ public class MyDialog extends JDialog {
         public void run() {
             while (cnt) {
                 try {
-                    List<order_VO> newList = getData();
+                    List<OrderVO> newList = getData();
                     DefaultTableModel model = new DefaultTableModel(data, o_name) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
