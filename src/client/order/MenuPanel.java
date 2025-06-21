@@ -8,6 +8,8 @@ import vo.ProductsVO;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,10 +41,24 @@ public class MenuPanel extends JPanel {
 
     public void getData() {
         SqlSession ss = f.factory.openSession();
-        List<ProductsVO> list = ss.selectList("products.getname"); // DB의 products 를 받아오고
-        for (ProductsVO vo : list) {
-            add(new JButton(vo.getP_name()));
-        }
+        List<ProductsVO> list = ss.selectList("products.getname");
         ss.close();
+
+        for (ProductsVO vo : list) {
+            JButton btn = new JButton(vo.getP_name());
+
+            // ✅ 버튼에 클릭 리스너 추가
+            btn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new OptionDialog(vo);
+                }
+            });
+            add(btn); // 메뉴 패널에 버튼 추가
+        }
+
+        revalidate(); // 레이아웃 새로고침
+        repaint();
     }
+
 }
