@@ -25,7 +25,12 @@ public class OptionDialog extends JDialog {
     public OptionDialog(ProductsVO product) {
         this.product = product;
 //        this.defaultPrice = Integer.parseInt(product.getP_price()); // String형 price 숫자로 변환
+
+        // 가격 초기값 설정
+        price = Integer.parseInt(product.getP_price());
+
         initcomponents();
+
 
         // 창 닫기 이벤트
         this.addWindowListener(new WindowAdapter() {
@@ -54,8 +59,7 @@ public class OptionDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 count++;
                 updateCount();
-                updatePrice();
-                System.out.println();
+                totalPrice();
             }
         });
         minusBtn.addActionListener(new ActionListener() {
@@ -64,7 +68,7 @@ public class OptionDialog extends JDialog {
                 if(count > 1){
                     count--;
                     updateCount();
-                    updatePrice();
+                    totalPrice();
                 }
             }
         });
@@ -92,9 +96,8 @@ public class OptionDialog extends JDialog {
         menuCenterPanel = new JPanel();
         menuCenterPanel.setLayout(new GridLayout(2, 1, 5, 5));
 
-//        String str = product.getP_name();
-//        menuLabel = new JLabel(str, SwingConstants.CENTER);
-        menuLabel = new JLabel("메뉴이름", SwingConstants.CENTER);
+        // 메뉴 이름 라벨 가져오기
+        menuLabel = new JLabel(product.getP_name(), SwingConstants.CENTER);
         menuLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         menuLabel.setOpaque(true);
         menuCenterPanel.add(menuLabel);
@@ -116,10 +119,10 @@ public class OptionDialog extends JDialog {
         menuCenterPanel.add(countPanel);
         northPanel.add(menuCenterPanel);
 
-        // 가격
-//        priceLabel = new JLabel(price, SwingConstants.C ENTER);
-        priceLabel = new JLabel("4500", SwingConstants.CENTER);
+        // 가격 영역
+        priceLabel = new JLabel(product.getP_price(), SwingConstants.CENTER);
         priceLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+        priceLabel.setOpaque(true);
         northPanel.add(priceLabel);
 
         // ================= 중앙 패널 =================
@@ -167,9 +170,8 @@ public class OptionDialog extends JDialog {
         countLabel.setText(String.valueOf(count));
     }
 
-    public void updatePrice(){
-//        price = Integer.parseInt(product.getP_price()); // 값 얻어오기
-        price = 4500 * count;
-        System.out.println(price);
+    // Label에 가격 보이게하기
+    public void totalPrice(){
+        priceLabel.setText(String.valueOf(count*price));
     }
 }
