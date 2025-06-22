@@ -2,15 +2,12 @@ package client.order; // 패키지 변경
 
 import client.MainFrame;
 import org.apache.ibatis.session.SqlSession;
-import org.w3c.dom.ls.LSOutput;
-import vo.OrderVO;
 import vo.ProductsVO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -19,14 +16,14 @@ import java.util.List;
 
 public class MenuPanel extends JPanel {
 
-    private OrderPanel orderPanel; // MainFrame 대신 OrderPanel을 참조
+    OrderPanel orderPanel; // MainFrame 대신 OrderPanel을 참조
 
     List<ProductsVO> productsList;
     ProductsVO product;
     MainFrame f;
 
     // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
-    public MenuPanel(OrderPanel orderPanel, MainFrame f) {
+    public MenuPanel(OrderPanel orderPanel, MainFrame f, ProductsVO p) {
         this.orderPanel = orderPanel;
         this.f = f;
         
@@ -51,7 +48,7 @@ public class MenuPanel extends JPanel {
             btn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new OptionDialog(vo);
+                    new OptionDialog(orderPanel, f, vo);
                 }
             });
             add(btn); // 메뉴 패널에 버튼 추가

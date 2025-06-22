@@ -1,5 +1,6 @@
 package client.order;
 
+import client.MainFrame;
 import vo.ProductsVO;
 
 import javax.swing.*;
@@ -11,18 +12,28 @@ import java.awt.event.WindowEvent;
 
 public class OptionDialog extends JDialog {
 
+    // 장바구니에서 사용해야하는 값들을 받는 멤버변수들
+    int totalPrice = 0;
+    int count = 1;
+
     ProductsVO product;
     JButton plusBtn, minusBtn;
     JButton okBtn, cancelBtn;
-    int count = 1;
     int price = 0;
-    JButton hotBtn, iceBtn;
+    JButton hotBtn, iceBtn; // 옵션 버튼
     JPanel menuCenterPanel, countPanel, optionNorthPanel;
     JPanel northPanel, centerPanel, southPanel;
     JLabel imgLabel, countLabel, priceLabel;
     JLabel menuLabel;
 
-    public OptionDialog(ProductsVO product) {
+    OrderPanel p;
+    MainFrame f;
+
+//        public CartPanel(OrderPanel orderPanel, MainFrame f) {
+
+    public OptionDialog(OrderPanel p, MainFrame f, ProductsVO product) {
+        this.p = p;
+        this.f = f;
         this.product = product;
 //        this.defaultPrice = Integer.parseInt(product.getP_price()); // String형 price 숫자로 변환
 
@@ -39,14 +50,20 @@ public class OptionDialog extends JDialog {
                 dispose();
             }
         });
+
+        // 담기
         okBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 장바구니에 값 담고 창 꺼지기
-                
+                String cloneprice = String.valueOf(totalPrice);
+                product.setP_price(cloneprice); // 총 가격을 제품의 price에담아 전달
+                p.addToCart(product, price); // 함수 호출
+                resetValue();
                 dispose();
             }
         });
+
         // 취소
         cancelBtn.addActionListener(new ActionListener() {
             @Override
@@ -54,12 +71,13 @@ public class OptionDialog extends JDialog {
                 dispose();
             }
         });
+
         plusBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 count++;
                 updateCount();
-                totalPrice();
+                calPrice();
             }
         });
         minusBtn.addActionListener(new ActionListener() {
@@ -68,7 +86,7 @@ public class OptionDialog extends JDialog {
                 if(count > 1){
                     count--;
                     updateCount();
-                    totalPrice();
+                    calPrice();
                 }
             }
         });
@@ -171,7 +189,16 @@ public class OptionDialog extends JDialog {
     }
 
     // Label에 가격 보이게하기
-    public void totalPrice(){
+    public void calPrice(){ // cakculatePrice
         priceLabel.setText(String.valueOf(count*price));
+        totalPrice = count*price;
     }
+
+    public void resetValue(){
+        count = 1;
+        price = Integer.parseInt(product.getP_price());
+        totalPrice = 0;
+        priceLabel.setText(String.valueOf(price));
+    }
+
 }
