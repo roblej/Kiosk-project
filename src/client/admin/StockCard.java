@@ -14,6 +14,8 @@ import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
@@ -26,19 +28,19 @@ public class StockCard extends JPanel {
     JPanel stockPanel;
     JLabel s_SearchLb;
     JButton s_SearchBtn;
+    JButton s_backBtn;
     JTable stockTable;
     JScrollPane stockScroll;
     String[][] data;
-    String[] s_name = {"상품명", "현재수량"};
+    String[] s_name = {"상품코드", "상품명", "가격", "재고"};
     SqlSessionFactory factory;
-    List<ProductsVO> products;
-    ArrayList<String> cat_list;
+    List<ProductsVO> list;
     MainFrame f;
-
+    int i;
 
     public StockCard(MainFrame f){
         this.f = f;
-        this.cat_list = new ArrayList<>();
+
         initComponents();//화면구성
 
         init();//DB연결
@@ -46,17 +48,52 @@ public class StockCard extends JPanel {
         allData();
 
         //이벤트감지자 등록
-        s_SearchBtn.addActionListener(new ActionListener() {
+        s_SearchBtn.addActionListener(new ActionListener() {//재고관리
             @Override
             public void actionPerformed(ActionEvent e) {
+                ArrayList<String> cat_list = new ArrayList<>();
 
-                Map<String, ArrayList<String>> map = new HashMap<>();
-                map.put("cat_list", cat_list);
+                for(JCheckBox box : chk_ar){
+                    if(box.isSelected()){
+                        String str = box.getText();
+                        cat_list.add(str);
 
+                    }
+                }
                 SqlSession ss = factory.openSession();
-                List<ProductsVO> list = ss.selectList("products.search_cat", map);
+
+
+                if(cat_list.isEmpty()){
+                    //체크한 항목이 없다면 전체목록 조회
+                    list = ss.selectList("products.all");
+                }else {
+                    Map<String, ArrayList<String>> map = new HashMap<>();
+                    map.put("cat_list", cat_list);
+                    list = ss.selectList("products.search_cat", map);
+                }
+
                 viewTable(list);
                 ss.close();
+            }
+        });
+
+        s_backBtn.addActionListener(new ActionListener() {//뒤로가기 버튼
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.cardLayout.show(f.cardPanel, "AdminCard");
+            }
+        });
+
+        stockTable.addMouseListener(new MouseAdapter() {//테이블 더블클릭 했을때
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int cnt = e.getClickCount();
+                if(cnt == 2){
+                    i = stockTable.getSelectedRow();
+                    ProductsVO pvo = list.get(i);
+
+                    new StockDialog(f,true, pvo, StockCard.this);
+                }
             }
         });
     }//생성자의 끝
@@ -67,19 +104,27 @@ public class StockCard extends JPanel {
         s_SearchLb = new JLabel();
         s_SearchLb.setText("검색");
         stockTable = new JTable();
-        s_SearchBtn= new JButton();
-
-        ImageIcon icon = new ImageIcon("images/search.png");
-        Image img = icon.getImage().getScaledInstance(
+        s_SearchBtn = new JButton();
+        s_backBtn = new JButton();
+        ImageIcon search_icon = new ImageIcon("images/search.png");
+        ImageIcon back_icon = new ImageIcon("images/back.png");
+        Image img = search_icon.getImage().getScaledInstance(
                 40,40,Image.SCALE_SMOOTH);
+        Image img2 = back_icon.getImage().getScaledInstance(
+                40,40,Image.SCALE_SMOOTH);
+
+        s_backBtn.setIcon(new ImageIcon(img2));
+        s_backBtn.setPreferredSize(new Dimension(50, 50));
+        s_backBtn.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+
         s_SearchBtn.setIcon(new ImageIcon(img));
         s_SearchBtn.setPreferredSize(new Dimension(50, 50));
-        //jButton1.setBorder(new BevelBorder(BevelBorder.RAISED));
         s_SearchBtn.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 
+
+        stockPanel.add(s_backBtn);
         stockPanel.add(s_SearchBtn);
         stockPanel.add(s_SearchLb);
-
 
         stockTable.setModel(new DefaultTableModel(data, s_name));
         stockScroll = new JScrollPane(stockTable);
@@ -91,22 +136,24 @@ public class StockCard extends JPanel {
 
     private void allData(){
         SqlSession ss = factory.openSession();
-        products = ss.selectList("all");
+        list = ss.selectList("products.all");
 
         //카테고리 목록 만들기 (중복 제거)
         Set<String> set = new HashSet<>();
-        for (ProductsVO pvo : products) {
+        for (ProductsVO pvo : list) {
             set.add(pvo.getP_category());
         }
 
-        cat_list = new ArrayList<>(set); //HashSet을 ArrayList로 변환
+        ArrayList<String> cat_list = new ArrayList<>(set); //HashSet을 ArrayList로 변환
 
-        viewCat(); //이제 cat_list 기반으로 체크박스 생성
+        viewCat(cat_list); //이제 cat_list 기반으로 체크박스 생성
+
+        viewTable(list);
 
         ss.close();
     }
 
-    private void viewCat(){
+    private void viewCat( ArrayList<String> cat_list){
         chk_ar = new JCheckBox[cat_list.size()];
         int i = 0;
         for (String ca : cat_list) {
@@ -120,11 +167,13 @@ public class StockCard extends JPanel {
 
     }
     private void viewTable(List<ProductsVO> list){
-        data = new String[products.size()][s_name.length];
+        data = new String[list.size()][s_name.length];
         int i =0;
         for(ProductsVO vo : list){
-            data[i][0] = vo.getP_name();//상품명
-            data[i][1] = vo.getP_stock();//현재수량
+            data[i][0] = vo.getP_code();//상품코드
+            data[i][1] = vo.getP_name();//상품이름
+            data[i][2] = vo.getP_price();//상품가격
+            data[i][3] = vo.getP_stock();//재고
             i++;
 
         }
@@ -144,6 +193,18 @@ public class StockCard extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateData(ProductsVO pvo){
+        SqlSession ss = factory.openSession();
+        int cnt = ss.update("products.edit", pvo);
+        if(cnt > 0){
+            ss.commit();
+            stockTable.setValueAt(pvo.getP_stock(), i, 3);
+            list.set(i,pvo);
+        }else
+            ss.rollback();
+        ss.close();
     }
 
 
