@@ -21,4 +21,11 @@
         SET p_stock = #{p_stock}
         WHERE p_code = #{p_code}
     </update>
+    <select id="getCategories" resultType="String">
+        SELECT DISTINCT p_category FROM products WHERE p_category IS NOT NULL
+    </select>
+
+    <select id="getname" resultType="vo.ProductsVO">
+        select * from products
+    </select>
 </mapper>

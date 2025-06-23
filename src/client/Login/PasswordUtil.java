@@ -33,23 +33,4 @@ public class PasswordUtil {
         }
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
-
-//    public static void main(String[] args) {
-//        String originalPassword = "mySecretPassword123!";
-//
-//        // 1. 비밀번호 해싱 (회원가입 또는 비밀번호 변경 시)
-//        String hashedPassword = hashPassword(originalPassword);
-//        System.out.println("원본 비밀번호: " + originalPassword);
-//        System.out.println("해싱된 비밀번호: " + hashedPassword);
-//        // 이 hashedPassword를 데이터베이스의 u_password 컬럼에 저장합니다.
-//
-//        // 2. 비밀번호 검증 (로그인 시)
-//        String inputPassword = "mySecretPassword123!"; // 사용자가 로그인 시 입력한 비밀번호
-//        boolean isMatch = checkPassword(inputPassword, hashedPassword);
-//        System.out.println("입력 비밀번호 일치 여부: " + isMatch); // true
-//
-//        String wrongPassword = "wrongPassword";
-//        boolean isWrongMatch = checkPassword(wrongPassword, hashedPassword);
-//        System.out.println("잘못된 비밀번호 일치 여부: " + isWrongMatch); // false
-//    }
 }

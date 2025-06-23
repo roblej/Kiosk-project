@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="coupon">
+    <select id="all" resultType="vo.CouponVO">
+        SELECT * FROM coupons
+    </select>
+    <insert id="create" parameterType="vo.CouponVO">
+        INSERT INTO coupons (u_id,c_code, is_coupon_used, c_start, c_end, c_discount_rate)
+        VALUES (#{u_id},#{c_code}, #{is_coupon_used}, #{c_start}, #{c_end}, #{c_discount_rate})
+    </insert>
+    <select id="checkCodeExists" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM coupons WHERE c_code = #{c_code}
+    </select>
+</mapper>

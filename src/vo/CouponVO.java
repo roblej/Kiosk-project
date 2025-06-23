@@ -1,23 +1,22 @@
 package vo;
 
-import java.util.Date;
-
 public class CouponVO {
-    private int c_idx;
+    private String u_id;
     private String c_code;
-    private Date c_start;
-    private Date c_end;
-    private double c_discount_rate; // 할인율
-    private int is_coupon_used;     // 0: 미사용, 1: 사용
+    private String c_start;
+    private String c_end;
+    private String c_discount_rate; // 할인율
+    private String is_coupon_used;     // 0: 미사용, 1: 사용
 
     // --- Getter and Setter ---
 
-    public int getC_idx() {
-        return c_idx;
+
+    public String getU_id() {
+        return u_id;
     }
 
-    public void setC_idx(int c_idx) {
-        this.c_idx = c_idx;
+    public void setU_id(String u_id) {
+        this.u_id = u_id;
     }
 
     public String getC_code() {
@@ -28,35 +27,35 @@ public class CouponVO {
         this.c_code = c_code;
     }
 
-    public Date getC_start() {
+    public String getC_start() {
         return c_start;
     }
 
-    public void setC_start(Date c_start) {
+    public void setC_start(String c_start) {
         this.c_start = c_start;
     }
 
-    public Date getC_end() {
+    public String getC_end() {
         return c_end;
     }
 
-    public void setC_end(Date c_end) {
+    public void setC_end(String c_end) {
         this.c_end = c_end;
     }
 
-    public double getC_discount_rate() {
+    public String getC_discount_rate() {
         return c_discount_rate;
     }
 
-    public void setC_discount_rate(double c_discount_rate) {
+    public void setC_discount_rate(String c_discount_rate) {
         this.c_discount_rate = c_discount_rate;
     }
 
-    public int getIs_coupon_used() {
+    public String getIs_coupon_used() {
         return is_coupon_used;
     }
 
-    public void setIs_coupon_used(int is_coupon_used) {
+    public void setIs_coupon_used(String is_coupon_used) {
         this.is_coupon_used = is_coupon_used;
     }
 }

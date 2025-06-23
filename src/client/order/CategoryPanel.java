@@ -1,21 +1,31 @@
-package client.order; // 패키지 변경
+package client.order;
 
+import client.MainFrame;
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class CategoryPanel extends JPanel {
 
-    private OrderPanel orderPanel; // MainFrame 대신 OrderPanel을 참조
+    public CategoryPanel(MainFrame mainFrame) {
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setBackground(Color.WHITE);
 
-    // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
-    public CategoryPanel(OrderPanel orderPanel) {
-        this.orderPanel = orderPanel;
-        setBackground(Color.LIGHT_GRAY);
+        // DAO를 생성하여 DB에서 카테고리 목록을 조회합니다.
+        ProductsDao productsDao = new ProductsDao(mainFrame.factory);
+        List<String> categories = productsDao.getCategories();
 
-        // 임시 버튼들
-        add(new JButton("모든 메뉴"));
-        add(new JButton("추천 메뉴"));
-        add(new JButton("커피"));
-        add(new JButton("디저트"));
+        // 조회된 카테고리로 버튼을 생성합니다.
+        if (categories != null && !categories.isEmpty()) {
+            for (String categoryName : categories) {
+                JButton categoryButton = new JButton(categoryName);
+                categoryButton.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+                // 다른 패널에 기능이 없으므로 ActionListener는 추가하지 않습니다.
+                add(categoryButton);
+            }
+        } else {
+            // 카테고리가 없을 경우의 메시지
+            add(new JLabel("표시할 카테고리가 없습니다."));
+        }
     }
 }

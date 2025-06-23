@@ -1,13 +1,10 @@
 package client;
 
 import client.Closing_sales.ClosingSalesPanel;
-import client.admin.AdminCard;
-import client.admin.UserManagerPanel;
-import client.Login.CardPanel1;
+import client.admin.*;
 import client.Login.LoginDialog;
 import client.Login.LoginPanel;
-import client.admin.StockCard;
-import client.order.OrderPanel;
+import client.order.*;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -52,14 +49,14 @@ public class MainFrame extends JFrame {
         AdminCard adminCard = new AdminCard(this);
         ClosingSalesPanel closingSalesPanel = new ClosingSalesPanel(this);
         StockCard stockCard = new StockCard(this);
-        OrderPanel orderPanel = new OrderPanel();
-        CardPanel1 panel1 = new CardPanel1();
+        OrderPanel orderPanel = new OrderPanel(this);
+        CouponManagerPanel couponManagerPanel = new CouponManagerPanel(this);
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(orderPanel,"orderPanel");
-        cardPanel.add(panel1, "Panel1"); // "Panel1"이라는 이름으로 추가
         cardPanel.add(adminCard, "AdminCard");
         cardPanel.add(closingSalesPanel, "ClosingSalesPanel"); // "ClosingSalesPanel" 이름으로 추가
         cardPanel.add(userManagerPanel, "userManagerPanel");
+        cardPanel.add(couponManagerPanel, "CouponManagerPanel"); // "CouponManagerPanel" 이름으로 추가
         cardPanel.add(stockCard,"StockCard");
         // 컨트롤 버튼 생성 (패널 전환용)
         JPanel controlPanel = new JPanel();

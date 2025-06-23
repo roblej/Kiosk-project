@@ -1,13 +1,10 @@
 package client.admin;
 import client.MainFrame;
-import org.apache.ibatis.session.SqlSession;
-import vo.order_VO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class AdminCard extends JPanel {
 
@@ -74,7 +71,7 @@ public class AdminCard extends JPanel {
         couponBtn.addActionListener(new ActionListener() {//쿠폰사용내역
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                f.cardLayout.show(f.cardPanel, "CouponManagerPanel");
             }
         });
 
@@ -96,8 +93,7 @@ public class AdminCard extends JPanel {
         orderBtn.addActionListener(new ActionListener() {//주문처리
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<order_VO> list = getData();
-                new MyDialog(f, true, data, o_name, f.factory, list);
+                new MyDialog(f, true);
             }
         });
 
@@ -109,25 +105,5 @@ public class AdminCard extends JPanel {
         });
 
     }
-
-    String[] o_name = {"주문번호", "결제금액", "주문상태", "고객ID"};
-    String[][] data;
-    public List<order_VO> getData(){
-        SqlSession ss = f.factory.openSession();
-        List<order_VO> list = ss.selectList("orders.status");
-        data = new String[list.size()][o_name.length];
-        int i = 0;
-        for (order_VO vo : list) {
-            data[i][0] = vo.getO_idx();            // 주문번호
-            data[i][1] = vo.getO_total_amount();   // 결제금액
-            data[i][2] = vo.getO_status();         // 주문상태
-            data[i][3] = vo.getUser_id();          // 고객ID
-            i++;
-        }
-        ss.close();
-        return list;
-    }
-
-
 
 }
