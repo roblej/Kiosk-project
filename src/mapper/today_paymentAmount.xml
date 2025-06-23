@@ -25,7 +25,7 @@
         ( SELECT * FROM orders where substring(o_number,1,6) = date_format(now(),"%y%m%d")
         AND o_status IN ('처리완료','취소'))
         od left join order_items oi on
-        od.o_idx = oi.oi_idx
+        od.o_number = oi.oi_id
     </select>
 
 </mapper>
