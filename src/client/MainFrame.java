@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
     public JPanel cardPanel; // CardLayout이 적용될 패널
     public CardLayout cardLayout; // CardLayout 매니저
     public SqlSessionFactory factory;
+    public static String userId; // 로그인한 사용자 ID를 저장할 변수
 
     public MainFrame()  {
         Reader r = null;
@@ -58,10 +59,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(userManagerPanel, "userManagerPanel");
         cardPanel.add(couponManagerPanel, "CouponManagerPanel"); // "CouponManagerPanel" 이름으로 추가
         cardPanel.add(stockCard,"StockCard");
-        // 컨트롤 버튼 생성 (패널 전환용)
-        JPanel controlPanel = new JPanel();
-        JButton btn1 = new JButton("Panel 1로 이동");
-        JButton btn2 = new JButton("Panel 2로 이동");
+
         loginPanel.inBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -70,7 +68,6 @@ public class MainFrame extends JFrame {
                 LoginDialog loginDialog = null;
                 loginDialog = new LoginDialog(MainFrame.this);
                 loginDialog.setVisible(true); // 대화상자 표시
-                //                cardLayout.show(cardPanel, "Panel1");
             }
         });
 
@@ -82,26 +79,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        btn1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "Panel1"); // "Panel1" 이름의 카드 보이기
-            }
-        });
-
-        btn2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "Panel2"); // "Panel2" 이름의 카드 보이기
-            }
-        });
-
-        controlPanel.add(btn1);
-        controlPanel.add(btn2);
-
-        // 프레임에 패널들 추가
         add(cardPanel, BorderLayout.CENTER);
-//        add(controlPanel, BorderLayout.SOUTH);
         this.setVisible(true);
     }
 
