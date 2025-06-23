@@ -1,61 +1,108 @@
-package client.order; // 패키지 변경
+package client.order;
 
 import client.MainFrame;
 import org.apache.ibatis.session.SqlSession;
 import vo.ProductsVO;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
-
-/*
-이곳은 메뉴판 항목들이 표시되는 부분이다. ProductsVO에서 품목들의 이름, 가격, 사진을 가져와 이곳에 출력하자
- */
 
 public class MenuPanel extends JPanel {
 
-    OrderPanel orderPanel; // MainFrame 대신 OrderPanel을 참조
+    private final OrderPanel orderPanel;
+    private final MainFrame f;
+    private final ProductsDao productsDao;
 
-    List<ProductsVO> productsList;
-    ProductsVO product;
-    MainFrame f;
+    private final JPanel gridPanel;
 
-    // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
+    private OptionDialog optionDialog;
+
     public MenuPanel(OrderPanel orderPanel, MainFrame f, ProductsVO p) {
         this.orderPanel = orderPanel;
         this.f = f;
-        
-        setBackground(Color.WHITE); // 배경 흰색
+        this.productsDao = new ProductsDao(f.factory);
 
-        // 한 줄에 3개씩 표시되도록 GridLayout으로 설정
-        setLayout(new GridLayout(0, 3, 15, 15));
-        setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        super.setLayout(new BorderLayout());
+        super.setBackground(Color.WHITE);
+
+        // --- 1. 그리드 레이아웃의 좌우 간격(hgap) 수정 ---
+        gridPanel = new JPanel(new GridLayout(0, 3, 10, 15)); // 가로 간격 15 -> 10
+        gridPanel.setBackground(Color.WHITE);
+        // --- 2. 그리드 패널의 테두리 여백 수정 ---
+        gridPanel.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10)); // 좌우 여백 15 -> 10
+
+        super.add(gridPanel, BorderLayout.NORTH);
 
         getData();
     }
 
-    public void getData() {
-        SqlSession ss = f.factory.openSession();
-        List<ProductsVO> list = ss.selectList("products.getname");
-        ss.close();
+    private void addMenuButton(ProductsVO vo) {
+        MenuButton btnPanel = new MenuButton(vo);
 
-        for (ProductsVO vo : list) {
-            JButton btn = new JButton(vo.getP_name());
-
-            // ✅ 버튼에 클릭 리스너 추가
-            btn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    new OptionDialog(orderPanel, f, vo);
+        btnPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) { // 메뉴버튼 클릭했을 때
+                // 이미 열려있다면 새로 열지않음
+                if (optionDialog != null && optionDialog.isShowing()) {
+                    return;
                 }
-            });
-            add(btn); // 메뉴 패널에 버튼 추가
-        }
+                // ✅ 새로 열고, 닫힐 때 optionDialog = null 처리
+                optionDialog = new OptionDialog(orderPanel, f, vo);
+                optionDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        optionDialog = null;
+                    }
+                });
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) { // 메뉴버튼에 마우스 갖다댔을 때
+                btnPanel.setBorder(new LineBorder(Color.BLUE, 2));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) { // 메뉴버튼에서 마우스 나갔을 때
+                btnPanel.setBorder(new LineBorder(new Color(220, 220, 220)));
+            }
+        });
 
-        revalidate(); // 레이아웃 새로고침
-        repaint();
+        JPanel wrapper = new JPanel();
+        wrapper.setOpaque(false);
+        wrapper.add(btnPanel);
+
+        gridPanel.add(wrapper);
     }
 
+    public void getData() {
+        SqlSession ss = f.factory.openSession();
+        List<ProductsVO> list = ss.selectList("products.all");
+        ss.close();
+
+        if (list != null) {
+            for (ProductsVO vo : list) {
+                addMenuButton(vo);
+            }
+        }
+        super.revalidate();
+        super.repaint();
+    }
+
+    public void updateMenus(String category) {
+        gridPanel.removeAll();
+
+        List<ProductsVO> productList = category.equals("모든 메뉴") ?
+                productsDao.all() : productsDao.getProductsByCategory(category);
+
+        if (productList != null) {
+            for (ProductsVO vo : productList) {
+                addMenuButton(vo);
+            }
+        }
+
+        gridPanel.revalidate();
+        gridPanel.repaint();
+    }
 }
