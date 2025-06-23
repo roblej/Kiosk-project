@@ -26,9 +26,13 @@ public class StockCard extends JPanel {
 
     JCheckBox[] chk_ar;
     JPanel stockPanel;
+    JPanel buttonpanel;
+    JPanel backPanel;
     JLabel s_SearchLb;
     JButton s_SearchBtn;
     JButton s_backBtn;
+    JButton s_addBtn;
+    JButton s_delBtn;
     JTable stockTable;
     JScrollPane stockScroll;
     String[][] data;
@@ -48,7 +52,23 @@ public class StockCard extends JPanel {
         allData();
 
         //이벤트감지자 등록
-        s_SearchBtn.addActionListener(new ActionListener() {//재고관리
+
+        s_addBtn.addActionListener(new ActionListener() {//상품추가 버튼
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+            }
+        });
+
+        s_delBtn.addActionListener(new ActionListener() {//상품삭제 버튼
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        s_SearchBtn.addActionListener(new ActionListener() {//재고검색 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<String> cat_list = new ArrayList<>();
@@ -86,7 +106,7 @@ public class StockCard extends JPanel {
 
         stockTable.addMouseListener(new MouseAdapter() {//테이블 더블클릭 했을때
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {//상품 더블클릭 이벤트
                 int cnt = e.getClickCount();
                 if(cnt == 2){
                     i = stockTable.getSelectedRow();
@@ -101,8 +121,13 @@ public class StockCard extends JPanel {
     private void initComponents(){
 
         stockPanel = new JPanel();
+        buttonpanel = new JPanel();
+        buttonpanel.setLayout(new GridLayout(2,1,5,5));
+        backPanel = new JPanel();
         s_SearchLb = new JLabel();
         s_SearchLb.setText("검색");
+        s_addBtn =  new JButton("상품추가");
+        s_delBtn =  new JButton("상품삭제");
         stockTable = new JTable();
         s_SearchBtn = new JButton();
         s_backBtn = new JButton();
@@ -121,8 +146,10 @@ public class StockCard extends JPanel {
         s_SearchBtn.setPreferredSize(new Dimension(50, 50));
         s_SearchBtn.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 
-
-        stockPanel.add(s_backBtn);
+        backPanel.add(s_backBtn);
+        buttonpanel.add(s_addBtn);
+        buttonpanel.add(s_delBtn);
+        stockPanel.add(buttonpanel);
         stockPanel.add(s_SearchBtn);
         stockPanel.add(s_SearchLb);
 
@@ -130,6 +157,7 @@ public class StockCard extends JPanel {
         stockScroll = new JScrollPane(stockTable);
         this.setLayout(new BorderLayout());
         this.add(stockPanel, BorderLayout.NORTH);
+        this.add(backPanel, BorderLayout.SOUTH);
         this.add(stockScroll, BorderLayout.CENTER);
 
     }
@@ -205,6 +233,13 @@ public class StockCard extends JPanel {
         }else
             ss.rollback();
         ss.close();
+    }
+
+    public void addData(ProductsVO pvo){
+        SqlSession ss = factory.openSession();
+
+        ss.commit();
+        list.add(pvo);
     }
 
 

@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="products">
     <select id="all" resultType="vo.ProductsVO">
-        SELECT * FROM products ORDER BY p_name ASC
+        SELECT * FROM products ORDER BY p_code ASC
     </select>
 
     <select id="search_cat" resultType="vo.ProductsVO" parameterType="Map">
@@ -13,7 +13,7 @@
         <foreach collection="cat_list" item="cno" open="(" close=")" separator=",">
             #{cno}
         </foreach>
-        ORDER BY p_name ASC
+        ORDER BY p_code ASC
     </select>
 
     <update id="edit" parameterType="vo.ProductsVO">
