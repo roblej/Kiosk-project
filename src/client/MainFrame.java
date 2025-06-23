@@ -1,12 +1,9 @@
 package client;
 
 import client.Closing_sales.ClosingSalesPanel;
-import client.admin.AdminCard;
-import client.admin.CouponManagerPanel;
-import client.admin.UserManagerPanel;
+import client.admin.*;
 import client.Login.LoginDialog;
 import client.Login.LoginPanel;
-import client.admin.StockCard;
 import client.order.*;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
