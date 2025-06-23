@@ -1,7 +1,6 @@
 package client.admin;
 
 import client.MainFrame;
-import com.sun.tools.javac.Main;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -10,7 +9,6 @@ import vo.ProductsVO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,13 +24,11 @@ public class StockCard extends JPanel {
 
     JCheckBox[] chk_ar;
     JPanel stockPanel;
-    JPanel buttonpanel;
     JPanel backPanel;
     JLabel s_SearchLb;
     JButton s_SearchBtn;
     JButton s_backBtn;
     JButton s_addBtn;
-    JButton s_delBtn;
     JTable stockTable;
     JScrollPane stockScroll;
     String[][] data;
@@ -56,22 +52,17 @@ public class StockCard extends JPanel {
         s_addBtn.addActionListener(new ActionListener() {//상품추가 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
-            }
-        });
-
-        s_delBtn.addActionListener(new ActionListener() {//상품삭제 버튼
-            @Override
-            public void actionPerformed(ActionEvent e) {
+                ProductsVO pvo = new ProductsVO();
+                new AddDialog(f, true, pvo, StockCard.this);
 
             }
         });
 
-        s_SearchBtn.addActionListener(new ActionListener() {//재고검색 버튼
+        s_SearchBtn.addActionListener(new ActionListener() {//검색 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<String> cat_list = new ArrayList<>();
+              ArrayList<String> cat_list = new ArrayList<>();
+                cat_list.clear();
 
                 for(JCheckBox box : chk_ar){
                     if(box.isSelected()){
@@ -83,7 +74,7 @@ public class StockCard extends JPanel {
                 SqlSession ss = factory.openSession();
 
 
-                if(cat_list.isEmpty()){
+                if(cat_list != null && cat_list.isEmpty()){
                     //체크한 항목이 없다면 전체목록 조회
                     list = ss.selectList("products.all");
                 }else {
@@ -121,13 +112,10 @@ public class StockCard extends JPanel {
     private void initComponents(){
 
         stockPanel = new JPanel();
-        buttonpanel = new JPanel();
-        buttonpanel.setLayout(new GridLayout(2,1,5,5));
         backPanel = new JPanel();
         s_SearchLb = new JLabel();
         s_SearchLb.setText("검색");
         s_addBtn =  new JButton("상품추가");
-        s_delBtn =  new JButton("상품삭제");
         stockTable = new JTable();
         s_SearchBtn = new JButton();
         s_backBtn = new JButton();
@@ -147,9 +135,7 @@ public class StockCard extends JPanel {
         s_SearchBtn.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 
         backPanel.add(s_backBtn);
-        buttonpanel.add(s_addBtn);
-        buttonpanel.add(s_delBtn);
-        stockPanel.add(buttonpanel);
+        stockPanel.add(s_addBtn);
         stockPanel.add(s_SearchBtn);
         stockPanel.add(s_SearchLb);
 
@@ -235,12 +221,67 @@ public class StockCard extends JPanel {
         ss.close();
     }
 
-    public void addData(ProductsVO pvo){
+    public void deleteData(String code) {
         SqlSession ss = factory.openSession();
-
-        ss.commit();
-        list.add(pvo);
+        int cnt = ss.delete("products.del", code);
+        if (cnt > 0) {
+            ss.commit();
+            ArrayList<String> cat_list = new ArrayList<>();
+            for (JCheckBox box : chk_ar) {
+                if (box.isSelected()) {
+                    String str = box.getText();
+                    cat_list.add(str);
+                }
+            }
+            if (cat_list != null && cat_list.isEmpty()) {
+                //체크한 항목이 없다면 전체목록 조회
+                list = ss.selectList("products.all");
+            } else {
+                Map<String, ArrayList<String>> map = new HashMap<>();
+                map.put("cat_list", cat_list);
+                list = ss.selectList("products.search_cat", map);
+            }
+            viewTable(list);
+            ss.close();
+        }
     }
+    public void addData(ProductsVO pvo){
+        if(pvo != null ){
+            Map<String, String> map = new HashMap<>();
+            map.put("p_code", pvo.getP_code());
+            map.put("p_name", pvo.getP_name());
+            map.put("p_price", pvo.getP_price());
+            map.put("p_size", pvo.getP_size());
+            map.put("p_options", pvo.getP_options());
+            map.put("p_category", pvo.getP_category());
+            map.put("p_image_url", pvo.getP_image_url());
+            map.put("p_stock", pvo.getP_stock());
 
+            SqlSession ss = factory.openSession();
+            int cnt = ss.insert("products.add", pvo);
+            if(cnt > 0){
+                ss.commit();
+                ArrayList<String> cat_list = new ArrayList<>();
+                for (JCheckBox box : chk_ar) {
+                    if (box.isSelected()) {
+                        String str = box.getText();
+                        cat_list.add(str);
+                    }
+                }
+                if (cat_list != null && cat_list.isEmpty()) {
+                    //체크한 항목이 없다면 전체목록 조회
+                    list = ss.selectList("products.all");
+                } else {
+                    Map<String, ArrayList<String>> map2 = new HashMap<>();
+                    map2.put("cat_list", cat_list);
+                    list = ss.selectList("products.search_cat", map2);
+                }
+                viewTable(list);
+                ss.close();
+
+            }
+        }
+
+    }
 
 }
