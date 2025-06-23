@@ -23,8 +23,8 @@ public class MyDialog extends JDialog {
     int i;
     MainFrame f;
 
-    public MyDialog(MainFrame f) {
-        super(f, true); // 현재 창이 생성되면 그 외 요소는 클릭 못하게 함
+    public MyDialog(MainFrame f, boolean modal) {
+        super(f, modal);
         this.f = f;
 
         list = getData(); // 값 채우기
@@ -128,7 +128,7 @@ public class MyDialog extends JDialog {
                         list = newList;
                     });
                     System.out.println("table update");
-                    Thread.sleep(5000); // 5초마다 갱신
+                    Thread.sleep(1000); // 1초마다 갱신
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

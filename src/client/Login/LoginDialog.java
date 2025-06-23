@@ -40,8 +40,8 @@ public class LoginDialog extends JDialog {
                         // 로그인 성공 처리
                         dispose(); // 대화상자 닫기
                         //로그인 후 , 주문페이지로 이동
-                        login(username, password);
-//                        f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
+//                        login(username, password);
+                        f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
                     }
                 });
 
@@ -61,11 +61,9 @@ public class LoginDialog extends JDialog {
         anonBtn.addActionListener(e -> {
             // 비회원 주문 처리 로직 추가
             //db에 비회원용 아이디 하드코딩
-            username = "unknown_user"; // 비회원 ID 설정
+            username = "";
             password = "";
             dispose(); // 대화상자 닫기
-            MainFrame.userId = username; // 로그인한 사용자 ID 저장
-            f.setTitle("로그인한 사용자: " + MainFrame.userId); // 프레임 제목 업데이트
             f.cardLayout.show(f.cardPanel, "orderPanel"); // "orderPanel"로 이동하도록 변경
         });
         userPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -121,16 +119,13 @@ public class LoginDialog extends JDialog {
                 // PasswordUtil.checkPassword() 메서드 사용
                 if (PasswordUtil.checkPassword(rawPassword, storedHashedPassword)) {
                     // TODO: 로그인 성공 후 메인 화면의 CardLayout으로 전환
-                    MainFrame.userId = username; // 로그인한 사용자 ID 저장
-                    f.setTitle("로그인한 사용자: " + MainFrame.userId); // 프레임 제목 업데이트
-                    f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
-                    // 로그인 다이얼로그는 닫습니다.
-                    dispose();
-//                    if (f != null && f.cardLayout != null && f.cardPanel != null) {
-//
-//                    } else {
-//                        System.out.println("MainFrame 인스턴스가 없거나 CardLayout 설정이 올바르지 않습니다.");
-//                    }
+                    if (f != null && f.cardLayout != null && f.cardPanel != null) {
+                        f.cardLayout.show(f.cardPanel, "Panel1"); // MainFrame의 cardPanel로 전환
+                        // 로그인 다이얼로그는 닫습니다.
+                        dispose();
+                    } else {
+                        System.out.println("MainFrame 인스턴스가 없거나 CardLayout 설정이 올바르지 않습니다.");
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this, "비밀번호가 일치하지 않습니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
                 }
