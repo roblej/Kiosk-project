@@ -1,13 +1,9 @@
 package client.order; // 패키지 변경
 
-import client.MainFrame;
-import vo.ProductsVO;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
-import javax.swing.border.MatteBorder;
 
 /*
 이곳은 OptionDialog에서 저장된 값의 정보가 담길 class이다
@@ -18,35 +14,83 @@ OptionDialog에서 전달하고자 하는 이름, 가격을 멤버변수로 만�
 public class CartPanel extends JPanel {
 
     private OrderPanel orderPanel; // MainFrame 대신 OrderPanel을 참조
-    List<ProductsVO> productsList;
-    OptionDialog d;
-    ProductsVO p;
+    private List<String[]> cartList;
+    JTable table;
+    JScrollPane scrollPane;
+
+    JLabel bottomLabel;
+    int allPrice;
+
+    String[] pvo_name = {"주문상품", "주문수량", "주문가격", "옵션"};
 
     // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
-    public CartPanel(OrderPanel orderPanel, ProductsVO vo, int totalPrice) {
+    public CartPanel(OrderPanel orderPanel, List<String[]> cartList) {
         this.orderPanel = orderPanel;
-        this.p = vo;
+        this.cartList = cartList;
+        this.allPrice = allPrice;
+
+        // List -> 2차원 배열 변환
+        String[][] data = new String[cartList.size()][pvo_name.length];
+        for (int i = 0; i < cartList.size(); i++) {
+            data[i] = cartList.get(i);
+        }
+
+        table = new JTable(new DefaultTableModel(data, pvo_name) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(500, 220));
-        setBackground(Color.WHITE);
-        setBorder(new MatteBorder(1, 0, 0, 0, new Color(220, 220, 220)));
+        add(new JLabel("장바구니", SwingConstants.CENTER), BorderLayout.NORTH);
 
-        // (이하 장바구니 UI 구성 요소... - 이전 코드와 유사)
-        add(new JLabel("장바구니: " + vo.getP_name(), SwingConstants.CENTER), BorderLayout.NORTH);
+        scrollPane = new JScrollPane(table);
+        add(scrollPane, BorderLayout.CENTER);
 
-//        productsList = new ArrayList<>();
-//        productsList.add(vo);
-
-
+        int totalPrice = calcTotal(cartList);
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.add(new JLabel("총 금액: " + totalPrice + "원"), BorderLayout.CENTER);
-        bottomPanel.add(new JButton("결제하기"), BorderLayout.EAST);
+
+        bottomPanel.add(bottomLabel = new JLabel("총 금액: " + allPrice + "원"), BorderLayout.CENTER);
+
+        JButton payBtn = new JButton("결제하기");
+        payBtn.addActionListener(e -> {
+            cartList.clear(); // 장바구니 초기화
+            JOptionPane.showMessageDialog(this, "쿠폰을 사용하시겠습니까?");
+            // 테이블 새로 고침 필요 (다시 생성 or 테이블 모델 초기화)
+        });
+
+        bottomPanel.add(payBtn, BorderLayout.EAST);
         add(bottomPanel, BorderLayout.SOUTH);
+        setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new CartPanel(null, null, 0);
+    private int calcTotal(List<String[]> list) {
+        int total = 0;
+        for (String[] row : list) {
+            total += Integer.parseInt(row[2]); // 주문가격
+        }
+        return total;
     }
 
+    public void updateTable() {
+        String[][] data = new String[cartList.size()][pvo_name.length];
+        for (int i = 0; i < cartList.size(); i++) {
+            data[i] = cartList.get(i);
+        }
+        DefaultTableModel model = new DefaultTableModel(data, pvo_name) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        table.setModel(model);
+    }
+
+    public void updatePrice(int allPrice){
+        this.allPrice = allPrice; // 멤버변수의 allPrice에 값 넣어줌
+        bottomLabel.setText("총 금액: " + allPrice + "원");
+    }
 }

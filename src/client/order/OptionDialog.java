@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OptionDialog extends JDialog {
 
@@ -41,8 +43,8 @@ public class OptionDialog extends JDialog {
         resetValue();
         calPrice();
 
+        // 창 보이게 하기
         initcomponents();
-
 
         // 창 닫기 이벤트
         this.addWindowListener(new WindowAdapter() {
@@ -57,8 +59,7 @@ public class OptionDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 장바구니에 값 담고 창 꺼지기
-                int cloneprice = totalPrice;
-                p.addToCart(product, cloneprice); // 함수 호출
+                p.addToCart(product, count, totalPrice); // 함수 호출
                 dispose();
             }
         });
@@ -71,6 +72,7 @@ public class OptionDialog extends JDialog {
             }
         });
 
+        // 수량 더하기, 빼기
         plusBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -201,5 +203,4 @@ public class OptionDialog extends JDialog {
         if(priceLabel != null) // 창을 생성할 때 초기화 하므로 값이 비어있다면 수행하지 않아야 함
             priceLabel.setText(String.valueOf(price));
     }
-
 }
