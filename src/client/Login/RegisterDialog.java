@@ -130,8 +130,8 @@ public class RegisterDialog extends JDialog {
             // MyBatis Mapper 호출
             try {
                 int result = ss.insert("user.register", map); // UserMapper.xml에 정의된 insertUser 메서드 호출
-                ss.commit(); // 트랜잭션 커밋
                 if (result > 0) {
+                    ss.commit(); // 트랜잭션 커밋
                     System.out.println("회원가입 성공");
                     JOptionPane.showMessageDialog(RegisterDialog.this, "회원가입이 완료되었습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
                 } else {
