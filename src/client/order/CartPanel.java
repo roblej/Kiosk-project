@@ -6,6 +6,7 @@ import vo.CouponVO;
 import vo.ProductsVO;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
@@ -30,22 +31,50 @@ public class CartPanel extends JPanel {
     SqlSession ss;
     CouponPanel CouponPanel;
     // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
-    public CartPanel(MainFrame f,OrderPanel orderPanel, ProductsVO vo, int totalPrice) {
+    private List<String[]> cartList;
+    JTable table;
+    JScrollPane scrollPane;
 
+    JLabel bottomLabel;
+    int allPrice;
+
+    String[] pvo_name = {"주문상품", "주문수량", "주문가격", "삭제"};
+
+    // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
+    public CartPanel(OrderPanel orderPanel, List<String[]> cartList) {
+  //public CartPanel(MainFrame f,OrderPanel orderPanel, ProductsVO vo, int totalPrice) {
         this.orderPanel = orderPanel;
-        this.p = vo;
+        this.cartList = cartList;
+
+        // List -> 2차원 배열 변환
+        String[][] data = new String[cartList.size()][pvo_name.length];
+        for (int i = 0; i < cartList.size(); i++) {
+            data[i] = cartList.get(i);
+        }
+
+        table = new JTable(new DefaultTableModel(data, pvo_name) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(500, 220));
-        setBackground(Color.WHITE);
-        setBorder(new MatteBorder(1, 0, 0, 0, new Color(220, 220, 220)));
+        add(new JLabel("장바구니", SwingConstants.CENTER), BorderLayout.NORTH);
 
-        // (이하 장바구니 UI 구성 요소... - 이전 코드와 유사)
-        add(new JLabel("장바구니: " + vo.getP_name(), SwingConstants.CENTER), BorderLayout.NORTH);
+        scrollPane = new JScrollPane(table);
+        add(scrollPane, BorderLayout.CENTER);
 
-//        productsList = new ArrayList<>();
-//        productsList.add(vo);
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(bottomLabel = new JLabel("총 금액: " + allPrice + "원"), BorderLayout.CENTER); // 담은게 없어도 가격 보이게 하기
 
+        JButton payBtn = new JButton("결제하기");
+        payBtn.addActionListener(e -> {
+            clearCartList();
+            JOptionPane.showMessageDialog(this, "결제하시겠습니까?");
+            // 테이블 새로 고침 필요 (다시 생성 or 테이블 모델 초기화)
+        });
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(new JLabel("총 금액: " + totalPrice + "원"), BorderLayout.CENTER);
@@ -89,6 +118,34 @@ public class CartPanel extends JPanel {
         MainFrame f = new MainFrame();
         f.setVisible(false);
         new CartPanel(f,null, null, 0);
+        }
+  // 테이블 내부의 값 반복문 수행하면서 확인 후 화면에 보여줌
+    public void updateTable() {
+        String[][] data = new String[cartList.size()][pvo_name.length];
+        for (int i = 0; i < cartList.size(); i++) {
+            data[i] = cartList.get(i);
+        }
+        DefaultTableModel model = new DefaultTableModel(data, pvo_name) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        table.setModel(model);
     }
         }
 
+    // 장바구니 내용 비우는 함수
+    public void clearCartList(){
+        cartList.clear(); // 장바구니 초기화
+        allPrice = 0;
+        updatePrice(allPrice); // 총 가격 초기화
+        updateTable(); // 초기화 한 장바구니 보여주기
+    }
+
+    public void updatePrice(int allPrice){
+        this.allPrice = allPrice; // 멤버변수의 allPrice에 값 넣어줌
+        bottomLabel.setText("총 금액: " + allPrice + "원");
+    }
+}

@@ -93,7 +93,7 @@ public class AdminCard extends JPanel {
         orderBtn.addActionListener(new ActionListener() {//주문처리
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MyDialog(f, true);
+                new MyDialog(f);
             }
         });
 

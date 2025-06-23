@@ -3,15 +3,47 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="products">
-    <select id="update_stock" resultType="Map">
-        select * from products
+
+    <!-- 카테고리 기능 추가 코드-->
+    <select id="getProductsByCategory" parameterType="String" resultType="vo.ProductsVO">
+        select * from products where p_category = #{category}
     </select>
 
+    <select id="all" resultType="vo.ProductsVO">
+        SELECT * FROM products ORDER BY p_code ASC
+    </select>
+
+    <select id="search_cat" resultType="vo.ProductsVO" parameterType="Map">
+        SELECT * FROM products
+        WHERE p_category IN
+        <foreach collection="cat_list" item="cno" open="(" close=")" separator=",">
+            #{cno}
+        </foreach>
+        ORDER BY p_code ASC
+    </select>
+
+    <update id="edit" parameterType="vo.ProductsVO">
+        UPDATE products
+        SET p_stock = #{p_stock}
+        WHERE p_code = #{p_code}
+    </update>
+  
     <select id="getCategories" resultType="String">
         SELECT DISTINCT p_category FROM products WHERE p_category IS NOT NULL
     </select>
 
-    <select id="getname" resultType="vo.ProductsVO">
+    <select id="update_stock" resultType="Map">
         select * from products
     </select>
+
+    <delete id="del" parameterType="String">
+        DELETE FROM products WHERE p_code = #{p_code}
+    </delete>
+
+    <insert id="add" parameterType="vo.ProductsVO">
+        INSERT INTO products
+        (p_code, p_name, p_price, p_size, p_options, p_category, p_image_url, p_stock)
+        VALUES
+        (#{p_code}, #{p_name}, #{p_price}, #{p_size}, #{p_options}, #{p_category}, #{p_image_url}, #{p_stock})
+    </insert>
 </mapper>
