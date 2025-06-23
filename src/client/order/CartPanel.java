@@ -1,12 +1,15 @@
 package client.order; // 패키지 변경
 
 import client.MainFrame;
+import org.apache.ibatis.session.SqlSession;
+import vo.CouponVO;
 import vo.ProductsVO;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.border.MatteBorder;
 
 /*
@@ -21,9 +24,14 @@ public class CartPanel extends JPanel {
     List<ProductsVO> productsList;
     OptionDialog d;
     ProductsVO p;
-
+    List<CouponVO> couponList;
+    MainFrame f;
+    JButton Payment_Btn;
+    SqlSession ss;
+    CouponPanel CouponPanel;
     // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
-    public CartPanel(OrderPanel orderPanel, ProductsVO vo, int totalPrice) {
+    public CartPanel(MainFrame f,OrderPanel orderPanel, ProductsVO vo, int totalPrice) {
+
         this.orderPanel = orderPanel;
         this.p = vo;
 
@@ -41,12 +49,46 @@ public class CartPanel extends JPanel {
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(new JLabel("총 금액: " + totalPrice + "원"), BorderLayout.CENTER);
-        bottomPanel.add(new JButton("결제하기"), BorderLayout.EAST);
+        bottomPanel.add(Payment_Btn = new JButton("결제하기"), BorderLayout.EAST);
         add(bottomPanel, BorderLayout.SOUTH);
+
+
+        Payment_Btn.addActionListener(e -> cliked_Payment(f));
     }
 
-    public static void main(String[] args) {
-        new CartPanel(null, null, 0);
-    }
+    public void cliked_Payment(MainFrame f){
 
-}
+
+        int cnt = JOptionPane.showConfirmDialog
+                (null,"쿠폰을 사용하시겠습니까?","",JOptionPane.YES_NO_OPTION);
+        if(cnt==0){
+            //YES를 선택할 경우 쿠폰 사용 화면으로 넘어감
+            String coupon_Code = JOptionPane.showInputDialog(null,"코드를 입력하세요",null);
+            CouponVO cvo;
+            Map<String,String> map = new HashMap();
+            map.put("c_code",coupon_Code);
+            ss = f.factory.openSession();
+            cvo = ss.selectOne("coupon.couponConfirm",map);
+
+            if (cvo != null && coupon_Code.equals(cvo.getC_code())){
+                //쿠폰코드가 사용할 수 있는 경우
+                JOptionPane.showMessageDialog(null,"쿠폰이 확인되었습니다");
+                f.cardLayout.show(f.cardPanel,"CouponPanel");
+            }else {
+                //쿠폰코드가 사용할 수 없을 경우
+                JOptionPane.showMessageDialog(null,"사용할 수 없는 쿠폰코드입니다");
+            }
+        }else {
+            //NO를 선택할 경우 결제화면으로 넘어감
+            f.cardLayout.show(f.cardPanel,"CouponPanel");
+        }
+        //ss.close();
+
+    }
+        public static void main(String[] args) {
+        MainFrame f = new MainFrame();
+        f.setVisible(false);
+        new CartPanel(f,null, null, 0);
+    }
+        }
+

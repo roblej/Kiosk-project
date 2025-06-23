@@ -14,8 +14,10 @@ public class OrderPanel extends JPanel {
 
     ProductsVO p;
     OptionDialog d;
+    MainFrame f;
 
     public OrderPanel(MainFrame f) {
+        this.f = f;
         // 1. 이 패널의 레이아웃을 BorderLayout으로 설정.
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
@@ -40,9 +42,9 @@ public class OrderPanel extends JPanel {
     // 예: public void loadMenus(String category) { ... }
     //     public void showOptionDialog(ProductVO product) { ... }
 
-    public void addToCart(ProductsVO product, int totalPrice) {
+    public void addToCart(MainFrame f,ProductsVO product, int totalPrice) {
         if (cartPanel != null) remove(cartPanel); // 이전 장바구니 제거
-        cartPanel = new CartPanel(this, product, totalPrice);
+        cartPanel = new CartPanel(f,this, product, totalPrice);
         add(cartPanel, BorderLayout.SOUTH);
         revalidate(); // 레이아웃 갱신
         repaint();    // 화면 갱신

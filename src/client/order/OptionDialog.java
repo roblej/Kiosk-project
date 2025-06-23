@@ -58,7 +58,7 @@ public class OptionDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 // 장바구니에 값 담고 창 꺼지기
                 int cloneprice = totalPrice;
-                p.addToCart(product, cloneprice); // 함수 호출
+                p.addToCart(f,product, cloneprice); // 함수 호출
                 dispose();
             }
         });
