@@ -31,13 +31,10 @@ public class OptionDialog extends JDialog {
     OrderPanel p;
     MainFrame f;
 
-//        public CartPanel(OrderPanel orderPanel, MainFrame f) {
-
     public OptionDialog(OrderPanel p, MainFrame f, ProductsVO product) {
         this.p = p;
         this.f = f;
         this.product = product;
-//        this.defaultPrice = Integer.parseInt(product.getP_price()); // String형 price 숫자로 변환
 
         // 가격 초기값 설정
         resetValue();
@@ -59,7 +56,7 @@ public class OptionDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 장바구니에 값 담고 창 꺼지기
-                p.addToCart(product, count, totalPrice); // 함수 호출
+                p.addToCart(product, count, totalPrice); // OrderPanel의 함수 호출
                 dispose();
             }
         });

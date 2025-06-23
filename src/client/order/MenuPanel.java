@@ -19,6 +19,8 @@ public class MenuPanel extends JPanel {
 
     private final JPanel gridPanel;
 
+    private OptionDialog optionDialog;
+
     public MenuPanel(OrderPanel orderPanel, MainFrame f, ProductsVO p) {
         this.orderPanel = orderPanel;
         this.f = f;
@@ -44,7 +46,18 @@ public class MenuPanel extends JPanel {
         btnPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) { // 메뉴버튼 클릭했을 때
-                new OptionDialog(orderPanel, f, vo);
+                // 이미 열려있다면 새로 열지않음
+                if (optionDialog != null && optionDialog.isShowing()) {
+                    return;
+                }
+                // ✅ 새로 열고, 닫힐 때 optionDialog = null 처리
+                optionDialog = new OptionDialog(orderPanel, f, vo);
+                optionDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        optionDialog = null;
+                    }
+                });
             }
             @Override
             public void mouseEntered(MouseEvent e) { // 메뉴버튼에 마우스 갖다댔을 때
