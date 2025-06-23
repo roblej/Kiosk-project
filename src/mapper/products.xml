@@ -28,4 +28,15 @@
     <select id="getname" resultType="vo.ProductsVO">
         select * from products
     </select>
+
+    <delete id="del" parameterType="String">
+        DELETE FROM products WHERE p_code = #{p_code}
+    </delete>
+
+    <insert id="add" parameterType="vo.ProductsVO">
+        INSERT INTO products
+        (p_code, p_name, p_price, p_size, p_options, p_category, p_image_url, p_stock)
+        VALUES
+        (#{p_code}, #{p_name}, #{p_price}, #{p_size}, #{p_options}, #{p_category}, #{p_image_url}, #{p_stock})
+    </insert>
 </mapper>
