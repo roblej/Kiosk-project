@@ -7,18 +7,19 @@ import java.awt.image.BufferedImage;
 
 public class MenuButton extends JButton {
 
-    public MenuButton(String name, int price) {
+    public MenuButton(String name) {
         setBackground(Color.WHITE);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         setBorder(new LineBorder(new Color(220, 220, 220)));
         setFocusPainted(false);
+        int price = 10;// 임시값, 나중에 db에서 가격 받아와서 넣을 것
 
         ImageIcon placeholderIcon = createPlaceholderIcon(120, 120, new Color(230, 230, 230));
         setIcon(placeholderIcon);
 
         String htmlText = String.format(
                 "<html><center><p style='margin-bottom:3px;'>%s</p>" +
-                        "<p style='color:rgb(80,80,80);'>%,d원</p></center></html>",
+                        "<p style='color:rgb(80,80,80);'>%,d원</p></center></html>", // 나중에 로컬로 수정할 것
                 name,
                 price
         );

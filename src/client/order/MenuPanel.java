@@ -1,4 +1,4 @@
-package client.order; // 패키지 변경
+package client.order;
 
 import client.MainFrame;
 import org.apache.ibatis.session.SqlSession;
@@ -10,52 +10,61 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-/*
-이곳은 메뉴판 항목들이 표시되는 부분이다. ProductsVO에서 품목들의 이름, 가격, 사진을 가져와 이곳에 출력하자
- */
-
 public class MenuPanel extends JPanel {
 
-    OrderPanel orderPanel; // MainFrame 대신 OrderPanel을 참조
-
-    List<ProductsVO> productsList;
-    ProductsVO product;
+    OrderPanel orderPanel;
     MainFrame f;
+    // ProductsDao를 멤버 변수로 추가
+    private ProductsDao productsDao;
 
-    // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
     public MenuPanel(OrderPanel orderPanel, MainFrame f, ProductsVO p) {
         this.orderPanel = orderPanel;
         this.f = f;
-        
-        setBackground(Color.WHITE); // 배경 흰색
+        this.productsDao = new ProductsDao(f.factory); // DAO 생성
 
-        // 한 줄에 3개씩 표시되도록 GridLayout으로 설정
+        setBackground(Color.WHITE);
         setLayout(new GridLayout(0, 3, 15, 15));
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         getData();
     }
 
+    // 기존 메소드 원본 유지(함수 이름만 변경)
     public void getData() {
         SqlSession ss = f.factory.openSession();
-        List<ProductsVO> list = ss.selectList("products.getname");
+        // 이름를 변경했으므로 "products.getAllProducts"를 사용
+        List<ProductsVO> list = ss.selectList("products.all");
         ss.close();
 
         for (ProductsVO vo : list) {
-            JButton btn = new JButton(vo.getP_name());
-
-            // ✅ 버튼에 클릭 리스너 추가
-            btn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    new OptionDialog(orderPanel, f, vo);
-                }
-            });
-            add(btn); // 메뉴 패널에 버튼 추가
+            MenuButton btn = new MenuButton(vo.getP_name());
+            btn.addActionListener(e -> new OptionDialog(orderPanel, f, vo));
+            add(btn);
         }
-
-        revalidate(); // 레이아웃 새로고침
+        revalidate();
         repaint();
     }
 
+    // CategoryPanel에서 호출할 메뉴 업데이트 메소드 추가
+    public void updateMenus(String category) {
+        removeAll(); // 먼저 현재 메뉴창에 떠있는 메뉴들 모두 제거함
+
+        List<ProductsVO> productList;
+        if (category.equals("모든 메뉴")) { // 모든 메뉴에 있는 모든 메뉴 리스트임
+            productList = productsDao.all();
+        } else { // 아닐 경우
+            productList = productsDao.getProductsByCategory(category);
+        }
+
+        if (productList != null) {
+            for (ProductsVO vo : productList) {
+                MenuButton btn = new MenuButton(vo.getP_name());
+                btn.addActionListener(e -> new OptionDialog(orderPanel, f, vo));
+                add(btn);
+            }
+        }
+
+        revalidate(); // 레이아웃 새로고침
+        repaint();    // 패널 다시 그리기
+    }
 }
