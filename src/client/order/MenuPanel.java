@@ -44,6 +44,8 @@ public class MenuPanel extends JPanel {
         for (ProductsVO vo : list) {
             JButton btn = new JButton(vo.getP_name());
 
+
+
             // ✅ 버튼에 클릭 리스너 추가
             btn.addActionListener(new ActionListener() {
                 @Override

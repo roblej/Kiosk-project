@@ -5,6 +5,9 @@ out/
 *.iml
 .idea/
 
+# Properties files containing sensitive data
+*.properties
+
 ### Eclipse ###
 .apt_generated
 .classpath
