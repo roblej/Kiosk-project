@@ -5,66 +5,91 @@ import org.apache.ibatis.session.SqlSession;
 import vo.ProductsVO;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class MenuPanel extends JPanel {
 
-    OrderPanel orderPanel;
-    MainFrame f;
-    // ProductsDao를 멤버 변수로 추가
-    private ProductsDao productsDao;
+    private final OrderPanel orderPanel;
+    private final MainFrame f;
+    private final ProductsDao productsDao;
+
+    private final JPanel gridPanel;
 
     public MenuPanel(OrderPanel orderPanel, MainFrame f, ProductsVO p) {
         this.orderPanel = orderPanel;
         this.f = f;
-        this.productsDao = new ProductsDao(f.factory); // DAO 생성
+        this.productsDao = new ProductsDao(f.factory);
 
-        setBackground(Color.WHITE);
-        setLayout(new GridLayout(0, 3, 15, 15));
-        setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        super.setLayout(new BorderLayout());
+        super.setBackground(Color.WHITE);
+
+        // --- 1. 그리드 레이아웃의 좌우 간격(hgap) 수정 ---
+        gridPanel = new JPanel(new GridLayout(0, 3, 10, 15)); // 가로 간격 15 -> 10
+        gridPanel.setBackground(Color.WHITE);
+        // --- 2. 그리드 패널의 테두리 여백 수정 ---
+        gridPanel.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10)); // 좌우 여백 15 -> 10
+
+        super.add(gridPanel, BorderLayout.NORTH);
 
         getData();
     }
 
-    // 기존 메소드 원본 유지(함수 이름만 변경)
+    private void addMenuButton(ProductsVO vo) {
+        MenuButton btnPanel = new MenuButton(vo);
+
+        btnPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) { // 메뉴버튼 클릭했을 때
+                new OptionDialog(orderPanel, f, vo);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) { // 메뉴버튼에 마우스 갖다댔을 때
+                btnPanel.setBorder(new LineBorder(Color.BLUE, 2));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) { // 메뉴버튼에서 마우스 나갔을 때
+                btnPanel.setBorder(new LineBorder(new Color(220, 220, 220)));
+            }
+        });
+
+        JPanel wrapper = new JPanel();
+        wrapper.setOpaque(false);
+        wrapper.add(btnPanel);
+
+        gridPanel.add(wrapper);
+    }
+
     public void getData() {
         SqlSession ss = f.factory.openSession();
-        // 이름를 변경했으므로 "products.getAllProducts"를 사용
         List<ProductsVO> list = ss.selectList("products.all");
         ss.close();
 
-        for (ProductsVO vo : list) {
-            MenuButton btn = new MenuButton(vo.getP_name());
-            btn.addActionListener(e -> new OptionDialog(orderPanel, f, vo));
-            add(btn);
+        if (list != null) {
+            for (ProductsVO vo : list) {
+                addMenuButton(vo);
+            }
         }
-        revalidate();
-        repaint();
+        super.revalidate();
+        super.repaint();
     }
 
-    // CategoryPanel에서 호출할 메뉴 업데이트 메소드 추가
     public void updateMenus(String category) {
-        removeAll(); // 먼저 현재 메뉴창에 떠있는 메뉴들 모두 제거함
+        gridPanel.removeAll();
 
-        List<ProductsVO> productList;
-        if (category.equals("모든 메뉴")) { // 모든 메뉴에 있는 모든 메뉴 리스트임
-            productList = productsDao.all();
-        } else { // 아닐 경우
-            productList = productsDao.getProductsByCategory(category);
-        }
+        List<ProductsVO> productList = category.equals("모든 메뉴") ?
+                productsDao.all() : productsDao.getProductsByCategory(category);
 
         if (productList != null) {
             for (ProductsVO vo : productList) {
-                MenuButton btn = new MenuButton(vo.getP_name());
-                btn.addActionListener(e -> new OptionDialog(orderPanel, f, vo));
-                add(btn);
+                addMenuButton(vo);
             }
         }
 
-        revalidate(); // 레이아웃 새로고침
-        repaint();    // 패널 다시 그리기
+        gridPanel.revalidate();
+        gridPanel.repaint();
     }
 }
