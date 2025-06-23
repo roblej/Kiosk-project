@@ -14,10 +14,10 @@ public class ProductsDao {
     }
 
     // 1. 모든 상품 조회하는 메소드 (ID 변경에 맞춰 메소드 이름 변경)
-    public List<ProductsVO> getAllProducts() {
+    public List<ProductsVO> all() {
         try (SqlSession session = factory.openSession()) {
-            // "products.getname" 대신 "products.getAllProducts" 호출
-            return session.selectList("products.getAllProducts");
+            // "products.getname" 대신 "products.all" 호출
+            return session.selectList("products.all");
         }
     }
 

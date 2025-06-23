@@ -33,7 +33,7 @@ public class MenuPanel extends JPanel {
     public void getData() {
         SqlSession ss = f.factory.openSession();
         // 이름를 변경했으므로 "products.getAllProducts"를 사용
-        List<ProductsVO> list = ss.selectList("products.getAllProducts");
+        List<ProductsVO> list = ss.selectList("products.all");
         ss.close();
 
         for (ProductsVO vo : list) {
@@ -51,7 +51,7 @@ public class MenuPanel extends JPanel {
 
         List<ProductsVO> productList;
         if (category.equals("모든 메뉴")) { // 모든 메뉴에 있는 모든 메뉴 리스트임
-            productList = productsDao.getAllProducts();
+            productList = productsDao.all();
         } else { // 아닐 경우
             productList = productsDao.getProductsByCategory(category);
         }
