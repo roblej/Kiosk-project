@@ -1,64 +1,52 @@
-package client.order;
+package client.order; // 패키지 변경
+
+import client.MainFrame;
+import vo.ProductsVO;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.border.MatteBorder;
+
+/*
+이곳은 OptionDialog에서 저장된 값의 정보가 담길 class이다
+OptionDialog에서 전달하고자 하는 이름, 가격을 멤버변수로 만들어야하고
+이곳의 결제하기 버튼을 눌렀을 때 CartPanel의 List는 초기화 되어야하며 쿠폰 사용 유무 창을 띄워야한다.
+ */
 
 public class CartPanel extends JPanel {
 
-    /**
-     * 기능이 없는 생성자입니다.
-     * 정적인 장바구니 항목과 UI 요소들만 표시합니다.
-     */
-    public CartPanel() {
+    private OrderPanel orderPanel; // MainFrame 대신 OrderPanel을 참조
+    List<ProductsVO> productsList;
+    OptionDialog d;
+    ProductsVO p;
+
+    // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
+    public CartPanel(OrderPanel orderPanel, ProductsVO vo, int totalPrice) {
+        this.orderPanel = orderPanel;
+        this.p = vo;
+
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(500, 220));
-        setBorder(BorderFactory.createTitledBorder("장바구니"));
+        setBackground(Color.WHITE);
+        setBorder(new MatteBorder(1, 0, 0, 0, new Color(220, 220, 220)));
 
-        JPanel itemListPanel = new JPanel();
-        itemListPanel.setLayout(new BoxLayout(itemListPanel, BoxLayout.Y_AXIS));
-        itemListPanel.setBackground(Color.WHITE);
-        JScrollPane scrollPane = new JScrollPane(itemListPanel);
+        // (이하 장바구니 UI 구성 요소... - 이전 코드와 유사)
+        add(new JLabel("장바구니: " + vo.getP_name(), SwingConstants.CENTER), BorderLayout.NORTH);
+
+//        productsList = new ArrayList<>();
+//        productsList.add(vo);
+
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-        JLabel totalPriceLabel = new JLabel("총 주문금액: 16,500원");
-        totalPriceLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-
-        JButton paymentButton = new JButton("결제하기");
-        paymentButton.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-
-        bottomPanel.add(totalPriceLabel, BorderLayout.CENTER);
-        bottomPanel.add(paymentButton, BorderLayout.EAST);
-
-        add(scrollPane, BorderLayout.CENTER);
+        bottomPanel.add(new JLabel("총 금액: " + totalPrice + "원"), BorderLayout.CENTER);
+        bottomPanel.add(new JButton("결제하기"), BorderLayout.EAST);
         add(bottomPanel, BorderLayout.SOUTH);
-
     }
 
-    private void addStaticCartItem(JPanel targetPanel, String name, String price) {
-        JPanel itemPanel = new JPanel(new BorderLayout(10, 0));
-        itemPanel.setBackground(Color.WHITE);
-        itemPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
-
-        JLabel nameLabel = new JLabel(name);
-        nameLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
-
-        JLabel priceLabel = new JLabel(price);
-        priceLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-
-        JButton deleteButton = new JButton("X");
-        deleteButton.setMargin(new Insets(2, 4, 2, 4));
-
-        JPanel westPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        westPanel.setOpaque(false);
-        westPanel.add(deleteButton);
-        westPanel.add(nameLabel);
-
-        itemPanel.add(westPanel, BorderLayout.CENTER);
-        itemPanel.add(priceLabel, BorderLayout.EAST);
-
-        targetPanel.add(itemPanel);
+    public static void main(String[] args) {
+        new CartPanel(null, null, 0);
     }
+
 }

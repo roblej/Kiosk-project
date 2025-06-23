@@ -1,29 +1,51 @@
-package client.order;
+package client.order; // 새로운 패키지 경로
 
 import client.MainFrame;
+import vo.ProductsVO;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class OrderPanel extends JPanel {
 
-    public CategoryPanel categoryPanel;
-    public MenuPanel menuPanel;
-    public CartPanel cartPanel;
+    private CategoryPanel categoryPanel;
+    private MenuPanel menuPanel;
+    private CartPanel cartPanel;
 
-    public OrderPanel(MainFrame mainFrame) {
+    ProductsVO p;
+    OptionDialog d;
+
+    public OrderPanel(MainFrame f) {
+        // 1. 이 패널의 레이아웃을 BorderLayout으로 설정.
         setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
 
-        // CategoryPanel만 DB 연동을 위해 mainFrame 참조를 전달합니다.
-        categoryPanel = new CategoryPanel(mainFrame);
+        // 2. 자식 패널들의 인스턴스를 생성.
+        // (자식 패널들도 OrderPanel을 인식하도록 생성자를 수정.)
+        categoryPanel = new CategoryPanel(f);
+        menuPanel = new MenuPanel(this, f, p);
+//        cartPanel = new CartPanel(this, d, p);
 
-        // MenuPanel과 CartPanel은 기능이 없는 UI 전용 버전을 생성합니다.
-        menuPanel = new MenuPanel();
-        cartPanel = new CartPanel();
-
-        // 화면에 패널들을 배치합니다.
-        add(categoryPanel, BorderLayout.NORTH);
+        // 3. MenuPanel은 내용이 많아질 수 있으므로 스크롤 가능하도록 JScrollPane에 추가.
         JScrollPane menuScrollPane = new JScrollPane(menuPanel);
-        add(menuScrollPane, BorderLayout.CENTER);
-        add(cartPanel, BorderLayout.SOUTH);
+        menuScrollPane.setBorder(null); // 스크롤 패널의 테두리를 없애 깔끔하게 만듬.
+
+        // 4. 각 패널을 지정된 위치에 배치.
+        add(categoryPanel, BorderLayout.NORTH);  // 상단에 카테고리 패널
+        add(menuScrollPane, BorderLayout.CENTER); // 중앙에 메뉴 패널
+//        add(cartPanel, BorderLayout.SOUTH);   // 하단에 카트 패널
     }
+
+    // --- 앞으로 모든 이벤트 처리 및 로직 메소드들은 이 클래스에 추가 ---
+    // 예: public void loadMenus(String category) { ... }
+    //     public void showOptionDialog(ProductVO product) { ... }
+
+    public void addToCart(ProductsVO product, int totalPrice) {
+        if (cartPanel != null) remove(cartPanel); // 이전 장바구니 제거
+        cartPanel = new CartPanel(this, product, totalPrice);
+        add(cartPanel, BorderLayout.SOUTH);
+        revalidate(); // 레이아웃 갱신
+        repaint();    // 화면 갱신
+    }
+
 }
