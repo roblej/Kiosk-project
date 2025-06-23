@@ -1,7 +1,6 @@
 package client.admin;
 
 import client.MainFrame;
-import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 import java.awt.*;
