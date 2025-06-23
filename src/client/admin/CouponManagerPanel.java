@@ -50,7 +50,7 @@ public class CouponManagerPanel extends JPanel {
                     int i = table.getSelectedRow(); // 선택된 행의 인덱스
                     CouponVO vo = couponList.get(i);
                    CouponManagerDialog dialog = new CouponManagerDialog(f,CouponManagerPanel.this, true, vo, couponList, i);
-                    dialog.setVisible(true);
+
                 }
             }
         });
