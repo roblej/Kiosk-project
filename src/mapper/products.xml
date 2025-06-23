@@ -3,15 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="products">
-    <select id="update_stock" resultType="Map">
+
+    <select id="getAllProducts" resultType="vo.ProductsVO">
         select * from products
+    </select>
+
+    <!-- 카테고리 기능 추가 코드-->
+    <select id="getProductsByCategory" parameterType="String" resultType="vo.ProductsVO">
+        select * from products where p_category = #{category}
     </select>
 
     <select id="getCategories" resultType="String">
         SELECT DISTINCT p_category FROM products WHERE p_category IS NOT NULL
     </select>
 
-    <select id="getname" resultType="vo.ProductsVO">
+    <select id="update_stock" resultType="Map">
         select * from products
     </select>
+
 </mapper>
