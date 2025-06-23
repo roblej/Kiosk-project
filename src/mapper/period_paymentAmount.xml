@@ -9,7 +9,7 @@
         SELECT * FROM orders
         WHERE SUBSTRING(o_number, 1, 6) BETWEEN #{start_date} AND #{end_date}
         AND o_status IN ('처리완료', '취소')
-        ) od INNER JOIN order_items oi ON od.o_number = oi.oi_id
+        ) od INNER JOIN order_items oi ON od.o_idx = oi.oi_idx
     </select>
 
 
