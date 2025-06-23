@@ -21,13 +21,12 @@ public class CartPanel extends JPanel {
     JLabel bottomLabel;
     int allPrice;
 
-    String[] pvo_name = {"주문상품", "주문수량", "주문가격", "옵션"};
+    String[] pvo_name = {"주문상품", "주문수량", "주문가격", "삭제"};
 
     // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
     public CartPanel(OrderPanel orderPanel, List<String[]> cartList) {
         this.orderPanel = orderPanel;
         this.cartList = cartList;
-        this.allPrice = allPrice;
 
         // List -> 2차원 배열 변환
         String[][] data = new String[cartList.size()][pvo_name.length];
@@ -49,15 +48,13 @@ public class CartPanel extends JPanel {
         scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
 
-        int totalPrice = calcTotal(cartList);
         JPanel bottomPanel = new JPanel(new BorderLayout());
-
-        bottomPanel.add(bottomLabel = new JLabel("총 금액: " + allPrice + "원"), BorderLayout.CENTER);
+        bottomPanel.add(bottomLabel = new JLabel("총 금액: " + allPrice + "원"), BorderLayout.CENTER); // 담은게 없어도 가격 보이게 하기
 
         JButton payBtn = new JButton("결제하기");
         payBtn.addActionListener(e -> {
-            cartList.clear(); // 장바구니 초기화
-            JOptionPane.showMessageDialog(this, "쿠폰을 사용하시겠습니까?");
+            clearCartList();
+            JOptionPane.showMessageDialog(this, "결제하시겠습니까?");
             // 테이블 새로 고침 필요 (다시 생성 or 테이블 모델 초기화)
         });
 
@@ -66,14 +63,7 @@ public class CartPanel extends JPanel {
         setVisible(true);
     }
 
-    private int calcTotal(List<String[]> list) {
-        int total = 0;
-        for (String[] row : list) {
-            total += Integer.parseInt(row[2]); // 주문가격
-        }
-        return total;
-    }
-
+    // 테이블 내부의 값 반복문 수행하면서 확인 후 화면에 보여줌
     public void updateTable() {
         String[][] data = new String[cartList.size()][pvo_name.length];
         for (int i = 0; i < cartList.size(); i++) {
@@ -87,6 +77,14 @@ public class CartPanel extends JPanel {
         };
 
         table.setModel(model);
+    }
+
+    // 장바구니 내용 비우는 함수
+    public void clearCartList(){
+        cartList.clear(); // 장바구니 초기화
+        allPrice = 0;
+        updatePrice(allPrice); // 총 가격 초기화
+        updateTable(); // 초기화 한 장바구니 보여주기
     }
 
     public void updatePrice(int allPrice){
