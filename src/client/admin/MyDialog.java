@@ -128,7 +128,7 @@ public class MyDialog extends JDialog {
                         list = newList;
                     });
                     System.out.println("table update");
-                    Thread.sleep(1000); // 1초마다 갱신
+                    Thread.sleep(5000); // 5초마다 갱신
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

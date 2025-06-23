@@ -3,6 +3,25 @@ package vo;
 public class ProductsVO {
     private String p_code, p_name, p_price, p_size, p_options, p_category, p_image_url, p_stock;
 
+    // 장바구니에 적용하기 위한 멤버변수
+    private int price, count;
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     public String getP_code() {
         return p_code;
     }
