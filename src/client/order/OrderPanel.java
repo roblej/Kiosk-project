@@ -62,6 +62,11 @@ public class OrderPanel extends JPanel {
     public void addToCart(ProductsVO product, int count, int totalPrice) {
         allPrice = allPrice + totalPrice;
 
+        // 이미 장바구니에 담겨있는 상품은 새로 만들지 않고 있는 값에 추가한다.
+        if(cartPanel.data){
+
+        }
+
         String[] optionRow = {product.getP_name(), String.valueOf(count), String.valueOf(totalPrice), "옵션"};
         cartList.add(optionRow);
 
