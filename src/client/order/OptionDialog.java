@@ -38,7 +38,8 @@ public class OptionDialog extends JDialog {
 //        this.defaultPrice = Integer.parseInt(product.getP_price()); // String형 price 숫자로 변환
 
         // 가격 초기값 설정
-        price = Integer.parseInt(product.getP_price());
+        resetValue();
+        calPrice();
 
         initcomponents();
 
@@ -56,10 +57,8 @@ public class OptionDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 장바구니에 값 담고 창 꺼지기
-                String cloneprice = String.valueOf(totalPrice);
-                product.setP_price(cloneprice); // 총 가격을 제품의 price에담아 전달
-                p.addToCart(product, price); // 함수 호출
-                resetValue();
+                int cloneprice = totalPrice;
+                p.addToCart(product, cloneprice); // 함수 호출
                 dispose();
             }
         });
@@ -190,7 +189,8 @@ public class OptionDialog extends JDialog {
 
     // Label에 가격 보이게하기
     public void calPrice(){ // cakculatePrice
-        priceLabel.setText(String.valueOf(count*price));
+        if(priceLabel != null) // 창을 생성할 때 초기화 하므로 값이 비어있다면 수행하지 않아야 함
+            priceLabel.setText(String.valueOf(count*Integer.parseInt(product.getP_price())));
         totalPrice = count*price;
     }
 
@@ -198,7 +198,8 @@ public class OptionDialog extends JDialog {
         count = 1;
         price = Integer.parseInt(product.getP_price());
         totalPrice = 0;
-        priceLabel.setText(String.valueOf(price));
+        if(priceLabel != null) // 창을 생성할 때 초기화 하므로 값이 비어있다면 수행하지 않아야 함
+            priceLabel.setText(String.valueOf(price));
     }
 
 }

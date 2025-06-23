@@ -25,7 +25,6 @@ public class CartPanel extends JPanel {
     // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
     public CartPanel(OrderPanel orderPanel, ProductsVO vo, int totalPrice) {
         this.orderPanel = orderPanel;
-        this.d = d;
         this.p = vo;
 
         setLayout(new BorderLayout());
@@ -36,8 +35,8 @@ public class CartPanel extends JPanel {
         // (이하 장바구니 UI 구성 요소... - 이전 코드와 유사)
         add(new JLabel("장바구니: " + vo.getP_name(), SwingConstants.CENTER), BorderLayout.NORTH);
 
-        productsList = new ArrayList<>();
-        productsList.add(vo);
+//        productsList = new ArrayList<>();
+//        productsList.add(vo);
 
 
         JPanel bottomPanel = new JPanel(new BorderLayout());

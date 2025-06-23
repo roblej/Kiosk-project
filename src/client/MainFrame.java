@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
 
     public JPanel cardPanel; // CardLayout이 적용될 패널
     public CardLayout cardLayout; // CardLayout 매니저
-    public SqlSessionFactory factory;
+    public SqlSessionFactory factory; // public static SqlSessionFactiory 라고 선언하면 한번만 생성함
 
     public MainFrame()  {
         Reader r = null;
