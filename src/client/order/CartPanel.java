@@ -122,7 +122,6 @@ public class CartPanel extends JPanel {
                 } else {
                     JOptionPane.showMessageDialog(null, "지울 항목을 선택해주세요");
                 }
-                i = 100;
             }
         });
 
