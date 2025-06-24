@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
     public CardLayout cardLayout; // CardLayout 매니저
     public SqlSessionFactory factory;
     public static String userId; // 로그인한 사용자 ID를 저장할 변수
-
+    public static int orderType; // 주문 타입을 저장할 변수 (0: 포장 1: 매장)
     public MainFrame() {
         Reader r = null;
         try {

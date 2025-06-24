@@ -90,6 +90,7 @@ public class LoginPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 //매장식사
                 //LoginDialog 호출
+                MainFrame.orderType = 1;
                 LoginDialog loginDialog = null;
                 loginDialog = new LoginDialog(f);
                 loginDialog.setVisible(true); // 대화상자 표시
@@ -100,7 +101,10 @@ public class LoginPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //포장식사
-                f.cardLayout.show(f.cardPanel, "orderPanel"); // "Panel1"을 "orderPanel"로 변경
+                MainFrame.orderType = 0; // 포장
+                LoginDialog loginDialog = null;
+                loginDialog = new LoginDialog(f);
+                loginDialog.setVisible(true); // 대화상자 표시
             }
         });
 
