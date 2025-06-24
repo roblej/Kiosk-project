@@ -184,5 +184,4 @@ public class CartPanel extends JPanel {
         }
         updatePrice(total);
     }
-    
 }
