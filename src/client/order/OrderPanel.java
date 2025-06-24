@@ -70,9 +70,7 @@ public class OrderPanel extends JPanel {
         cartList.add(optionRow);
 
         cartPanel.updateTable(); // 내용만 갱신
-        cartPanel.updatePrice(allPrice); // 총 가격 갱신
+        cartPanel.calTotalPrice(); // 총 가격 갱신
         returnPrice = allPrice;
-        revalidate();
-        repaint();
     }
 }
