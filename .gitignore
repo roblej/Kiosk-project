@@ -5,6 +5,9 @@ out/
 *.iml
 .idea/
 
+# Properties files containing sensitive data
+*.properties
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -29,5 +32,3 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-
-src/config/conf.xml
