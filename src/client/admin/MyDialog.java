@@ -64,7 +64,9 @@ public class MyDialog extends JDialog {
                     i = table.getSelectedRow();
                     // 알아낸 index로 order_VO에 접근
                     order_VO vo = MyDialog.this.list.get(i);
-                    new StatusChange(MyDialog.this, true, vo);
+                    String str = vo.getO_number();
+                    System.out.println(str);
+                    new StatusChange(f, MyDialog.this, true, vo, str);
 
                 }
             }
@@ -99,7 +101,7 @@ public class MyDialog extends JDialog {
         data = new String[list.size()][o_name.length];
         int i = 0;
         for (order_VO vo : list) {
-            data[i][0] = vo.getO_idx();            // 주문번호
+            data[i][0] = vo.getO_number();            // 주문번호
             data[i][1] = vo.getO_total_amount();   // 결제금액
             data[i][2] = vo.getO_status();         // 주문상태
             data[i][3] = vo.getUser_id();          // 고객ID

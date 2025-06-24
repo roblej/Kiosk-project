@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="order_items">
+    <select id="status" resultType="vo.order_items_VO" parameterType="String">
+        select * from order_items
+        WHERE oi_id = #{oi_id}
+    </select>
+</mapper>

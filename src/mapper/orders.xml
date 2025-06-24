@@ -5,7 +5,9 @@
 <mapper namespace="orders">
 
     <select id="status" resultType="vo.order_VO">
-        select * from orders ORDER BY o_idx DESC
+        select * from orders
+        WHERE o_status IN('조리중', '취소') <!-- 처리완료는 안보임 -->
+        ORDER BY o_idx DESC
     </select>
 
     <update id="update" parameterType="vo.order_VO">

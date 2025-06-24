@@ -17,6 +17,7 @@
     <mappers>
         <mapper resource="mapper/user.xml"/>
         <mapper resource="mapper/orders.xml"/>
+        <mapper resource="mapper/order_items.xml"/>
         <mapper resource="mapper/today_paymentAmount.xml"/>
         <mapper resource="mapper/period_paymentAmount.xml"/>
         <mapper resource="mapper/month_paymentAmount.xml"/>
