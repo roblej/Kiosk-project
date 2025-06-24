@@ -4,9 +4,19 @@ import client.MainFrame;
 import vo.ProductsVO;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 public class AddDialog extends JDialog {
     private  JPanel code_panel;
@@ -63,6 +73,48 @@ public class AddDialog extends JDialog {
         stock_tf.setText(pvo.getP_stock());
 
         //이벤트 감지자 등록
+        img_tf.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                FileNameExtensionFilter imageFilter = new FileNameExtensionFilter(
+                        "이미지 파일 (jpg, png, gif)", "jpg", "jpeg", "png", "gif");
+                fileChooser.setFileFilter(imageFilter);
+
+                int result = fileChooser.showOpenDialog(null);
+
+                if(result == JFileChooser.APPROVE_OPTION){
+                    File selectedFile = fileChooser.getSelectedFile();
+
+                    String uploadDirPath = System.getProperty("user.dir") +"/images";
+                    File uploadDir = new File(uploadDirPath);
+                    if(!uploadDir.exists()){
+                        uploadDir.mkdirs();
+                    }
+
+                    String origianlFileName = selectedFile.getName();
+                    String extension = origianlFileName.substring(origianlFileName.lastIndexOf("."));
+                    String uniqueFileName = UUID.randomUUID().toString() + extension;
+                    Path destinationPath = Paths.get(uploadDir.getAbsolutePath(), uniqueFileName);
+
+                    try{
+                        Files.copy(selectedFile.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
+
+                        System.out.println("이미지 업로드 성공" + destinationPath.toString());
+                        Path projectPath = Paths.get(System.getProperty("user.dir"));
+                        Path relativePath = projectPath.relativize(destinationPath);
+                        String dbPathRobust = relativePath.toString().replace('\\', '/');
+
+                        img_tf.setText(dbPathRobust);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        System.out.println("이미지 업로드 실패:" + ex.getMessage());
+                    }
+                }else
+                    System.out.println("이미지 업로드가 취소되었습니다.");
+            }
+        });
+
         ccBtn.addActionListener(new ActionListener() {//취소버튼 클릭시 수행
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -75,13 +127,29 @@ public class AddDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //추가버튼을 클릭할 때마다 수행함.
                 String code = code_tf.getText().trim();
+                if(code == null || code.trim().isEmpty()){JOptionPane.showMessageDialog(null, "상품코드를 입력하세요");
+                return;}
                 String name = name_tf.getText().trim();
+                if(name == null || name.trim().isEmpty()){JOptionPane.showMessageDialog(null, "상품명을 입력하세요");
+                return;}
                 String price = price_tf.getText().trim();
+                if(price == null || price.trim().isEmpty()){JOptionPane.showMessageDialog(null, "가격을 입력하세요");
+                return;}
                 String size = size_tf.getText().trim();
+                if(size == null) size = "";
+
                 String option = option_tf.getText().trim();
+                if(option == null) option = "";
+
                 String category = cat_tf.getText().trim();
+                if(category == null || category.trim().isEmpty()){JOptionPane.showMessageDialog(null, "카테고리를 입력하세요");
+                return;}
                 String img = img_tf.getText().trim();
+                if(img == null || img.trim().isEmpty()){JOptionPane.showMessageDialog(null, "이미지를 입력하세요");
+                return;}
                 String stock = stock_tf.getText().trim();
+                if(stock == null || stock.trim().isEmpty()){JOptionPane.showMessageDialog(null, "재고를 입력하세요");
+                return;}
 
                 ProductsVO pvo = new ProductsVO();//저장할 객체 생성
                 pvo.setP_code(code);
