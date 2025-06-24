@@ -36,7 +36,7 @@ public class OrderPanel extends JPanel {
         //    - CategoryPanel이 MenuPanel을 제어해야 하므로, MenuPanel을 먼저 생성해야 합니다.
         //    - 기존 MenuPanel 생성자를 그대로 활용합니다.
         menuPanel = new MenuPanel(this, f, p);
-        cartPanel = new CartPanel(this, cartList);
+        cartPanel = new CartPanel(f, this, cartList);
 
         //    - CategoryPanel을 생성할 때, 제어할 대상인 menuPanel의 참조를 넘겨줍니다.
         categoryPanel = new CategoryPanel(menuPanel, f);
@@ -60,16 +60,11 @@ public class OrderPanel extends JPanel {
 
     // OptjonDialog의 담기 버튼을 누르면 수행하는 addToCart, cartPanel에 접근하기 위해 이곳에서 수행
     public void addToCart(ProductsVO product, int count, int totalPrice) {
-        allPrice = allPrice + totalPrice;
-
         String[] optionRow = {product.getP_name(), String.valueOf(count), String.valueOf(totalPrice), "옵션"};
         cartList.add(optionRow);
 
-        cartPanel.updateTable(); // 내용만 갱신
-        cartPanel.updatePrice(allPrice); // 총 가격 갱신
-
-        revalidate();
-        repaint();
+        cartPanel.calTotalPrice(); // 총 금액 갱신
+        cartPanel.updateTable(); // 장바구니 테이블 갱신
     }
 
 }
