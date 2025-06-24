@@ -3,25 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <properties resource="config/db.properties"/>
     <environments default="">
         <environment id="">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="${db.driver}"/>
-                <property name="url" value="${db.url}"/>
-                <property name="username" value="${db.username}"/>
-                <property name="password" value="${db.password}"/>
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://13.125.215.134:3306/db"/>
+                <property name="username" value="admin"/>
+                <property name="password" value="sistkiosk"/>
             </dataSource>
         </environment>
     </environments>
     <mappers>
         <mapper resource="mapper/user.xml"/>
         <mapper resource="mapper/orders.xml"/>
-        <mapper resource="mapper/today_paymentAmount.xml"/>
-        <mapper resource="mapper/period_paymentAmount.xml"/>
-        <mapper resource="mapper/month_paymentAmount.xml"/>
+        <mapper resource="mapper/order_items.xml"/>
         <mapper resource="mapper/coupon.xml"/>
         <mapper resource="mapper/products.xml"/>
+        <mapper resource="mapper/order_items.xml"/>
     </mappers>
 </configuration>

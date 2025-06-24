@@ -6,6 +6,16 @@ public class order_items_VO {
     private String oi_idx, oi_id, product_code, oi_quantity, oi_price, oi_size, options;
     private List<order_VO> list;
 
+    private String p_name;
+
+    public String getP_name() {
+        return p_name;
+    }
+
+    public void setP_name(String p_name) {
+        this.p_name = p_name;
+    }
+
     public List<order_VO> getList() {
         return list;
     }

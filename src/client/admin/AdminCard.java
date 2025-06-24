@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class AdminCard extends JPanel {
 
-    MyDialog dialog;
+    OrderManager dialog;
     MainFrame f;
 
 
@@ -50,7 +50,7 @@ public class AdminCard extends JPanel {
         openBtn.addActionListener(new ActionListener() {//오픈버튼
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "오픈시작");
+               f.cardLayout.show(f.cardPanel, "LoginPanel");
                 //  int result = JOptionPane.showConfirmDialog(null, )
             }
         });
@@ -93,7 +93,7 @@ public class AdminCard extends JPanel {
         orderBtn.addActionListener(new ActionListener() {//주문처리
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MyDialog(f);
+                new OrderManager(f);
             }
         });
 

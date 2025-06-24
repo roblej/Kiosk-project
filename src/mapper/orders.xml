@@ -5,7 +5,9 @@
 <mapper namespace="orders">
 
     <select id="status" resultType="vo.order_VO">
-        select * from orders ORDER BY o_idx DESC
+        select * from orders
+        WHERE o_status IN('조리중', '취소') <!-- 처리완료는 안보임 -->
+        ORDER BY o_idx DESC
     </select>
 
     <update id="update" parameterType="vo.order_VO">
@@ -19,4 +21,47 @@
         VALUES ( #{o_idx}, #{o_number}, #{o_total_amount}, #{o_status}, #{o_is_takeout}, #{user_id} )
     </insert>
 
+    <resultMap id="month1" type="vo.order_VO" >
+        <id property="o_idx" column="o_idx" />
+        <result property="o_number" column="o_number"/>
+        <result property="o_total_amount" column="o_total_amount"/>
+        <result property="oi_quantity" column="oi_quantity"/>
+        <result property="oi_price" column="oi_price"/>
+        <!--        <collection property="oiv" ofType="order_items_VO" resultMap="month2"/>-->
+    </resultMap>
+
+    <select id="month" resultMap="month1">
+        SELECT * FROM
+        ( SELECT * FROM orders where substring(o_number,1,4) = date_format(now(),"%y%m")
+        AND o_status IN ('처리완료','취소'))
+        od inner join order_items oi on
+        od.o_number = oi.oi_id
+    </select>
+
+    <select id="period" resultType="vo.order_VO" parameterType="map">
+        SELECT * FROM (
+        SELECT * FROM orders
+        WHERE SUBSTRING(o_number, 1, 6) BETWEEN #{start_date} AND #{end_date}
+        AND o_status IN ('처리완료', '취소')
+        ) od INNER JOIN order_items oi ON
+        od.o_number = oi.oi_id
+    </select>
+
+    <resultMap id="today1" type="vo.order_VO" >
+        <id property="o_idx" column="o_idx" />
+        <result property="o_number" column="o_number"/>
+        <result property="o_total_amount" column="o_total_amount"/>
+        <result property="oi_quantity" column="oi_quantity"/>
+        <result property="oi_price" column="oi_price"/>
+        <result property="o_status" column="o_status"/>
+        <!--        <collection property="oiv" ofType="order_items_VO" resultMap="today2"/>-->
+    </resultMap>
+
+    <select id="today" resultMap="today1">
+        SELECT * FROM
+        ( SELECT * FROM orders where substring(o_number,1,6) = date_format(now(),"%y%m%d")
+        AND o_status IN ('처리완료','취소'))
+        od inner join order_items oi on
+        od.o_number = oi.oi_id
+    </select>
 </mapper>

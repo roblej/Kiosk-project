@@ -35,7 +35,7 @@ public class LoginDialog extends JDialog {
                     username = userField.getText();
                     password = new String(passField.getPassword());
                     if (username.isEmpty() || password.isEmpty()) {
-                        JOptionPane.showMessageDialog(this, "사용자 이름과 비밀번호를 입력하세요.", "오류", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(f, "사용자 이름과 비밀번호를 입력하세요.", "오류", JOptionPane.ERROR_MESSAGE);
                     } else {
                         // 로그인 성공 처리
                         dispose(); // 대화상자 닫기
@@ -44,6 +44,9 @@ public class LoginDialog extends JDialog {
 //                        f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
                     }
                 });
+        passField.addActionListener(e -> {
+            loginBtn.doClick();
+        });
 
         JButton btn_register = new JButton("회원가입");
         btn_register.addActionListener(e -> {
@@ -65,7 +68,7 @@ public class LoginDialog extends JDialog {
             password = "";
             dispose(); // 대화상자 닫기
             MainFrame.userId = username; // 로그인한 사용자 ID 저장
-            f.setTitle("로그인한 사용자: " + MainFrame.userId); // 프레임 제목 업데이트
+            f.setTitle("로그인한 사용자: " + MainFrame.userId + MainFrame.orderType); // 프레임 제목 업데이트
             f.cardLayout.show(f.cardPanel, "orderPanel"); // "orderPanel"로 이동하도록 변경
         });
         userPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -95,7 +98,7 @@ public class LoginDialog extends JDialog {
         // 로그인 처리 메서드
             // 1. 입력 유효성 검사
             if (username.isEmpty() || rawPassword.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "ID와 비밀번호를 모두 입력하세요.", "경고", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(f, "ID와 비밀번호를 모두 입력하세요.", "경고", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -113,7 +116,7 @@ public class LoginDialog extends JDialog {
 
                 // 3. 조회된 해시된 비밀번호가 null인지 확인 (사용자 ID가 존재하지 않음)
                 if (storedHashedPassword == null) {
-                    JOptionPane.showMessageDialog(this, "존재하지 않는 사용자 ID입니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(f, "존재하지 않는 사용자 ID입니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
                     return; // 함수 종료
                 }
 
@@ -122,7 +125,7 @@ public class LoginDialog extends JDialog {
                 if (PasswordUtil.checkPassword(rawPassword, storedHashedPassword)) {
                     // TODO: 로그인 성공 후 메인 화면의 CardLayout으로 전환
                     MainFrame.userId = username; // 로그인한 사용자 ID 저장
-                    f.setTitle("로그인한 사용자: " + MainFrame.userId); // 프레임 제목 업데이트
+                    f.setTitle("로그인한 사용자: " + MainFrame.userId + MainFrame.orderType); // 프레임 제목 업데이트
                     f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
                     // 로그인 다이얼로그는 닫습니다.
                     dispose();
@@ -132,12 +135,12 @@ public class LoginDialog extends JDialog {
 //                        System.out.println("MainFrame 인스턴스가 없거나 CardLayout 설정이 올바르지 않습니다.");
 //                    }
                 } else {
-                    JOptionPane.showMessageDialog(this, "비밀번호가 일치하지 않습니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(f, "비밀번호가 일치하지 않습니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
                 }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "로그인 중 오류가 발생했습니다: " + ex.getMessage(), "오류", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(f, "로그인 중 오류가 발생했습니다: " + ex.getMessage(), "오류", JOptionPane.ERROR_MESSAGE);
             } finally {
                 if (ss != null) {
                     ss.close();

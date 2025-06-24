@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="order_items">
+    <select id="status" resultType="vo.order_items_VO" parameterType="String">
+        select * from order_items INNER JOIN products
+        WHERE oi_id = #{oi_id}
+    </select>
+
+    <select id="statusjoin" resultType="vo.order_items_VO" parameterType="String">
+        SELECT o.oi_id, p.p_name, o.oi_quantity, o.oi_price, o.oi_size, o.options
+        FROM order_items o INNER JOIN products p
+        ON o.product_code = p.p_code
+        WHERE oi_id = #{oi_id}
+    </select>
+</mapper>

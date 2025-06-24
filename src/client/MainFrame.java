@@ -1,6 +1,6 @@
 package client;
 
-import client.Closing_sales.ClosingSalesPanel;
+import client.admin.ClosingSalesPanel;
 import client.admin.*;
 import client.Login.LoginDialog;
 import client.Login.LoginPanel;
@@ -11,8 +11,8 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -22,8 +22,8 @@ public class MainFrame extends JFrame {
     public CardLayout cardLayout; // CardLayout 매니저
     public SqlSessionFactory factory;
     public static String userId; // 로그인한 사용자 ID를 저장할 변수
-
-    public MainFrame()  {
+    public static int orderType; // 주문 타입을 저장할 변수 (0: 포장 1: 매장)
+    public MainFrame() {
         Reader r = null;
         try {
             r = Resources.getResourceAsReader("config/conf.xml");
@@ -54,8 +54,9 @@ public class MainFrame extends JFrame {
         CouponManagerPanel couponManagerPanel = new CouponManagerPanel(this);
         CouponPanel couponPanel = new CouponPanel(this);
         FinalPayment FinalPayment = new FinalPayment(this);
+
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
-        cardPanel.add(orderPanel,"orderPanel");
+        cardPanel.add(orderPanel, "orderPanel");
         cardPanel.add(adminCard, "AdminCard");
         cardPanel.add(closingSalesPanel, "ClosingSalesPanel"); // "ClosingSalesPanel" 이름으로 추가
         cardPanel.add(userManagerPanel, "userManagerPanel");
@@ -64,36 +65,19 @@ public class MainFrame extends JFrame {
         cardPanel.add(couponPanel,"CouponPanel");
         cardPanel.add(FinalPayment,"FinalPayment");
 
-        loginPanel.inBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //매장식사
-                //LoginDialog 호출
-                LoginDialog loginDialog = null;
-                loginDialog = new LoginDialog(MainFrame.this);
-                loginDialog.setVisible(true); // 대화상자 표시
-            }
-        });
+        this.add(cardPanel, BorderLayout.CENTER);
 
-        loginPanel.outBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //포장식사
-                cardLayout.show(cardPanel, "orderPanel"); // "Panel1"을 "orderPanel"로 변경
-            }
-        });
-
-        add(cardPanel, BorderLayout.CENTER);
         this.setVisible(true);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
     }
 
     public static void main(String[] args) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                new MainFrame().setVisible(true);
-//            }
-//        });
+        // MainFrame 인스턴스를 생성하여 실행
         new MainFrame();
     }
 }

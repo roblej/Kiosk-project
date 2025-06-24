@@ -1,10 +1,8 @@
-package client.Closing_sales;
+package client.admin;
 
 import client.MainFrame;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import vo.order_VO;
 
 import javax.swing.*;
@@ -13,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Reader;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
@@ -72,24 +69,9 @@ public class ClosingSalesPanel extends JPanel {
 
         back_btn.addActionListener(e -> back_Action());
 
-//        this.addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosing(WindowEvent e) {
-//                System.exit(0);
-//            }
-//        });
-
     }
 
     private void init() {
-//        try {
-//            Reader r = Resources.getResourceAsReader("client/config/conf.xml");
-//            factory = new SqlSessionFactoryBuilder().build(r);
-//            ss = factory.openSession();
-//            r.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         ss = f.factory.openSession();
     }
 
@@ -99,6 +81,7 @@ public class ClosingSalesPanel extends JPanel {
         int total_price = 0;
         int total_amount = 0;
         int total_quantity = 0;
+        java.util.Set<String> processedOrderNumbers = new java.util.HashSet<>();
 
         for (order_VO vo : list) {
             switch (vo.getO_status()){
@@ -109,11 +92,18 @@ public class ClosingSalesPanel extends JPanel {
             data[i][2] = vo.getOi_quantity();
             data[i][3] = vo.getOptions(); //할인??
             int amount1 = Integer.parseInt(vo.getO_total_amount());
-            data[i][4] = String.format("%,d",amount1);
+            String currentOrderNumber = vo.getO_number();
+
+            if(processedOrderNumbers.contains(currentOrderNumber)) {
+                data[i][4] = "";
+            }else {
+                data[i][4] = String.format("%,d", amount1);
+                processedOrderNumbers.add(currentOrderNumber);
+                total_amount += amount1;
+            }
             data[i][5] = vo.getO_status();
             total_price += price1;
             total_quantity += Integer.parseInt(data[i][2]);
-            total_amount += amount1;
             i++;
             break;
                 case "취소":
@@ -123,11 +113,18 @@ public class ClosingSalesPanel extends JPanel {
                     data[i][2] = "-"+ vo.getOi_quantity();
                     data[i][3] = vo.getOptions(); //할인??
                     int amount2 = Integer.parseInt(vo.getO_total_amount());
-                    data[i][4] = String.format("%,d",amount2);
+                    String currentOrderNumber2 = vo.getO_number();
+                    if(processedOrderNumbers.contains(currentOrderNumber2)) {
+                        data[i][4] = "";
+                    }else {
+                        data[i][4] = String.format("%,d",amount2);
+                        processedOrderNumbers.add(currentOrderNumber2);
+                        total_amount -= amount2;
+                    }
                     data[i][5] = vo.getO_status();
-                    total_price += price2;
+                    total_price -= price2
+                    ;
                     total_quantity -= Integer.parseInt(data[i][2])*-1;
-                    total_amount -= amount2;
                     i++;
                     break;
             }//csae문의 끝
@@ -144,14 +141,14 @@ public class ClosingSalesPanel extends JPanel {
 
     private void today_paymentAmount() {
         init();
-        List<order_VO> list = ss.selectList("paymentAmount.today");
+        List<order_VO> list = ss.selectList("orders.today");
         viewtable(list);
         ss.close();
     }
 
     private void month_paymentAmount() {
         init();
-        List<order_VO> list = ss.selectList("paymentAmount.month");
+        List<order_VO> list = ss.selectList("orders.month");
         viewtable(list);
         ss.close();
     }
@@ -275,7 +272,7 @@ public class ClosingSalesPanel extends JPanel {
 
                 init();
 
-                List<order_VO> list = ss.selectList("paymentAmount.period",map);
+                List<order_VO> list = ss.selectList("orders.period",map);
                 viewtable(list);
                 ss.close();
                 }else {
@@ -292,8 +289,5 @@ public class ClosingSalesPanel extends JPanel {
                 dialog.dispose();
             }
         });
-
     }
-
-
 }
