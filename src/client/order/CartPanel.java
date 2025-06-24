@@ -157,14 +157,14 @@ public class CartPanel extends JPanel {
             if (cvo != null && coupon_Code.equals(cvo.getC_code())){
                 //쿠폰코드가 사용할 수 있는 경우
                 JOptionPane.showMessageDialog(null,"쿠폰이 확인되었습니다");
-                f.cardLayout.show(f.cardPanel,"CouponPanel");
+                CouponDialog CD = new CouponDialog(f,cvo,orderPanel);
             }else {
                 //쿠폰코드가 사용할 수 없을 경우
                 JOptionPane.showMessageDialog(null,"사용할 수 없는 쿠폰코드입니다");
             }
         }else {
             //NO를 선택할 경우 결제화면으로 넘어감
-            f.cardLayout.show(f.cardPanel,"CouponPanel");
+            f.cardLayout.show(f.cardPanel, "FinalPayment");
         }
 
     }

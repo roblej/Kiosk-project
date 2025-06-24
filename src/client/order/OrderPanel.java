@@ -20,12 +20,15 @@ public class OrderPanel extends JPanel {
     ProductsVO p;
     MainFrame f;
 
+    int returnPrice;
     /**
      * OrderPanel의 생성자입니다.
      * @param f 메인 프레임(MainFrame)의 참조
      */
     public OrderPanel(MainFrame f) {
         this.f = f;
+
+        returnPrice = 0;
         // 1. 패널의 레이아웃을 BorderLayout으로 설정합니다.
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
@@ -70,7 +73,7 @@ public class OrderPanel extends JPanel {
 
         cartPanel.updateTable(); // 내용만 갱신
         cartPanel.updatePrice(allPrice); // 총 가격 갱신
-
+        returnPrice = allPrice;
         revalidate();
         repaint();
     }
