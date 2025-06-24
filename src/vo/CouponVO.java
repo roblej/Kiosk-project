@@ -8,7 +8,7 @@ public class CouponVO {
     private String c_discount_rate; // 할인율
     private String is_coupon_used;     // 0: 미사용, 1: 사용
 
-    // --- Getter and Setter ---
+// --- Getter and Setter ---
 
 
     public String getU_id() {

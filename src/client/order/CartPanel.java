@@ -120,6 +120,7 @@ public class CartPanel extends JPanel {
                 }else{
                     JOptionPane.showMessageDialog(null, "지울 항목을 선택해주세요");
                 }
+                i = 100;
             }
         });
 
@@ -136,7 +137,7 @@ public class CartPanel extends JPanel {
                 // 테이블에서 더블클릭을 알아내자!
                 int cnt = e.getClickCount();
                 if(cnt == 1){
-                    // JTable에 선택된 행, index를 얻어냄
+                    // JTable에 선택된 행, index를 얻어내자
                     i = table.getSelectedRow();
                     System.out.println(i);
                 }
@@ -192,21 +193,20 @@ public class CartPanel extends JPanel {
                 if (cvo != null && coupon_Code.equals(cvo.getC_code())) {
                     //쿠폰코드가 사용할 수 있는 경우
                     JOptionPane.showMessageDialog(null, "쿠폰이 확인되었습니다");
-                    f.cardLayout.show(f.cardPanel, "CouponPanel");
+                    CouponDialog CD = new CouponDialog(f, cvo, orderPanel);
                 } else {
                     //쿠폰코드가 사용할 수 없을 경우
                     JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
                 }
             } else {
                 //NO를 선택할 경우 결제화면으로 넘어감
-                f.cardLayout.show(f.cardPanel, "CouponPanel");
+                f.cardLayout.show(f.cardPanel, "FinalPayment");
             }
         }else { // 장바구니에 품목이 없다면
-            JOptionPane.showMessageDialog(null, "상품을 담아주세요");
-        }
-
+                JOptionPane.showMessageDialog(null, "상품을 담아주세요");
+            }
     }
-    
+
     public void calTotalPrice(){
         // 총 금액계산
         int total = 0;

@@ -27,4 +27,5 @@
     <delete id="delete" parameterType="String">
         DELETE FROM coupons WHERE c_code = #{c_code}
     </delete>
+
 </mapper>

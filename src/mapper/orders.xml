@@ -16,6 +16,11 @@
         WHERE o_idx = #{o_idx}
     </update>
 
+    <insert id="addorders" parameterType="map">
+        INSERT INTO orders ( o_idx, o_number, o_total_amount, o_status, o_is_takeout, user_id )
+        VALUES ( #{o_idx}, #{o_number}, #{o_total_amount}, #{o_status}, #{o_is_takeout}, #{user_id} )
+    </insert>
+
     <resultMap id="month1" type="vo.order_VO" >
         <id property="o_idx" column="o_idx" />
         <result property="o_number" column="o_number"/>
