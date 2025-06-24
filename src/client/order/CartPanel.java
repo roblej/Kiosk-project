@@ -34,6 +34,7 @@ public class CartPanel extends JPanel {
 
     int i = 100;
 
+    JButton backBtn; // 첫 화면으로
     JButton delBtn; // 장바구니 품목 지우기
     JButton payBtn; // 결제벝
 
@@ -70,11 +71,40 @@ public class CartPanel extends JPanel {
             data[j] = cartList.get(j);
         }
 
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        bottomPanel.add(bottomLabel = new JLabel("총 금액: " + allPrice + "원"), BorderLayout.CENTER); // 담은게 없어도 가격 보이게 하기
+        JPanel bottomLarea = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel bottomRarea = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel bottomPanel = new JPanel(new GridLayout(1, 2));
 
+        bottomLarea.setBackground(Color.WHITE);
+        bottomRarea.setBackground(Color.WHITE);
+
+        bottomPanel.add(bottomLarea, BorderLayout.WEST);
+        bottomPanel.add(bottomRarea, BorderLayout.EAST);
+
+
+        bottomLarea.add(bottomLabel = new JLabel("총 금액: " + allPrice + "원"), BorderLayout.WEST); // 담은게 없어도 가격 보이게 하기
+
+        backBtn = new JButton("첫화면");
         delBtn = new JButton("지우기");
         payBtn = new JButton("결제하기");
+
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(null, "첫 화면으로 이동하시겠습니까?","", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    if(data != null && data.length != 0){
+                        data = null;
+                        f.cardLayout.show(f.cardPanel, "LoginPanel");
+                        clearCartList();
+                    }else{
+                        f.cardLayout.show(f.cardPanel, "LoginPanel");
+                    }
+                } else if (result == JOptionPane.NO_OPTION) {
+                    // 아무 동작도 하지 않으면 창만 그대로 유지됨 (닫히지 않음)
+                }
+            }
+        });
 
         // 장바구니 삭제 버튼 이벤트 감지자
         delBtn.addActionListener(new ActionListener() {
@@ -95,8 +125,9 @@ public class CartPanel extends JPanel {
 
         payBtn.addActionListener(e -> cliked_Payment(f));
 
-        bottomPanel.add(delBtn);
-        bottomPanel.add(payBtn);
+        bottomRarea.add(backBtn);
+        bottomRarea.add(delBtn);
+        bottomRarea.add(payBtn);
         add(bottomPanel, BorderLayout.SOUTH);
 
         table.addMouseListener(new MouseAdapter() {
@@ -171,7 +202,7 @@ public class CartPanel extends JPanel {
                 f.cardLayout.show(f.cardPanel, "CouponPanel");
             }
         }else { // 장바구니에 품목이 없다면
-            JOptionPane.showMessageDialog(null, "메뉴를 담아주세요");
+            JOptionPane.showMessageDialog(null, "상품을 담아주세요");
         }
 
     }
