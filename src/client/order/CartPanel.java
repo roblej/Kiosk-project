@@ -86,7 +86,7 @@ public class CartPanel extends JPanel {
 
         backBtn = new JButton("첫화면");
         delBtn = new JButton("지우기");
-        payBtn = new JButton("결제하기");
+        payBtn = new JButton("결제");
 
         backBtn.addActionListener(new ActionListener() {
             @Override
