@@ -56,6 +56,17 @@ public class UserManagerPanel extends JPanel {
             }
         });
 
+        inputTextField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = inputTextField.getText();
+                if(str.length()>0){
+                    search(str);
+                }else {
+                    JOptionPane.showMessageDialog(UserManagerPanel.this,"전화번호를 입력하세요");
+                }
+            }
+        });
         searchBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,10 +80,14 @@ public class UserManagerPanel extends JPanel {
         });
         backBtn.addActionListener(new ActionListener() {
             @Override
+
             public void actionPerformed(ActionEvent e) {
+                viewAll();
+                inputTextField.setText("");
                 f.cardLayout.show(f.cardPanel, "AdminCard");
             }
         });
+        viewAll(); // 초기 로드 시 전체 회원 조회
     }
 
     public void search(String phoneNumber){
@@ -81,7 +96,12 @@ public class UserManagerPanel extends JPanel {
         userList = ss.selectList("user.getUserInfo", phoneNumber);
         viewTable(userList);
     }
-
+    public void viewAll(){
+        //전체 회원 조회 기능 구현
+        SqlSession ss = f.factory.openSession();
+        userList = ss.selectList("user.getAllUserInfo");
+        viewTable(userList);
+    }
     private void viewTable(List<UserVO> list){
         String[][] data = new String[list.size()][c_name.length];
         for(int i=0; i<list.size(); i++){
