@@ -7,26 +7,33 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class StockDialog extends JDialog {
 
 
+    private  JPanel main_panel;
+    private  JPanel info_panel;
     private  JPanel code_panel;
     private  JPanel name_panel;
     private  JPanel price_panel;
     private  JPanel stock_panel;
     private  JPanel select_panel;
+    private  JPanel image_panel;
+    private  JPanel imgpath_panel;
 
     private  JTextField code_tf;
     private  JTextField name_tf;
     private  JTextField price_tf;
     private  JTextField stock_tf;
+    private  JTextField img_tf;
 
     private JLabel codelb;
     private JLabel namelb;
     private JLabel pricelb;
     private JLabel stocklb;
-
+    private JLabel imagelb;
+    private JLabel imgpathlb;
     private JButton delBtn;
     private JButton okBtn;
     private JButton ccBtn;
@@ -36,6 +43,7 @@ public class StockDialog extends JDialog {
 
     private StockCard callingStockCard;
 
+
     public StockDialog(MainFrame f, boolean modal, ProductsVO pvo, StockCard callingStock){
 
         super(f, modal);
@@ -44,11 +52,13 @@ public class StockDialog extends JDialog {
         setTitle("재고수정");
         setSize(400, 300);
         setLocationRelativeTo(null);
-        initComponents();//화면구성
+        getImage(pvo);
+        initComponents(pvo);//화면구성
         code_tf.setText(pvo.getP_code());
         name_tf.setText(pvo.getP_name());
         price_tf.setText(pvo.getP_price());
         stock_tf.setText(pvo.getP_stock());
+        img_tf.setText(pvo.getP_image_url());
 
         //이벤트 감지자 등록
         plusBtn.addActionListener(new ActionListener() {//재고 증가 버튼
@@ -94,36 +104,46 @@ public class StockDialog extends JDialog {
                 String name = name_tf.getText().trim();
                 String price = price_tf.getText().trim();
                 String stock = stock_tf.getText().trim();
+                String image = img_tf.getText().trim();
 
                 ProductsVO pvo = new ProductsVO();//저장할 객체 생성
                 pvo.setP_code(code);
                 pvo.setP_name(name);
                 pvo.setP_price(price);
                 pvo.setP_stock(stock);
+                pvo.setP_image_url(image);
 
                 callingStockCard.updateData(pvo);
+
                 dispose();
             }
         });
         setVisible(true);
     }
 
-    private void initComponents(){
+    private void initComponents(ProductsVO pvo){
+        main_panel = new JPanel(new BorderLayout());
+        info_panel = new JPanel();
         code_panel = new JPanel();
         name_panel = new JPanel();
         price_panel = new JPanel();
         stock_panel = new JPanel();
         select_panel = new JPanel();
+        image_panel = new JPanel();
+        imgpath_panel = new JPanel();
 
         code_tf = new JTextField();
         name_tf = new JTextField();
         price_tf = new JTextField();
         stock_tf = new JTextField();
+        img_tf = new JTextField();
 
         codelb = new JLabel();
         namelb = new JLabel();
         pricelb = new JLabel();
         stocklb = new JLabel();
+        imgpathlb = new JLabel();
+
         delBtn = new JButton();
         okBtn = new JButton();
         ccBtn = new JButton();
@@ -131,7 +151,27 @@ public class StockDialog extends JDialog {
         minusBtn = new JButton();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        getContentPane().setLayout(new GridLayout(5,1));
+
+        String str = pvo.getP_image_url();
+        ImageIcon icon = new ImageIcon(str);
+        Image img = icon.getImage();
+        Image scaledImg = img.getScaledInstance(150,250,Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImg);
+        imagelb = new JLabel(scaledIcon);
+
+        image_panel.add(imagelb);
+        getContentPane().add(main_panel);
+        main_panel.add(image_panel, BorderLayout.WEST);
+
+        info_panel.setLayout(new GridLayout(6,1));
+
+        imgpath_panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        imgpathlb = new JLabel("이미지:");
+        img_tf.setEditable(false);
+        imgpath_panel.add(imgpathlb);
+        img_tf.setColumns(10);
+        imgpath_panel.add(img_tf);
+        info_panel.add(imgpath_panel);
 
         code_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         codelb.setText("상품코드:");
@@ -139,7 +179,7 @@ public class StockDialog extends JDialog {
         code_tf.setEditable(false);
         code_tf.setColumns(10);
         code_panel.add(code_tf);
-        getContentPane().add(code_panel);
+        info_panel.add(code_panel);
 
         name_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         namelb.setText("상품명:");
@@ -147,15 +187,15 @@ public class StockDialog extends JDialog {
         name_tf.setEditable(false);
         name_tf.setColumns(10);
         name_panel.add(name_tf);
-        getContentPane().add(name_panel);
+        info_panel.add(name_panel);
 
         price_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         pricelb.setText("가격:");
         price_panel.add(pricelb);
-        price_tf.setEditable(false);
+        price_tf.setEditable(true);
         price_tf.setColumns(10);
         price_panel.add(price_tf);
-        getContentPane().add(price_panel);
+        info_panel.add(price_panel);
 
         stock_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         stocklb.setText("재고:");
@@ -168,7 +208,7 @@ public class StockDialog extends JDialog {
         stock_panel.add(minusBtn);
         stock_panel.add(stock_tf);
         stock_panel.add(plusBtn);
-        getContentPane().add(stock_panel);
+        info_panel.add(stock_panel);
 
         delBtn.setText("상품삭제");
         select_panel.add(delBtn);
@@ -179,8 +219,19 @@ public class StockDialog extends JDialog {
         ccBtn.setText("취소");
         select_panel.add(ccBtn);
 
-        getContentPane().add(select_panel);
+        info_panel.add(select_panel);
+
+        main_panel.add(info_panel, BorderLayout.EAST);
 
 
+
+    }
+    public void getImage(ProductsVO pvo){
+        String s_img = pvo.getP_image_url();
+        ImageIcon icon = new ImageIcon(s_img);
+        Image img = icon.getImage();
+        Image scaledImg = img.getScaledInstance(150,250,Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImg);
+        imagelb = new JLabel(scaledIcon);
     }
 }

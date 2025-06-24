@@ -60,7 +60,7 @@ public class AddDialog extends JDialog {
         this.callingStockCard = callingStock;
 
         setTitle("상품추가");
-        setSize(400, 300);
+        setSize(200, 300);
         setLocationRelativeTo(null);
         initComponents();//화면구성
         code_tf.setText(pvo.getP_code());
