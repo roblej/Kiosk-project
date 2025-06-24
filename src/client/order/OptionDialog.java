@@ -77,12 +77,30 @@ public class OptionDialog extends JDialog {
         northPanel = new JPanel(new GridLayout(1, 3, 10, 0));
         northPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
-        // --- 수정 1: 이미지를 래퍼 패널로 감싸 정사각형 유지 ---
-        imgLabel = new JLabel("이미지", SwingConstants.CENTER);
-        imgLabel.setPreferredSize(new Dimension(120, 120)); // 정사각형 크기 지정
-        imgLabel.setOpaque(true);
-        imgLabel.setBackground(Color.gray);
-        imgLabel.setForeground(Color.WHITE);
+        try {
+            // 1. DB에서 "images/파일명.png" 형식의 순수한 리소스 경로를 가져옴
+            String imagePath = product.getP_image_url();
+
+            // 2. 맨 앞에 "/"를 붙여 클래스패스 절대경로로 만듦
+            java.net.URL imageUrl = MenuButton.class.getResource("/" + imagePath);
+
+            if (imageUrl == null) {
+                throw new Exception("리소스를 찾을 수 없음: /" + imagePath);
+            }
+
+            // 3. URL로 ImageIcon 생성 및 크기 조절
+            ImageIcon icon = new ImageIcon(imageUrl);
+            Image img = icon.getImage();
+            Image scaledImg = img.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            ImageIcon finalIcon = new ImageIcon(scaledImg);
+            imgLabel = new JLabel(finalIcon);
+
+        } catch (Exception e) {
+            System.err.println("이미지 로드 실패: " + product.getP_image_url() + " | " + e.getMessage());
+            imgLabel = new JLabel("이미지 없음");
+            imgLabel.setPreferredSize(new Dimension(120, 120));
+            imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        }
 
         JPanel imageWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         imageWrapper.add(imgLabel);
