@@ -8,10 +8,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 주문 화면의 메인 컨테이너 패널입니다.
- * 상단에는 CategoryPanel, 중앙에는 MenuPanel, 하단에는 CartPanel이 위치합니다.
- */
 public class OrderPanel extends JPanel {
 
     private CategoryPanel categoryPanel;
@@ -22,12 +18,14 @@ public class OrderPanel extends JPanel {
     List<String[]> cartList = new ArrayList<>();
 
     ProductsVO p;
+    MainFrame f;
 
     /**
      * OrderPanel의 생성자입니다.
      * @param f 메인 프레임(MainFrame)의 참조
      */
     public OrderPanel(MainFrame f) {
+        this.f = f;
         // 1. 패널의 레이아웃을 BorderLayout으로 설정합니다.
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
@@ -36,7 +34,7 @@ public class OrderPanel extends JPanel {
         //    - CategoryPanel이 MenuPanel을 제어해야 하므로, MenuPanel을 먼저 생성해야 합니다.
         //    - 기존 MenuPanel 생성자를 그대로 활용합니다.
         menuPanel = new MenuPanel(this, f, p);
-        cartPanel = new CartPanel(this, cartList);
+        cartPanel = new CartPanel(f, this, cartList);
 
         //    - CategoryPanel을 생성할 때, 제어할 대상인 menuPanel의 참조를 넘겨줍니다.
         categoryPanel = new CategoryPanel(menuPanel, f);
@@ -61,6 +59,11 @@ public class OrderPanel extends JPanel {
     // OptjonDialog의 담기 버튼을 누르면 수행하는 addToCart, cartPanel에 접근하기 위해 이곳에서 수행
     public void addToCart(ProductsVO product, int count, int totalPrice) {
         allPrice = allPrice + totalPrice;
+
+//         이미 장바구니에 담겨있는 상품은 새로 만들지 않고 있는 값에 추가한다.
+//        if(cartPanel.data){
+//
+//        }
 
         String[] optionRow = {product.getP_name(), String.valueOf(count), String.valueOf(totalPrice), "옵션"};
         cartList.add(optionRow);
