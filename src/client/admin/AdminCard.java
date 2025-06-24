@@ -50,7 +50,7 @@ public class AdminCard extends JPanel {
         openBtn.addActionListener(new ActionListener() {//오픈버튼
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "오픈시작");
+               f.cardLayout.show(f.cardPanel, "LoginPanel");
                 //  int result = JOptionPane.showConfirmDialog(null, )
             }
         });
