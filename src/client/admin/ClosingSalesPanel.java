@@ -102,7 +102,7 @@ public class ClosingSalesPanel extends JPanel {
                 total_amount += amount1;
             }
             data[i][5] = vo.getO_status();
-            total_price += price1* Integer.parseInt(vo.getOi_quantity());
+            total_price += price1;
             total_quantity += Integer.parseInt(data[i][2]);
             i++;
             break;
@@ -122,7 +122,8 @@ public class ClosingSalesPanel extends JPanel {
                         total_amount -= amount2;
                     }
                     data[i][5] = vo.getO_status();
-                    total_price -= price2* Integer.parseInt(vo.getOi_quantity());
+                    total_price -= price2
+                    ;
                     total_quantity -= Integer.parseInt(data[i][2])*-1;
                     i++;
                     break;

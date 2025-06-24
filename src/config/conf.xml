@@ -19,5 +19,6 @@
         <mapper resource="mapper/orders.xml"/>
         <mapper resource="mapper/coupon.xml"/>
         <mapper resource="mapper/products.xml"/>
+        <mapper resource="mapper/order_items.xml"/>
     </mappers>
 </configuration>
