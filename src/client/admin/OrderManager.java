@@ -64,8 +64,7 @@ public class OrderManager extends JDialog {
                     i = table.getSelectedRow();
                     // 알아낸 index로 order_VO에 접근
                     order_VO vo = OrderManager.this.list.get(i);
-                    String str = vo.getO_number();
-                    System.out.println(str);
+                    String str = vo.getO_number(); // order_items 조회를 위한 인자받기
                     new OrderManagerDialog(f, OrderManager.this, true, vo, str);
 
                 }
