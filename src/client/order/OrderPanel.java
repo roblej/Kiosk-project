@@ -8,10 +8,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 주문 화면의 메인 컨테이너 패널입니다.
- * 상단에는 CategoryPanel, 중앙에는 MenuPanel, 하단에는 CartPanel이 위치합니다.
- */
 public class OrderPanel extends JPanel {
 
     private CategoryPanel categoryPanel;
@@ -22,12 +18,14 @@ public class OrderPanel extends JPanel {
     List<String[]> cartList = new ArrayList<>();
 
     ProductsVO p;
+    MainFrame f;
 
     /**
      * OrderPanel의 생성자입니다.
      * @param f 메인 프레임(MainFrame)의 참조
      */
     public OrderPanel(MainFrame f) {
+        this.f = f;
         // 1. 패널의 레이아웃을 BorderLayout으로 설정합니다.
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);

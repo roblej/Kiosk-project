@@ -13,6 +13,11 @@
     <select id="checkCodeExists" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM coupons WHERE c_code = #{c_code}
     </select>
+
+    <select id="couponConfirm" resultType="vo.CouponVO" parameterType="map">
+        SELECT * FROM coupons WHERE c_code = #{c_code}
+    </select>
+
     <update id="update" parameterType="vo.CouponVO">
         UPDATE coupons
         SET u_id = #{u_id}, c_code = #{c_code}, is_coupon_used = #{is_coupon_used},
