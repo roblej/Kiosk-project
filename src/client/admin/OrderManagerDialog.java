@@ -118,7 +118,7 @@ public class OrderManagerDialog extends JDialog {
             // oi_idx, oi_id, product_code, oi_quantity, oi_price, oi_size, options
             // "주문번호", "주문상품", "주문수량", "주문가격", "사이즈", "옵션"
             data[i][0] = vo.getOi_id();            // 주문번호
-            data[i][1] = vo.getProduct_code();   // 주문상품 (products의 p_name)
+            data[i][1] = vo.getP_name();   // 주문상품 (products의 p_name)
             data[i][2] = vo.getOi_quantity();         // 주문수량
             data[i][3] = vo.getOi_price();          // 주문가격
             data[i][4] = vo.getOi_size();           // 사이즈
