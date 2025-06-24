@@ -58,21 +58,11 @@ public class OrderPanel extends JPanel {
 
     // OptjonDialog의 담기 버튼을 누르면 수행하는 addToCart, cartPanel에 접근하기 위해 이곳에서 수행
     public void addToCart(ProductsVO product, int count, int totalPrice) {
-        allPrice = allPrice + totalPrice;
-
-//         이미 장바구니에 담겨있는 상품은 새로 만들지 않고 있는 값에 추가한다.
-//        if(cartPanel.data){
-//
-//        }
-
         String[] optionRow = {product.getP_name(), String.valueOf(count), String.valueOf(totalPrice), "옵션"};
         cartList.add(optionRow);
 
-        cartPanel.updateTable(); // 내용만 갱신
-        cartPanel.updatePrice(allPrice); // 총 가격 갱신
-
-        revalidate();
-        repaint();
+        cartPanel.calTotalPrice(); // 총 금액 갱신
+        cartPanel.updateTable(); // 장바구니 테이블 갱신
     }
 
 }

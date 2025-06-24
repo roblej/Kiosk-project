@@ -1,6 +1,7 @@
 package client.order; // 패키지 변경
 
 import client.MainFrame;
+import org.apache.ibatis.jdbc.Null;
 import org.apache.ibatis.session.SqlSession;
 import vo.CouponVO;
 
@@ -80,10 +81,15 @@ public class CartPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
-                if (i >= 0 && i < model.getRowCount()) {
-                    model.removeRow(i); // i번째 행 삭제
+                if (i >= 0 && i < model.getRowCount()) { // 사용자가 table의 행을 선택했을 때만 수행
+                    cartList.remove(i); // 장바구니의 i번째 리스트 제거
+                    i = 100; // 사용자 선택 값 초기화
+
+                    calTotalPrice(); // 총 금액 갱신
+                    updateTable(); // 테이블 갱신
+                }else{
+                    JOptionPane.showMessageDialog(null, "지울 항목을 선택해주세요");
                 }
-                i = 100;
             }
         });
 
@@ -99,7 +105,7 @@ public class CartPanel extends JPanel {
                 // 테이블에서 더블클릭을 알아내자!
                 int cnt = e.getClickCount();
                 if(cnt == 1){
-                    // JTable에 선택된 행, index를 얻어내자
+                    // JTable에 선택된 행, index를 얻어냄
                     i = table.getSelectedRow();
                     System.out.println(i);
                 }
@@ -140,32 +146,42 @@ public class CartPanel extends JPanel {
     }
 
     public void cliked_Payment(MainFrame f){
+        if(data.length != 0) { // 장바구니의 품목이 있을때만
+            int cnt = JOptionPane.showConfirmDialog(null, "쿠폰을 사용하시겠습니까?", "", JOptionPane.YES_NO_OPTION);
+            if (cnt == 0) {
+                //YES를 선택할 경우 쿠폰 사용 화면으로 넘어감
+                String coupon_Code = JOptionPane.showInputDialog(null, "코드를 입력하세요", null);
+                CouponVO cvo;
+                Map<String, String> map = new HashMap();
+                map.put("c_code", coupon_Code);
+                SqlSession ss = f.factory.openSession();
+                cvo = ss.selectOne("coupon.couponConfirm", map);
 
-
-        int cnt = JOptionPane.showConfirmDialog
-                (null,"쿠폰을 사용하시겠습니까?","",JOptionPane.YES_NO_OPTION);
-        if(cnt==0){
-            //YES를 선택할 경우 쿠폰 사용 화면으로 넘어감
-            String coupon_Code = JOptionPane.showInputDialog(null,"코드를 입력하세요",null);
-            CouponVO cvo;
-            Map<String,String> map = new HashMap();
-            map.put("c_code",coupon_Code);
-            SqlSession ss = f.factory.openSession();
-            cvo = ss.selectOne("coupon.couponConfirm",map);
-
-            ss.close();
-            if (cvo != null && coupon_Code.equals(cvo.getC_code())){
-                //쿠폰코드가 사용할 수 있는 경우
-                JOptionPane.showMessageDialog(null,"쿠폰이 확인되었습니다");
-                f.cardLayout.show(f.cardPanel,"CouponPanel");
-            }else {
-                //쿠폰코드가 사용할 수 없을 경우
-                JOptionPane.showMessageDialog(null,"사용할 수 없는 쿠폰코드입니다");
+                ss.close();
+                if (cvo != null && coupon_Code.equals(cvo.getC_code())) {
+                    //쿠폰코드가 사용할 수 있는 경우
+                    JOptionPane.showMessageDialog(null, "쿠폰이 확인되었습니다");
+                    f.cardLayout.show(f.cardPanel, "CouponPanel");
+                } else {
+                    //쿠폰코드가 사용할 수 없을 경우
+                    JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
+                }
+            } else {
+                //NO를 선택할 경우 결제화면으로 넘어감
+                f.cardLayout.show(f.cardPanel, "CouponPanel");
             }
-        }else {
-            //NO를 선택할 경우 결제화면으로 넘어감
-            f.cardLayout.show(f.cardPanel,"CouponPanel");
+        }else { // 장바구니에 품목이 없다면
+            JOptionPane.showMessageDialog(null, "메뉴를 담아주세요");
         }
 
+    }
+    
+    public void calTotalPrice(){
+        // 총 금액계산
+        int total = 0;
+        for (String[] row : cartList) {
+            total += Integer.parseInt(row[2]); // 주문가격은 문자열로 들어있으니 정수로 변환
+        }
+        updatePrice(total);
     }
 }
