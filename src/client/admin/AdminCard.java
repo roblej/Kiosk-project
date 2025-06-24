@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class AdminCard extends JPanel {
 
-    MyDialog dialog;
+    OrderManager dialog;
     MainFrame f;
 
 
@@ -93,7 +93,7 @@ public class AdminCard extends JPanel {
         orderBtn.addActionListener(new ActionListener() {//주문처리
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MyDialog(f);
+                new OrderManager(f);
             }
         });
 

@@ -15,10 +15,10 @@ import java.util.List;
 창 생성 시 조리중, 처리완료, 취소 위 영역에 주문한 메뉴들의 정보가 나와야 함
  */
 
-public class StatusChange extends JDialog {
+public class OrderManagerDialog extends JDialog {
 
     JButton pending, process, finish;
-    MyDialog parent;
+    OrderManager parent;
     order_VO vo;
     JTable table;
     JScrollPane scrollPane;
@@ -30,7 +30,7 @@ public class StatusChange extends JDialog {
     String[] statusTable = {"주문번호", "주문상품", "주문수량", "주문가격", "사이즈", "옵션"};
     String[][] data;
 
-    public StatusChange(MainFrame f, MyDialog parent, boolean modal, order_VO vo, String str) {
+    public OrderManagerDialog(MainFrame f, OrderManager parent, boolean modal, order_VO vo, String str) {
         super(parent, modal);
         this.f = f;
         this.parent = parent;
