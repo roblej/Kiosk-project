@@ -9,7 +9,7 @@
     </select>
 
     <select id="statusjoin" resultType="vo.order_items_VO" parameterType="String">
-        SELECT o.oi_id, p.p_name, o.oi_quantity, o.oi_price, o.oi_size
+        SELECT o.oi_id, p.p_name, o.oi_quantity, o.oi_price, o.oi_size, o.options
         FROM order_items o INNER JOIN products p
         ON o.product_code = p.p_code
         WHERE oi_id = #{oi_id}
