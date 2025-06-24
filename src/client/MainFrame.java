@@ -51,6 +51,7 @@ public class MainFrame extends JFrame {
         StockCard stockCard = new StockCard(this);
         OrderPanel orderPanel = new OrderPanel(this);
         CouponManagerPanel couponManagerPanel = new CouponManagerPanel(this);
+        CouponPanel couponPanel = new CouponPanel(this);
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(orderPanel,"orderPanel");
         cardPanel.add(adminCard, "AdminCard");
@@ -58,6 +59,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(userManagerPanel, "userManagerPanel");
         cardPanel.add(couponManagerPanel, "CouponManagerPanel"); // "CouponManagerPanel" 이름으로 추가
         cardPanel.add(stockCard,"StockCard");
+        cardPanel.add(couponPanel,"CouponPanel");
         // 컨트롤 버튼 생성 (패널 전환용)
         JPanel controlPanel = new JPanel();
         JButton btn1 = new JButton("Panel 1로 이동");

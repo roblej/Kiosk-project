@@ -1,5 +1,9 @@
 package client.order; // 패키지 변경
 
+import client.MainFrame;
+import org.apache.ibatis.session.SqlSession;
+import vo.CouponVO;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -7,7 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
 이곳은 OptionDialog에서 저장된 값의 정보가 담길 class이다
@@ -21,22 +27,23 @@ public class CartPanel extends JPanel {
     private List<String[]> cartList;
     JTable table;
     JScrollPane scrollPane;
-
+    MainFrame f;
     JLabel bottomLabel;
     int allPrice;
 
     int i = 100;
 
     JButton delBtn; // 장바구니 품목 지우기
+    JButton payBtn; // 결제벝
 
     String[] pvo_name = {"주문상품", "주문수량", "주문가격", "옵션"};
     String[][] data;
 
     // 생성자에서 MainFrame 대신 OrderPanel을 받도록 수정
-    public CartPanel(OrderPanel orderPanel, List<String[]> cartList) {
+    public CartPanel(MainFrame f, OrderPanel orderPanel, List<String[]> cartList) {
+        this.f = f;
         this.orderPanel = orderPanel;
         this.cartList = cartList;
-
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(500, 220));
         setBackground(Color.WHITE);
@@ -66,7 +73,7 @@ public class CartPanel extends JPanel {
         bottomPanel.add(bottomLabel = new JLabel("총 금액: " + allPrice + "원"), BorderLayout.CENTER); // 담은게 없어도 가격 보이게 하기
 
         delBtn = new JButton("지우기");
-        JButton payBtn = new JButton("결제하기");
+        payBtn = new JButton("결제하기");
 
         // 장바구니 삭제 버튼 이벤트 감지자
         delBtn.addActionListener(new ActionListener() {
@@ -80,11 +87,7 @@ public class CartPanel extends JPanel {
             }
         });
 
-        payBtn.addActionListener(e -> {
-            clearCartList();
-            JOptionPane.showMessageDialog(this, "결제하시겠습니까?");
-            // 테이블 새로 고침 필요 (다시 생성 or 테이블 모델 초기화)
-        });
+        payBtn.addActionListener(e -> cliked_Payment(f));
 
         bottomPanel.add(delBtn);
         bottomPanel.add(payBtn);
@@ -104,7 +107,7 @@ public class CartPanel extends JPanel {
         });
 
         setVisible(true);
-    }
+    } // 생자 끝
 
     // 테이블 내부의 값 반복문 수행하면서 확인 후 화면에 보여줌
     public void updateTable() {
@@ -134,5 +137,35 @@ public class CartPanel extends JPanel {
     public void updatePrice(int allPrice){
         this.allPrice = allPrice; // 멤버변수의 allPrice에 값 넣어줌
         bottomLabel.setText("총 금액: " + allPrice + "원");
+    }
+
+    public void cliked_Payment(MainFrame f){
+
+
+        int cnt = JOptionPane.showConfirmDialog
+                (null,"쿠폰을 사용하시겠습니까?","",JOptionPane.YES_NO_OPTION);
+        if(cnt==0){
+            //YES를 선택할 경우 쿠폰 사용 화면으로 넘어감
+            String coupon_Code = JOptionPane.showInputDialog(null,"코드를 입력하세요",null);
+            CouponVO cvo;
+            Map<String,String> map = new HashMap();
+            map.put("c_code",coupon_Code);
+            SqlSession ss = f.factory.openSession();
+            cvo = ss.selectOne("coupon.couponConfirm",map);
+
+            ss.close();
+            if (cvo != null && coupon_Code.equals(cvo.getC_code())){
+                //쿠폰코드가 사용할 수 있는 경우
+                JOptionPane.showMessageDialog(null,"쿠폰이 확인되었습니다");
+                f.cardLayout.show(f.cardPanel,"CouponPanel");
+            }else {
+                //쿠폰코드가 사용할 수 없을 경우
+                JOptionPane.showMessageDialog(null,"사용할 수 없는 쿠폰코드입니다");
+            }
+        }else {
+            //NO를 선택할 경우 결제화면으로 넘어감
+            f.cardLayout.show(f.cardPanel,"CouponPanel");
+        }
+
     }
 }
