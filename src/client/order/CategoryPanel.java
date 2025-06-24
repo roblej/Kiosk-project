@@ -8,25 +8,30 @@ import java.util.List;
 public class CategoryPanel extends JPanel {
 
     private final MenuPanel menuPanel;
+    private String currentCategory;
 
     public CategoryPanel(MenuPanel menuPanel, MainFrame mainFrame) {
         this.menuPanel = menuPanel;
         super.setLayout(new BorderLayout());
         super.setBackground(Color.WHITE);
 
+        this.currentCategory = "모든 메뉴";
+
         JPanel buttonContainerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         buttonContainerPanel.setBackground(Color.WHITE);
 
-        // --- 수정된 부분 ---
-        // 이전의 불필요하게 큰 하단 여백 대신, 위아래로 작은 여백(5px)을 주어 간격을 조절합니다.
         buttonContainerPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-        // --- 여기까지 수정 ---
 
         ProductsDao productsDao = new ProductsDao(mainFrame.factory);
 
         JButton allButton = new JButton("모든 메뉴");
         allButton.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-        allButton.addActionListener(e -> this.menuPanel.updateMenus("모든 메뉴"));
+        allButton.addActionListener(e -> {
+            if (!"모든 메뉴".equals(currentCategory)) {
+                this.currentCategory = "모든 메뉴";
+                this.menuPanel.updateMenus("모든 메뉴");
+            }
+        });
         buttonContainerPanel.add(allButton);
 
         List<String> categories = productsDao.getCategories();
@@ -34,7 +39,13 @@ public class CategoryPanel extends JPanel {
             for (String categoryName : categories) {
                 JButton categoryButton = new JButton(categoryName);
                 categoryButton.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-                categoryButton.addActionListener(e -> this.menuPanel.updateMenus(categoryName));
+
+                categoryButton.addActionListener(e -> {
+                    if (!categoryName.equals(currentCategory)) {
+                        this.currentCategory = categoryName;
+                        this.menuPanel.updateMenus(categoryName);
+                    }
+                });
                 buttonContainerPanel.add(categoryButton);
             }
         } else {

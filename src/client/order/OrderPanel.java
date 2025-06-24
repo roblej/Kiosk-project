@@ -1,4 +1,4 @@
-package client.order; // 패키지 경로는 프로젝트에 맞게 확인해주세요.
+package client.order;
 
 import client.MainFrame;
 import vo.ProductsVO;
@@ -55,20 +55,18 @@ public class OrderPanel extends JPanel {
 
     }
 
-    // --- 앞으로 모든 이벤트 처리 및 로직 메소드들은 이 클래스에 추가 ---
-    // 예: public void loadMenus(String category) { ... }
-    //     public void showOptionDialog(ProductVO product) { ... }
 
-    // OptjonDialog의 담기 버튼을 누르면 수행하는 addToCart, cartPanel에 접근하기 위해 이곳에서 수행
-    public void addToCart(ProductsVO product, int count, int totalPrice) {
-        allPrice = allPrice + totalPrice;
+    /**
+     * OptionDialog의 '담기' 버튼을 누르면 수행하는 메소드.
+     * @param product     상품 정보
+     * @param count       수량
+     * @param totalPrice  총가격
+     * @param selectedSize 선택된 사이즈 (새로 추가된 파라미터)
+     */
+    public void addToCart(ProductsVO product, int count, int totalPrice, String selectedSize) {
+        // --- 수정된 부분: 배열에 담는 순서를 [상품명, 사이즈, 수량, 가격]으로 변경 ---
+        String[] optionRow = {product.getP_name(), selectedSize, String.valueOf(count), String.valueOf(totalPrice)};
 
-//         이미 장바구니에 담겨있는 상품은 새로 만들지 않고 있는 값에 추가한다.
-//        if(cartPanel.data){
-//
-//        }
-
-        String[] optionRow = {product.getP_name(), String.valueOf(count), String.valueOf(totalPrice), "옵션"};
         cartList.add(optionRow);
 
         cartPanel.updateTable(); // 내용만 갱신
@@ -77,5 +75,4 @@ public class OrderPanel extends JPanel {
         revalidate();
         repaint();
     }
-
 }

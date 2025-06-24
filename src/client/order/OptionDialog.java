@@ -48,8 +48,10 @@ public class OptionDialog extends JDialog {
             }
         });
 
+        // '담기' 버튼 클릭 시, OrderPanel의 수정된 addToCart 메소드를 호출합니다.
+        // 네 번째 인자로 현재 선택된 사이즈(selectedSize)를 전달합니다.
         okBtn.addActionListener(e -> {
-            p.addToCart(product, count, totalPrice);
+            p.addToCart(product, count, totalPrice, selectedSize);
             dispose();
         });
 
@@ -78,23 +80,16 @@ public class OptionDialog extends JDialog {
         northPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
         try {
-            // 1. DB에서 "images/파일명.png" 형식의 순수한 리소스 경로를 가져옴
             String imagePath = product.getP_image_url();
-
-            // 2. 맨 앞에 "/"를 붙여 클래스패스 절대경로로 만듦
             java.net.URL imageUrl = MenuButton.class.getResource("/" + imagePath);
-
             if (imageUrl == null) {
                 throw new Exception("리소스를 찾을 수 없음: /" + imagePath);
             }
-
-            // 3. URL로 ImageIcon 생성 및 크기 조절
             ImageIcon icon = new ImageIcon(imageUrl);
             Image img = icon.getImage();
             Image scaledImg = img.getScaledInstance(120, 120, Image.SCALE_SMOOTH);
             ImageIcon finalIcon = new ImageIcon(scaledImg);
             imgLabel = new JLabel(finalIcon);
-
         } catch (Exception e) {
             System.err.println("이미지 로드 실패: " + product.getP_image_url() + " | " + e.getMessage());
             imgLabel = new JLabel("이미지 없음");
@@ -104,9 +99,8 @@ public class OptionDialog extends JDialog {
 
         JPanel imageWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         imageWrapper.add(imgLabel);
-        northPanel.add(imageWrapper); // 패널에 이미지 라벨이 아닌 래퍼 패널을 추가
+        northPanel.add(imageWrapper);
 
-        // 메뉴이름 & 수량
         menuCenterPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         menuLabel = new JLabel(product.getP_name(), SwingConstants.CENTER);
         menuLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
@@ -126,7 +120,6 @@ public class OptionDialog extends JDialog {
         menuCenterPanel.add(countPanel);
         northPanel.add(menuCenterPanel);
 
-        // 가격 영역
         priceLabel = new JLabel("", SwingConstants.CENTER);
         priceLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         northPanel.add(priceLabel);
@@ -135,7 +128,6 @@ public class OptionDialog extends JDialog {
         centerPanel = new JPanel(new BorderLayout(10, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // 사이즈 버튼 패널 (래퍼로 감싸서 크기 유지)
         JPanel sizePanel = new JPanel(new GridLayout(1, 3, 10, 0));
         shortBtn = new JButton("Short (-500)");
         tallBtn = new JButton("Tall (기본)");
@@ -146,7 +138,7 @@ public class OptionDialog extends JDialog {
 
         JPanel sizeWrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         sizeWrapperPanel.add(sizePanel);
-        centerPanel.add(sizeWrapperPanel, BorderLayout.CENTER); // 중앙에 배치
+        centerPanel.add(sizeWrapperPanel, BorderLayout.CENTER);
 
         updateSizeButtonUI();
 
@@ -163,8 +155,7 @@ public class OptionDialog extends JDialog {
         add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
 
-        // --- 수정 3: 전체 창 크기 조절 ---
-        setSize(500, 600); // 다이얼로그 크기를 줄여서 간결하게 만듦
+        setSize(500, 350); // 다이얼로그 높이 조절
         setLocationRelativeTo(null);
         setVisible(true);
     }
