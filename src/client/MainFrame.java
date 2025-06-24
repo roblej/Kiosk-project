@@ -53,7 +53,7 @@ public class MainFrame extends JFrame {
         OrderPanel orderPanel = new OrderPanel(this);
         CouponManagerPanel couponManagerPanel = new CouponManagerPanel(this);
         CouponPanel couponPanel = new CouponPanel(this);
-        FinalPayment FinalPayment = new FinalPayment(this);
+
 
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(orderPanel, "orderPanel");
@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(couponManagerPanel, "CouponManagerPanel"); // "CouponManagerPanel" 이름으로 추가
         cardPanel.add(stockCard,"StockCard");
         cardPanel.add(couponPanel,"CouponPanel");
-        cardPanel.add(FinalPayment,"FinalPayment");
+
 
         this.add(cardPanel, BorderLayout.CENTER);
 

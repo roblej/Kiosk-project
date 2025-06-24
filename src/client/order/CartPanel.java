@@ -193,14 +193,14 @@ public class CartPanel extends JPanel {
                 if (cvo != null && coupon_Code.equals(cvo.getC_code())) {
                     //쿠폰코드가 사용할 수 있는 경우
                     JOptionPane.showMessageDialog(null, "쿠폰이 확인되었습니다");
-                    CouponDialog CD = new CouponDialog(f, cvo, orderPanel);
+                    new CouponDialog(f, cvo, orderPanel, CartPanel.this);
                 } else {
                     //쿠폰코드가 사용할 수 없을 경우
                     JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
                 }
             } else {
                 //NO를 선택할 경우 결제화면으로 넘어감
-                f.cardLayout.show(f.cardPanel, "FinalPayment");
+                new CouponDialog(f, orderPanel, CartPanel.this);
             }
         }else { // 장바구니에 품목이 없다면
                 JOptionPane.showMessageDialog(null, "상품을 담아주세요");
