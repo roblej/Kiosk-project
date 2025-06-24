@@ -25,7 +25,7 @@ public class ClosingSalesPanel extends JPanel {
     String[] item = {"주문번호", "가격", "수량", "할인", "총금액","상태"};
     String[][] data;
 
-    SqlSessionFactory factory;
+//    SqlSessionFactory factory;
     SqlSession ss;
     MainFrame f;
 

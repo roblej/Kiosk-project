@@ -20,12 +20,15 @@ public class OrderPanel extends JPanel {
     ProductsVO p;
     MainFrame f;
 
+    int returnPrice;
     /**
      * OrderPanel의 생성자입니다.
      * @param f 메인 프레임(MainFrame)의 참조
      */
     public OrderPanel(MainFrame f) {
         this.f = f;
+
+        returnPrice = 0;
         // 1. 패널의 레이아웃을 BorderLayout으로 설정합니다.
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
@@ -52,6 +55,7 @@ public class OrderPanel extends JPanel {
 
     }
 
+
     /**
      * OptionDialog의 '담기' 버튼을 누르면 수행하는 메소드.
      * @param product     상품 정보
@@ -62,9 +66,13 @@ public class OrderPanel extends JPanel {
     public void addToCart(ProductsVO product, int count, int totalPrice, String selectedSize) {
         // --- 수정된 부분: 배열에 담는 순서를 [상품명, 사이즈, 수량, 가격]으로 변경 ---
         String[] optionRow = {product.getP_name(), selectedSize, String.valueOf(count), String.valueOf(totalPrice)};
+
         cartList.add(optionRow);
 
-        cartPanel.calTotalPrice(); // 총 금액 갱신
-        cartPanel.updateTable(); // 장바구니 테이블 갱신
+        cartPanel.updateTable(); // 내용만 갱신
+        cartPanel.updatePrice(allPrice); // 총 가격 갱신
+        returnPrice = allPrice;
+        revalidate();
+        repaint();
     }
 }

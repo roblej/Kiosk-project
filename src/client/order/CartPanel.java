@@ -122,6 +122,7 @@ public class CartPanel extends JPanel {
                 } else {
                     JOptionPane.showMessageDialog(null, "지울 항목을 선택해주세요");
                 }
+                i = 100;
             }
         });
 
@@ -130,7 +131,10 @@ public class CartPanel extends JPanel {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
+                // 테이블에서 더블클릭을 알아내자!
+                int cnt = e.getClickCount();
+                if(cnt == 1){
+                    // JTable에 선택된 행, index를 얻어내자
                     i = table.getSelectedRow();
                 }
             }
@@ -189,29 +193,32 @@ public class CartPanel extends JPanel {
             int cnt = JOptionPane.showConfirmDialog(null, "쿠폰을 사용하시겠습니까?", "", JOptionPane.YES_NO_OPTION);
             if (cnt == 0) {
                 String coupon_Code = JOptionPane.showInputDialog(null, "코드를 입력하세요", null);
-                if (coupon_Code != null && !coupon_Code.trim().isEmpty()) {
-                    CouponVO cvo;
-                    Map<String, String> map = new HashMap<>();
-                    map.put("c_code", coupon_Code);
-                    SqlSession ss = f.factory.openSession();
-                    cvo = ss.selectOne("coupon.couponConfirm", map);
-                    ss.close();
-                    if (cvo != null) {
-                        JOptionPane.showMessageDialog(null, "쿠폰이 확인되었습니다");
-                        f.cardLayout.show(f.cardPanel, "CouponPanel");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
-                    }
+                CouponVO cvo;
+                Map<String, String> map = new HashMap();
+                map.put("c_code", coupon_Code);
+                SqlSession ss = f.factory.openSession();
+                cvo = ss.selectOne("coupon.couponConfirm", map);
+
+                ss.close();
+                if (cvo != null && coupon_Code.equals(cvo.getC_code())) {
+                    //쿠폰코드가 사용할 수 있는 경우
+                    JOptionPane.showMessageDialog(null, "쿠폰이 확인되었습니다");
+                    CouponDialog CD = new CouponDialog(f, cvo, orderPanel);
+                } else {
+                    //쿠폰코드가 사용할 수 없을 경우
+                    JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
                 }
             } else {
-                f.cardLayout.show(f.cardPanel, "CouponPanel");
+                //NO를 선택할 경우 결제화면으로 넘어감
+                f.cardLayout.show(f.cardPanel, "FinalPayment");
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "상품을 담아주세요");
-        }
+        }else { // 장바구니에 품목이 없다면
+                JOptionPane.showMessageDialog(null, "상품을 담아주세요");
+            }
     }
 
-    public void calTotalPrice() {
+    public void calTotalPrice(){
+        // 총 금액계산
         int total = 0;
         for (String[] row : cartList) {
             total += Integer.parseInt(row[3]);

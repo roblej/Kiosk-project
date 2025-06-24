@@ -2,6 +2,7 @@ package client;
 
 import client.admin.ClosingSalesPanel;
 import client.admin.*;
+import client.Login.LoginDialog;
 import client.Login.LoginPanel;
 import client.order.*;
 import org.apache.ibatis.io.Resources;
@@ -33,7 +34,7 @@ public class MainFrame extends JFrame {
         }
 
         setTitle("CardLayout 팀 프로젝트 예시");
-
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 800);
         setLocationRelativeTo(null); // 화면 중앙에 배치
 
@@ -52,6 +53,7 @@ public class MainFrame extends JFrame {
         OrderPanel orderPanel = new OrderPanel(this);
         CouponManagerPanel couponManagerPanel = new CouponManagerPanel(this);
         CouponPanel couponPanel = new CouponPanel(this);
+        FinalPayment FinalPayment = new FinalPayment(this);
 
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(orderPanel, "orderPanel");
@@ -59,8 +61,9 @@ public class MainFrame extends JFrame {
         cardPanel.add(closingSalesPanel, "ClosingSalesPanel"); // "ClosingSalesPanel" 이름으로 추가
         cardPanel.add(userManagerPanel, "userManagerPanel");
         cardPanel.add(couponManagerPanel, "CouponManagerPanel"); // "CouponManagerPanel" 이름으로 추가
-        cardPanel.add(stockCard, "StockCard");
-        cardPanel.add(couponPanel, "CouponPanel");
+        cardPanel.add(stockCard,"StockCard");
+        cardPanel.add(couponPanel,"CouponPanel");
+        cardPanel.add(FinalPayment,"FinalPayment");
 
         this.add(cardPanel, BorderLayout.CENTER);
 
