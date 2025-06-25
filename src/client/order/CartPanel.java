@@ -110,15 +110,15 @@ public class CartPanel extends JPanel {
             }
         });
 
+        // 장바구니 삭제 이벤트 감지자
         delBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
-                if (i >= 0 && i < model.getRowCount()) {
-                    cartList.remove(i);
-                    i = 100;
+                if (i >= 0 && i < cartList.size()) { // i가 0보다 크거나, list의 size 보다 작을 때
+                    cartList.remove(i); // i번째 행 지우고
                     calTotalPrice();
                     updateTable();
+                    i = 100; // i 초기화
                 } else {
                     JOptionPane.showMessageDialog(null, "지울 항목을 선택해주세요");
                 }
@@ -130,11 +130,12 @@ public class CartPanel extends JPanel {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // 테이블에서 더블클릭을 알아내자!
+                // 테이블 선택 행을 얻어오기
                 int cnt = e.getClickCount();
                 if(cnt == 1){
-                    // JTable에 선택된 행, index를 얻어내자
+                    // JTable에 선택된 행, index를 얻어냄
                     i = table.getSelectedRow();
+                    System.out.println(i);
                 }
             }
         });
@@ -176,10 +177,9 @@ public class CartPanel extends JPanel {
     }
 
     public void clearCartList() {
-        cartList.clear();
-        allPrice = 0;
-        updatePrice(allPrice);
-        updateTable();
+        cartList.clear(); // 장바구니에 담긴 품목을 모두 지움
+        calTotalPrice(); // 값이 없는 장바구니의 총 값을 찍음
+        updateTable(); // 테이블 업데이트
     }
 
     public void updatePrice(int allPrice) {
