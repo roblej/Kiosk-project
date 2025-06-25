@@ -47,7 +47,7 @@ public class CouponDialog extends JDialog {
 
         totalPrice = orderPanel.returnPrice;
         String totalPrice2 = String.format("%,d",totalPrice);
-        north_p.add(new JLabel("총 주문금액 : " + totalPrice2));
+        north_p.add(new JLabel("총 주문금액 : " + p.allPrice));
 
         String ratePrice = cvo.getC_discount_rate();
         int cnt = totalPrice - ((int)(totalPrice * Double.parseDouble(ratePrice)*0.01));
@@ -86,7 +86,7 @@ public class CouponDialog extends JDialog {
 
         totalPrice = orderPanel.returnPrice;
         String totalPrice2 = String.format("%,d",totalPrice);
-        north_p.add(new JLabel("총 주문금액 : " + totalPrice2));
+        north_p.add(new JLabel("총 주문금액 : " + p.allPrice));
 
 
         south_p.add(confirmBt = new JButton("확인"));

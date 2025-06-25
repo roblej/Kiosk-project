@@ -62,7 +62,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(userManagerPanel, "userManagerPanel");
         cardPanel.add(couponManagerPanel, "CouponManagerPanel"); // "CouponManagerPanel" 이름으로 추가
         cardPanel.add(stockCard,"StockCard");
-        cardPanel.add(couponPanel,"CouponPanel");
+//        cardPanel.add(couponPanel,"CouponPanel");
 
 
         this.add(cardPanel, BorderLayout.CENTER);
