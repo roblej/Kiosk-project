@@ -109,7 +109,7 @@ public class ClosingSalesPanel extends JPanel {
                 case "취소":
                     data[i][0] = vo.getO_number();
                     int price2 = Integer.parseInt(vo.getOi_price());
-                    data[i][1] = String.format("%,d",price2);
+                    data[i][1] = String.format("-%,d",price2);
                     data[i][2] = "-"+ vo.getOi_quantity();
                     data[i][3] = vo.getOptions(); //할인??
                     int amount2 = Integer.parseInt(vo.getO_total_amount());
@@ -117,7 +117,7 @@ public class ClosingSalesPanel extends JPanel {
                     if(processedOrderNumbers.contains(currentOrderNumber2)) {
                         data[i][4] = "";
                     }else {
-                        data[i][4] = String.format("%,d",amount2);
+                        data[i][4] = String.format("-%,d",amount2);
                         processedOrderNumbers.add(currentOrderNumber2);
                         total_amount -= amount2;
                     }
