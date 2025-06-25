@@ -98,7 +98,6 @@ public class UserManagerDialog extends JDialog {
                     p.table.setValueAt(vo.getU_gender(), i, 2);
                     p.table.setValueAt(vo.getU_phone(), i, 3);
 
-
                 } catch (Exception ex) {
                     ss.rollback(); // 오류 발생 시 롤백
                     JOptionPane.showMessageDialog(UserManagerDialog.this, "업데이트 실패: " + ex.getMessage());

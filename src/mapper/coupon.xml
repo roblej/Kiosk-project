@@ -15,7 +15,9 @@
     </select>
 
     <select id="couponConfirm" resultType="vo.CouponVO" parameterType="map">
-        SELECT * FROM coupons WHERE c_code = #{c_code}
+        SELECT * FROM coupons
+        WHERE c_code = #{c_code}
+        AND u_id = #{u_id}
     </select>
 
     <update id="update" parameterType="vo.CouponVO">
@@ -27,5 +29,16 @@
     <delete id="delete" parameterType="String">
         DELETE FROM coupons WHERE c_code = #{c_code}
     </delete>
+
+    <update id="couponUse" parameterType="map">
+        UPDATE coupons
+        SET is_coupon_used = 1
+        WHERE c_code = #{c_code}
+    </update>
+
+    <select id="coupon" parameterType="vo.CouponVO">
+        SELECT * FROM coupons
+        WHERE is_coupon_used = 1
+    </select>
 
 </mapper>

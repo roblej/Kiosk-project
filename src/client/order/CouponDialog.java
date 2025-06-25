@@ -67,8 +67,8 @@ public class CouponDialog extends JDialog {
         Dialog.setLocationRelativeTo(null);
         Dialog.setVisible(true);
 
-        confirmBt.addActionListener(e -> clicked_confirm()); // 확인버튼 눌렀을 시 액션을 감지해서 클릭드_컨펌 이라는 메소드 호출함
-        cancelBt.addActionListener(e -> clicked_cancel()); // 취소버튼 눌렀을 시 액션을 감지해서 클릭드_캔슬 이라는 메소드 호출함
+        confirmBt.addActionListener(e -> clicked_confirm()); // 확인 -> 장바구니 값 받아 DB에 INSERT
+        cancelBt.addActionListener(e -> clicked_cancel()); // 취소 -> 현재 다이어로그 끔
     }//생성자의 끝
 
     // 쿠폰을 적용하지 않았을 때 생성하는 생성자
@@ -175,6 +175,19 @@ public class CouponDialog extends JDialog {
         }else {
             ss.rollback();
             System.out.println("커밋실패");
+        }
+
+        if (this.cvo != null) {
+            Map<String, String> couponMap = new HashMap<>();
+            couponMap.put("c_code", this.cvo.getC_code());
+
+            int result = ss.update("coupon.couponUse", couponMap); // Mapper에 정의된 쿼리 실행
+            if (result > 0) {
+                ss.commit();
+                System.out.println("쿠폰 사용 완료 → is_coupon_used = 1");
+            } else {
+                ss.rollback();
+            }
         }
 
         ss.close();

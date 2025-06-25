@@ -80,11 +80,10 @@ public class LoginPanel extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = 0;
         southPanel.add(outBtn, gbc);
-
         add(southPanel,"South"); // 남쪽 패널을 전체 패널의 남쪽에 추가
-
         // 전체 패널 배경색 설정
         setBackground(Color.LIGHT_GRAY);
+
         inBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,8 +106,6 @@ public class LoginPanel extends JPanel {
                 loginDialog.setVisible(true); // 대화상자 표시
             }
         });
-
-
     }
     /**
      * [배경 이미지] 배경 이미지를 그리기 위해 paintComponent 메소드를 오버라이드합니다.

@@ -34,6 +34,7 @@ public class FinalDialog extends JDialog {
 
     private void clickedConfirm(){
         FinalDialog.dispose();
+        MainFrame.userId = "";
         p.clearCartList();
         f.cardLayout.show(f.cardPanel, "LoginPanel");
     }

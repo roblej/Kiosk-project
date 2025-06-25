@@ -92,7 +92,7 @@ public class OrderManager extends JDialog {
         ss.close();
     }
 
-    String[] o_name = {"주문번호", "결제금액", "주문상태", "고객ID"};
+    String[] o_name = {"주문번호", "결제금액", "주문상태", "고객ID", "주문유형"};
     String[][] data;
     public List<order_VO> getData(){
         SqlSession ss = f.factory.openSession();
@@ -102,8 +102,10 @@ public class OrderManager extends JDialog {
         for (order_VO vo : list) {
             data[i][0] = vo.getO_number();            // 주문번호
             data[i][1] = vo.getO_total_amount();   // 결제금액
-            data[i][2] = vo.getO_status();         // 주문상태
-            data[i][3] = vo.getUser_id();          // 고객ID
+            data[i][2] = vo.getUser_id();          // 고객ID
+            System.out.println(vo.getO_is_takeout());
+            data[i][3] = "1".equals(vo.getO_is_takeout()) ? "매장":"포장";           // 주문유형
+            data[i][4] = vo.getO_status();         // 주문상태
             i++;
         }
         ss.close();

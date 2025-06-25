@@ -98,8 +98,6 @@ public class RegisterDialog extends JDialog {
         panel.add(registerBtn);
 
         this.add(panel);
-
-        // 한번만 수행
     }
 
     // 회원가입 버튼 클릭 시 호출되는 메서드
@@ -112,12 +110,10 @@ public class RegisterDialog extends JDialog {
             }
 
             // 비밀번호 해싱
-//            username = userField.getText(); // 사용자 이름 가져오기
             password = PasswordUtil.hashPassword(rawPassword);// 해싱된 비밀번호를 저장
             gender = (maleRadio.isSelected() ? "M" : (femaleRadio.isSelected() ? "F" : "선택 안됨"));
             phone = phoneField.getText(); // 전화번호 가져오기
             birth = birthField.getText(); // 생년월일 가져오기
-            // 회원가입 정보 출력 (디버깅용)
 
             // TODO: 여기에 실제 DB 저장 로직 (MyBatis Mapper 호출 등) 구현
             SqlSession ss = D.f.factory.openSession();

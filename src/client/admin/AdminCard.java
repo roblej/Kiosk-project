@@ -17,7 +17,7 @@ public class AdminCard extends JPanel {
 //        this.factory = factory;
 
         setLayout(new GridLayout(4, 2, 10, 10));
-
+        //버튼생성
         JButton openBtn = new JButton("오픈");
         JButton setBtn = new JButton("마감/정산");
         JButton payBtn = new JButton("결제관리");
@@ -27,6 +27,7 @@ public class AdminCard extends JPanel {
         JButton orderBtn = new JButton("주문처리");
         JButton closeBtn = new JButton("종료");
 
+        //화면에 버튼 삽입
         add(openBtn);
         add(setBtn);
         add(payBtn);
@@ -36,6 +37,7 @@ public class AdminCard extends JPanel {
         add(orderBtn);
         add(closeBtn);
 
+        //버튼 글씨체, 폰트, 사이즈 수정
         openBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
         setBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
         payBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
