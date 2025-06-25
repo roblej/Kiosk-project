@@ -75,7 +75,7 @@ public class AddDialog extends JDialog {
         //이벤트 감지자 등록
         img_tf.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {//이미지 추가
                 JFileChooser fileChooser = new JFileChooser();
                 FileNameExtensionFilter imageFilter = new FileNameExtensionFilter(
                         "이미지 파일 (jpg, png, gif)", "jpg", "jpeg", "png", "gif");
