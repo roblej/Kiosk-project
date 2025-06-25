@@ -65,7 +65,7 @@ public class OrderPanel extends JPanel {
      */
     public void addToCart(ProductsVO product, int count, int totalPrice, String selectedSize) {
         // --- 수정된 부분: 배열에 담는 순서를 [상품명, 사이즈, 수량, 가격]으로 변경 ---
-        String[] optionRow = {product.getP_name(), selectedSize, String.valueOf(count), String.valueOf(totalPrice)};
+        String[] optionRow = {product.getP_name(), selectedSize, String.valueOf(count), String.valueOf(totalPrice),product.getP_code()};
 
         cartList.add(optionRow);
 

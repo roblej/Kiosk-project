@@ -14,4 +14,9 @@
         ON o.product_code = p.p_code
         WHERE oi_id = #{oi_id}
     </select>
+
+        <insert id="addorder_items" parameterType="map">
+            INSERT INTO order_items ( oi_idx, oi_id, product_code, oi_quantity, oi_price, oi_size, options )
+            VALUES ( #{oi_idx}, #{oi_id}, #{product_code}, #{oi_quantity}, #{oi_price}, #{oi_size}, #{options} )
+        </insert>
 </mapper>

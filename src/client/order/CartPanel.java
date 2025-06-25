@@ -22,7 +22,7 @@ import java.util.Map;
 public class CartPanel extends JPanel {
 
     private OrderPanel orderPanel;
-    private List<String[]> cartList;
+    public List<String[]> cartList;
     JTable table;
     JScrollPane scrollPane;
     MainFrame f;
@@ -35,7 +35,7 @@ public class CartPanel extends JPanel {
     JButton delBtn;
     JButton payBtn;
 
-    String[] pvo_name = {"주문상품", "옵션", "주문수량", "주문가격"};
+    String[] pvo_name = {"주문상품", "사이즈", "주문수량", "주문가격"};
     String[][] data;
 
     public CartPanel(MainFrame f, OrderPanel orderPanel, List<String[]> cartList) {
