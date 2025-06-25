@@ -62,7 +62,6 @@ public class MainFrame extends JFrame {
         cardPanel.add(couponManagerPanel, "CouponManagerPanel"); // "CouponManagerPanel" 이름으로 추가
         cardPanel.add(stockCard,"StockCard");
 
-
         this.add(cardPanel, BorderLayout.CENTER);
 
         this.setVisible(true);

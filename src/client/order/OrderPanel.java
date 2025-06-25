@@ -63,14 +63,45 @@ public class OrderPanel extends JPanel {
      * @param totalPrice  총가격
      * @param selectedSize 선택된 사이즈 (새로 추가된 파라미터)
      */
+//    public void addToCart(ProductsVO product, int count, int totalPrice, String selectedSize) {
+//        // --- 수정된 부분: 배열에 담는 순서를 [상품명, 사이즈, 수량, 가격]으로 변경 ---
+//        String[] optionRow = {product.getP_name(), selectedSize, String.valueOf(count), String.valueOf(totalPrice)};
+//
+//        cartList.add(optionRow);
+//
+//        cartPanel.updateTable(); // 내용만 갱신
+//        cartPanel.calTotalPrice(); // 총 가격 갱신
+//        returnPrice = allPrice;
+//    }
+
+    // 만약 장바구니에 품목이 담겨있다면 해당 품목의 수량과 금액을 추가함
     public void addToCart(ProductsVO product, int count, int totalPrice, String selectedSize) {
         // --- 수정된 부분: 배열에 담는 순서를 [상품명, 사이즈, 수량, 가격]으로 변경 ---
+        boolean found = false;
+
+        for (int i = 0; i < cartList.size(); i++) {
+            // 상품명과 옵션이 둘 다 동일한 경우
+            if (cartList.get(i)[0].equals(product.getP_name()) && cartList.get(i)[1].equals(selectedSize)) {
+                // 기존 수량, 금액에 더해서 누적
+                int prevCount = Integer.parseInt(cartList.get(i)[2]);
+                int prevPrice = Integer.parseInt(cartList.get(i)[3]);
+
+                cartList.get(i)[2] = String.valueOf(prevCount + count);
+                cartList.get(i)[3] = String.valueOf(prevPrice + totalPrice);
+
+                found = true;
+                break;
+            }
+        }        
+  
+        // 동일한 상품+옵션 조합이 없었으면 새로 추가
+        if (!found) {
         String[] optionRow = {product.getP_name(), selectedSize, String.valueOf(count), String.valueOf(totalPrice),product.getP_code()};
-
         cartList.add(optionRow);
+        }
 
-        cartPanel.updateTable(); // 내용만 갱신
-        cartPanel.calTotalPrice(); // 총 가격 갱신
+        cartPanel.updateTable();      // 테이블 갱신
+        cartPanel.calTotalPrice();    // 총 가격 갱신
         returnPrice = allPrice;
     }
 }

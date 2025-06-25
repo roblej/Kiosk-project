@@ -68,10 +68,11 @@ public class OptionDialog extends JDialog {
                 updateCountAndPrice();
             }
         });
-
-        shortBtn.addActionListener(e -> handleSizeSelection("Short", -500));
-        tallBtn.addActionListener(e -> handleSizeSelection("Tall", 0));
-        ventiBtn.addActionListener(e -> handleSizeSelection("Venti", 500));
+        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")) {
+            shortBtn.addActionListener(e -> handleSizeSelection("Short", -500));
+            tallBtn.addActionListener(e -> handleSizeSelection("Tall", 0));
+            ventiBtn.addActionListener(e -> handleSizeSelection("Venti", 500));
+        }
     }
 
     public void initcomponents() {
@@ -127,20 +128,21 @@ public class OptionDialog extends JDialog {
         // ================= 중앙 패널 (옵션) =================
         centerPanel = new JPanel(new BorderLayout(10, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")) {
 
-        JPanel sizePanel = new JPanel(new GridLayout(1, 3, 10, 0));
-        shortBtn = new JButton("Short (-500)");
-        tallBtn = new JButton("Tall (기본)");
-        ventiBtn = new JButton("Venti (+500)");
-        sizePanel.add(shortBtn);
-        sizePanel.add(tallBtn);
-        sizePanel.add(ventiBtn);
+            JPanel sizePanel = new JPanel(new GridLayout(1, 3, 10, 0));
+            shortBtn = new JButton("Short (-500)");
+            tallBtn = new JButton("Tall (기본)");
+            ventiBtn = new JButton("Venti (+500)");
+            sizePanel.add(shortBtn);
+            sizePanel.add(tallBtn);
+            sizePanel.add(ventiBtn);
+            JPanel sizeWrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            sizeWrapperPanel.add(sizePanel);
+            centerPanel.add(sizeWrapperPanel, BorderLayout.CENTER);
+            updateSizeButtonUI();
+        }
 
-        JPanel sizeWrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        sizeWrapperPanel.add(sizePanel);
-        centerPanel.add(sizeWrapperPanel, BorderLayout.CENTER);
-
-        updateSizeButtonUI();
 
         // ================= 하단 패널 (버튼) =================
         southPanel = new JPanel(new GridLayout(1, 2, 10, 0));

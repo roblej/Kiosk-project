@@ -47,11 +47,11 @@ public class CouponDialog extends JDialog {
 
         totalPrice = orderPanel.returnPrice;
         String totalPrice2 = String.format("%,d",totalPrice);
-        north_p.add(new JLabel("총 주문금액 : " + totalPrice2));
+        north_p.add(new JLabel("총 주문금액 : " + p.allPrice));
 
         String ratePrice = cvo.getC_discount_rate();
         int cnt = totalPrice - ((int)(totalPrice * Double.parseDouble(ratePrice)*0.01));
-        finalPrice = String.format("%,d",cnt);
+        finalPrice = String.format("%,d이게 받는 결제금액인가?",cnt);
 
         center_p.add(couponLabel = new JLabel("쿠폰적용 후 최종 결제 금액 : "+ finalPrice));
 
@@ -67,9 +67,9 @@ public class CouponDialog extends JDialog {
         Dialog.setLocationRelativeTo(null);
         Dialog.setVisible(true);
 
-        confirmBt.addActionListener(e -> clicked_confirm());
+        confirmBt.addActionListener(e -> clicked_confirm()); // 확인버튼 눌렀을 시 액션을 감지해서 클릭드_컨펌 이라는 메소드 호출함
 
-        cancelBt.addActionListener(e -> clicked_cancel());
+        cancelBt.addActionListener(e -> clicked_cancel()); // 취소버튼 눌렀을 시 액션을 감지해서 클릭드_캔슬 이라는 메소드 호출함
     }//생성자의 끝
     
     // 쿠폰을 적용하지 않았을 때 생성하는 생성자
@@ -86,7 +86,7 @@ public class CouponDialog extends JDialog {
 
         totalPrice = orderPanel.returnPrice;
         String totalPrice2 = String.format("%,d",totalPrice);
-        north_p.add(new JLabel("총 주문금액 : " + totalPrice2));
+        north_p.add(new JLabel("총 주문금액 : " + p.allPrice));
 
 
         south_p.add(confirmBt = new JButton("확인"));
@@ -192,7 +192,6 @@ public class CouponDialog extends JDialog {
     }
 
     private void clicked_cancel(){
-        p.clearCartList();
         Dialog.dispose();
     }
 //
