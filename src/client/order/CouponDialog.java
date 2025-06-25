@@ -50,8 +50,8 @@ public class CouponDialog extends JDialog {
         north_p.add(new JLabel("총 주문금액 : " + p.allPrice));
 
         String ratePrice = cvo.getC_discount_rate();
-        int cnt = p.allPrice - ((int)(p.allPrice * Double.parseDouble(ratePrice)*0.01));
-        finalPrice = String.format("%,d",cnt);
+        int cnt = totalPrice - ((int)(totalPrice * Double.parseDouble(ratePrice)*0.01));
+        finalPrice = String.format("%,d이게 받는 결제금액인가?",cnt);
 
         center_p.add(couponLabel = new JLabel("쿠폰적용 후 최종 결제 금액 : "+ finalPrice));
 
