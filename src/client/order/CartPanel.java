@@ -105,6 +105,7 @@ public class CartPanel extends JPanel {
                     if (cartList != null && !cartList.isEmpty()){
                         clearCartList();
                     }
+                    MainFrame.userId ="";
                     f.cardLayout.show(f.cardPanel, "LoginPanel");
                 }
             }

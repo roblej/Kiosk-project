@@ -68,7 +68,6 @@ public class LoginDialog extends JDialog {
             password = "";
             dispose(); // 대화상자 닫기
             MainFrame.userId = username; // 로그인한 사용자 ID 저장
-            f.setTitle("로그인한 사용자: " + MainFrame.userId + MainFrame.orderType); // 프레임 제목 업데이트
             f.cardLayout.show(f.cardPanel, "orderPanel"); // "orderPanel"로 이동하도록 변경
         });
         userPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -125,7 +124,6 @@ public class LoginDialog extends JDialog {
                 if (PasswordUtil.checkPassword(rawPassword, storedHashedPassword)) {
                     // TODO: 로그인 성공 후 메인 화면의 CardLayout으로 전환
                     MainFrame.userId = username; // 로그인한 사용자 ID 저장
-                    f.setTitle("로그인한 사용자: " + MainFrame.userId + MainFrame.orderType); // 프레임 제목 업데이트
                     f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
                     // 로그인 다이얼로그는 닫습니다.
                     dispose();
