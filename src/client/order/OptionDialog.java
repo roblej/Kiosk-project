@@ -203,7 +203,9 @@ public class OptionDialog extends JDialog {
     public void resetValue() {
         count = 1;
         totalPrice = 0;
-
+        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")) {
+            selectedSize = "Tall"; // 기본 사이즈를 Tall로 설정
+        }
         sizePriceModifier = 0;
         if (countLabel != null) {
             countLabel.setText(String.valueOf(count));
