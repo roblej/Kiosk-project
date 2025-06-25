@@ -52,7 +52,7 @@ public class MenuPanel extends JPanel {
                     return;
                 }
                 // ✅ 새로 열고, 닫힐 때 optionDialog = null 처리
-                optionDialog = new OptionDialog(orderPanel, f, vo);
+                optionDialog = new OptionDialog(orderPanel, f, true, vo);
                 optionDialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosed(java.awt.event.WindowEvent e) {
