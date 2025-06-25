@@ -50,9 +50,9 @@ public class CouponDialog extends JDialog {
         north_p.add(new JLabel("총 주문금액 : " + p.allPrice));
 
         String ratePrice = cvo.getC_discount_rate();
-        int cnt = totalPrice - ((int)(totalPrice * Double.parseDouble(ratePrice)*0.01));
-        finalPrice = String.format("%,d이게 받는 결제금액인가?",cnt);
-
+        int cnt = p.allPrice - ((int)(p.allPrice * Double.parseDouble(ratePrice)*0.01));
+//        finalPrice = String.format("%,d이게 받는 결제금액인가?",cnt);
+        finalPrice = String.valueOf(cnt);
         center_p.add(couponLabel = new JLabel("쿠폰적용 후 최종 결제 금액 : "+ finalPrice));
 
         south_p.add(confirmBt = new JButton("확인"));
@@ -84,8 +84,8 @@ public class CouponDialog extends JDialog {
         center_p = new JPanel();
         south_p = new JPanel();
 
-        north_p.add(new JLabel("총 주문금액 : " + p.allPrice));
-
+        finalPrice = String.valueOf(p.allPrice);
+        north_p.add(new JLabel("총 주문금액 : " + finalPrice));
         south_p.add(confirmBt = new JButton("확인"));
         south_p.add(cancelBt = new JButton("취소"));
 
@@ -115,7 +115,7 @@ public class CouponDialog extends JDialog {
         String orderNumber = nowDate + n;
 
         map.put("o_number",orderNumber);
-        map.put("o_total_amount", String.valueOf(p.allPrice));
+        map.put("o_total_amount", String.valueOf(finalPrice));
         map.put("user_id", MainFrame.userId);
         map.put("o_is_takeout", String.valueOf(MainFrame.orderType));
         map.put("o_status","조리중");
