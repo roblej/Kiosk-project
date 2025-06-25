@@ -210,7 +210,6 @@ public class CartPanel extends JPanel {
                         JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
                     }else {
                         //X버튼으로 닫을 경우
-
                     }
 
             } else if (cnt == JOptionPane.CLOSED_OPTION) {
