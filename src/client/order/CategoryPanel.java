@@ -17,7 +17,7 @@ public class CategoryPanel extends JPanel {
 
         this.currentCategory = "모든 메뉴";
 
-        JPanel buttonContainerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        JPanel buttonContainerPanel = new JPanel(new GridLayout(0,4, 10, 10));
         buttonContainerPanel.setBackground(Color.WHITE);
 
         buttonContainerPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
