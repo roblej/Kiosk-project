@@ -6,6 +6,10 @@
     <select id="all" resultType="vo.CouponVO">
         SELECT * FROM coupons
     </select>
+    <select id="search" resultType="vo.CouponVO" parameterType="String">
+        SELECT * FROM coupons
+        WHERE u_id = #{u_id}
+    </select>
     <insert id="create" parameterType="vo.CouponVO">
         INSERT INTO coupons (u_id,c_code, is_coupon_used, c_start, c_end, c_discount_rate)
         VALUES (#{u_id},#{c_code}, #{is_coupon_used}, #{c_start}, #{c_end}, #{c_discount_rate})

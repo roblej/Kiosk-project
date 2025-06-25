@@ -54,6 +54,17 @@ public class CouponManagerPanel extends JPanel {
                 }
             }
         });
+        searchBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String id = searchTextField.getText();
+                if (id.isEmpty()) {
+                    showAll();
+                } else {
+                    search(id);
+                }
+            }
+        });
         southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
         southPanel.setBorder((new EmptyBorder(0,50,0,150)));
@@ -88,12 +99,12 @@ public class CouponManagerPanel extends JPanel {
 
         setVisible(true);
     }
-//    public void search(String id){
-//        //휴대폰번호로 검색기능 구현
-//        SqlSession ss = f.factory.openSession();
-//        couponList = ss.selectList("coupon.all", id);
-//        viewTable(couponList);
-//    }
+    public void search(String id){
+        //휴대폰번호로 검색기능 구현
+        SqlSession ss = f.factory.openSession();
+        couponList = ss.selectList("coupon.search", id);
+        viewTable(couponList);
+    }
     public void showAll(){
         //휴대폰번호로 검색기능 구현
         SqlSession ss = f.factory.openSession();
@@ -108,7 +119,11 @@ public class CouponManagerPanel extends JPanel {
             data[i][0] = vo.getU_id();
             data[i][1] = vo.getC_code();
             data[i][2] = vo.getC_discount_rate();
-            data[i][3] = vo.getIs_coupon_used();
+            if(vo.getIs_coupon_used().equals("0")){
+                data[i][3] = "사용안함";
+            }else{
+                data[i][3] = "사용됨";
+            }
             data[i][4] = vo.getC_start();
             data[i][5] = vo.getC_end();
         }
@@ -143,7 +158,7 @@ public class CouponManagerPanel extends JPanel {
         coupon.setC_code(newCouponCode);
         coupon.setU_id(nameTextField.getText());
         coupon.setC_discount_rate(rateTextField.getText());
-        coupon.setIs_coupon_used("1");
+        coupon.setIs_coupon_used("0");
         coupon.setC_start(String.valueOf(now()));
         coupon.setC_end(expiryDateTextField.getText());
         int result = ss.insert("coupon.create", coupon);
