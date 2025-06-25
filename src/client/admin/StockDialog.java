@@ -53,6 +53,9 @@ public class StockDialog extends JDialog {
 
     private StockCard callingStockCard;
 
+    private String dbPath;
+
+    private Path destinationPath;
 
     public StockDialog(MainFrame f, boolean modal, ProductsVO pvo, StockCard callingStock){
 
@@ -85,7 +88,7 @@ public class StockDialog extends JDialog {
                 if(result == JFileChooser.APPROVE_OPTION){
                     File selectedFile = fileChooser.getSelectedFile();
 
-                    String uploadDirPath = System.getProperty("user.dir") +"/images";
+                    String uploadDirPath = System.getProperty("user.dir") +"/src/images";
                     File uploadDir = new File(uploadDirPath);
                     if(!uploadDir.exists()){
                         uploadDir.mkdirs();
@@ -94,7 +97,7 @@ public class StockDialog extends JDialog {
                     String origianlFileName = selectedFile.getName();
                     String extension = origianlFileName.substring(origianlFileName.lastIndexOf("."));
                     String uniqueFileName = UUID.randomUUID().toString() + extension;
-                    Path destinationPath = Paths.get(uploadDir.getAbsolutePath(), uniqueFileName);
+                    destinationPath = Paths.get(uploadDir.getAbsolutePath(), uniqueFileName);
 
                     try{
                         Files.copy(selectedFile.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
@@ -104,7 +107,16 @@ public class StockDialog extends JDialog {
                         Path relativePath = projectPath.relativize(destinationPath);
                         String dbPathRobust = relativePath.toString().replace('\\', '/');
 
-                        img_tf.setText(dbPathRobust);
+                        int srcIndex = dbPathRobust.indexOf("src/");
+                        if(srcIndex != -1){
+                            dbPath = dbPathRobust.substring(srcIndex +4);
+
+
+                        }else {
+                             dbPath = dbPathRobust;
+                        }
+                        System.out.println("DB에 저장될 경로:" + dbPath);
+                        img_tf.setText(dbPath);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                         System.out.println("이미지 업로드 실패:" + ex.getMessage());
@@ -204,12 +216,7 @@ public class StockDialog extends JDialog {
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-        String str = pvo.getP_image_url();
-        ImageIcon icon = new ImageIcon(str);
-        Image img = icon.getImage();
-        Image scaledImg = img.getScaledInstance(150,250,Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImg);
-        imagelb = new JLabel(scaledIcon);
+        getImage(pvo);
 
         image_panel.add(imagelb);
         getContentPane().add(main_panel);
@@ -280,7 +287,8 @@ public class StockDialog extends JDialog {
     }
     public void getImage(ProductsVO pvo){
         String s_img = pvo.getP_image_url();
-        ImageIcon icon = new ImageIcon(s_img);
+        String fullpath = System.getProperty("user.dir") + "/src/" + s_img;
+        ImageIcon icon = new ImageIcon(fullpath);
         Image img = icon.getImage();
         Image scaledImg = img.getScaledInstance(150,250,Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImg);
