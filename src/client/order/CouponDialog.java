@@ -23,7 +23,7 @@ public class CouponDialog extends JDialog {
 
     String finalPrice;
     int totalPrice;
-
+    int salePrice = 0; // 쿠폰 할인 금액
     JDialog Dialog;
     JPanel north_p, center_p, south_p;
     JButton confirmBt, cancelBt;
@@ -50,11 +50,12 @@ public class CouponDialog extends JDialog {
         north_p.add(new JLabel("총 주문금액 : " + p.allPrice));
 
         String ratePrice = cvo.getC_discount_rate();
-        int cnt = p.allPrice - ((int)(p.allPrice * Double.parseDouble(ratePrice)*0.01));
+        salePrice = ((int)(p.allPrice * Double.parseDouble(ratePrice)*0.01));
+        int cnt = p.allPrice - salePrice;
 //        finalPrice = String.format("%,d이게 받는 결제금액인가?",cnt);
         finalPrice = String.valueOf(cnt);
         center_p.add(couponLabel = new JLabel("쿠폰적용 후 최종 결제 금액 : "+ finalPrice));
-
+        System.out.println("쿠폰 할인 금액: " + salePrice);
         south_p.add(confirmBt = new JButton("확인"));
         south_p.add(cancelBt = new JButton("취소"));
 
@@ -78,7 +79,7 @@ public class CouponDialog extends JDialog {
         this.orderPanel = orderPanel;
         this.p = p;
         this.cartlist = p.cartList;
-
+        salePrice = 0;
         Dialog = new JDialog();
         north_p = new JPanel();
         center_p = new JPanel();
@@ -119,7 +120,8 @@ public class CouponDialog extends JDialog {
         map.put("user_id", MainFrame.userId);
         map.put("o_is_takeout", String.valueOf(MainFrame.orderType));
         map.put("o_status","조리중");
-
+        map.put("o_coupon_sale",String.valueOf(salePrice));
+        System.out.println("쿠폰 할인 금액: " + salePrice);
         SqlSession ss = f.factory.openSession();
         int cnt = ss.insert("orders.addorders",map);
         if(cnt>0){

@@ -81,6 +81,7 @@ public class ClosingSalesPanel extends JPanel {
         int total_price = 0;
         int total_amount = 0;
         int total_quantity = 0;
+        int total_coupon_sale = 0;
         java.util.Set<String> processedOrderNumbers = new java.util.HashSet<>();
 
         for (order_VO vo : list) {
@@ -90,13 +91,25 @@ public class ClosingSalesPanel extends JPanel {
             int price1 = Integer.parseInt(vo.getOi_price());
             data[i][1] = String.format("%,d",price1);
             data[i][2] = vo.getOi_quantity();
-            data[i][3] = vo.getOptions(); //할인??
+
             int amount1 = Integer.parseInt(vo.getO_total_amount());
             String currentOrderNumber = vo.getO_number();
 
             if(processedOrderNumbers.contains(currentOrderNumber)) {
                 data[i][4] = "";
+                data[i][3] = "";
             }else {
+                String couponSaleStr = vo.getO_coupon_sale();
+// 쿠폰 할인액이 null이 아니고, 비어있는 문자열이 아닐 경우에만 숫자로 변환하여 더합니다.
+                if (couponSaleStr != null && !couponSaleStr.trim().isEmpty()) {
+                    try {
+                        total_coupon_sale += Integer.parseInt(couponSaleStr);
+                        data[i][3] = vo.getO_coupon_sale();
+                    } catch (NumberFormatException e) {
+                        // 혹시 모를 다른 예외 상황 (예: 문자열이 "abc"인 경우)에 대비
+                        System.err.println("쿠폰 할인액 숫자 변환 오류: " + couponSaleStr);
+                    }
+                }
                 data[i][4] = String.format("%,d", amount1);
                 processedOrderNumbers.add(currentOrderNumber);
                 total_amount += amount1;
@@ -111,19 +124,31 @@ public class ClosingSalesPanel extends JPanel {
                     int price2 = Integer.parseInt(vo.getOi_price());
                     data[i][1] = String.format("-%,d",price2);
                     data[i][2] = "-"+ vo.getOi_quantity();
-                    data[i][3] = vo.getOptions(); //할인??
+
+
                     int amount2 = Integer.parseInt(vo.getO_total_amount());
                     String currentOrderNumber2 = vo.getO_number();
                     if(processedOrderNumbers.contains(currentOrderNumber2)) {
                         data[i][4] = "";
+                        data[i][3] = "";
                     }else {
+                        String couponSaleStr2 = vo.getO_coupon_sale();
+// 쿠폰 할인액이 null이 아니고, 비어있는 문자열이 아닐 경우에만 숫자로 변환하여 더합니다.
+                        if (couponSaleStr2 != null && !couponSaleStr2.trim().isEmpty()) {
+                            try {
+                                total_coupon_sale -= Integer.parseInt(couponSaleStr2);
+                                data[i][3] = vo.getO_coupon_sale();
+                            } catch (NumberFormatException e) {
+                                // 혹시 모를 다른 예외 상황 (예: 문자열이 "abc"인 경우)에 대비
+                                System.err.println("쿠폰 할인액 숫자 변환 오류: " + couponSaleStr2);
+                            }
+                        }
                         data[i][4] = String.format("-%,d",amount2);
                         processedOrderNumbers.add(currentOrderNumber2);
                         total_amount -= amount2;
                     }
                     data[i][5] = vo.getO_status();
-                    total_price -= price2
-                    ;
+                    total_price -= price2;
                     total_quantity -= Integer.parseInt(data[i][2])*-1;
                     i++;
                     break;
@@ -131,6 +156,7 @@ public class ClosingSalesPanel extends JPanel {
         }//for문의 끝
         data[list.size()][1] = String.format("%,d",total_price);
         data[list.size()][2] = String.format("%,d",total_quantity);
+        data[list.size()][3] = String.format("%,d",total_coupon_sale);
         data[list.size()][4] = String.format("%,d",total_amount);
         table.setModel(new DefaultTableModel(data, item));
     }//view 끝

@@ -17,8 +17,8 @@
     </update>
 
     <insert id="addorders" parameterType="map">
-        INSERT INTO orders ( o_idx, o_number, o_total_amount, o_status, o_is_takeout, user_id )
-        VALUES ( #{o_idx}, #{o_number}, #{o_total_amount}, #{o_status}, #{o_is_takeout}, #{user_id} )
+        INSERT INTO orders ( o_idx, o_number, o_total_amount, o_status, o_is_takeout, user_id , o_coupon_sale )
+        VALUES ( #{o_idx}, #{o_number}, #{o_total_amount}, #{o_status}, #{o_is_takeout}, #{user_id}, #{o_coupon_sale} )
     </insert>
 
     <resultMap id="month1" type="vo.order_VO" >
@@ -27,6 +27,7 @@
         <result property="o_total_amount" column="o_total_amount"/>
         <result property="oi_quantity" column="oi_quantity"/>
         <result property="oi_price" column="oi_price"/>
+        <result property="o_coupon_sale" column="o_coupon_sale"/>
         <!--        <collection property="oiv" ofType="order_items_VO" resultMap="month2"/>-->
     </resultMap>
 
@@ -54,6 +55,7 @@
         <result property="oi_quantity" column="oi_quantity"/>
         <result property="oi_price" column="oi_price"/>
         <result property="o_status" column="o_status"/>
+        <result property="o_coupon_sale" column="o_coupon_sale"/>
         <!--        <collection property="oiv" ofType="order_items_VO" resultMap="today2"/>-->
     </resultMap>
 

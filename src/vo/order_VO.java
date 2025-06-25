@@ -2,9 +2,22 @@ package vo;
 
 public class order_VO {
 
-    private String o_idx, o_number, o_total_amount, o_status, o_is_takeout, user_id;
+    private String o_idx;
+    private String o_number;
+    private String o_total_amount;
+    private String o_status;
+    private String o_is_takeout;
+    private String user_id;
+    private String o_coupon_sale;
     private String oi_idx, oi_id, product_code, oi_quantity, oi_price, oi_size, options;
 
+    public String getO_coupon_sale() {
+        return o_coupon_sale;
+    }
+
+    public void setO_coupon_sale(String o_coupon_sale) {
+        this.o_coupon_sale = o_coupon_sale;
+    }
 
     public String getOi_idx() {
         return oi_idx;
