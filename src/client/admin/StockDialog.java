@@ -4,10 +4,20 @@ import client.MainFrame;
 import vo.ProductsVO;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 public class StockDialog extends JDialog {
 
@@ -61,6 +71,48 @@ public class StockDialog extends JDialog {
         img_tf.setText(pvo.getP_image_url());
 
         //이벤트 감지자 등록
+
+        img_tf.addMouseListener(new MouseAdapter() {//이미지 수정
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                FileNameExtensionFilter imageFilter = new FileNameExtensionFilter(
+                        "이미지 파일 (jpg, png, gif)", "jpg", "jpeg", "png", "gif");
+                fileChooser.setFileFilter(imageFilter);
+
+                int result = fileChooser.showOpenDialog(null);
+
+                if(result == JFileChooser.APPROVE_OPTION){
+                    File selectedFile = fileChooser.getSelectedFile();
+
+                    String uploadDirPath = System.getProperty("user.dir") +"/images";
+                    File uploadDir = new File(uploadDirPath);
+                    if(!uploadDir.exists()){
+                        uploadDir.mkdirs();
+                    }
+
+                    String origianlFileName = selectedFile.getName();
+                    String extension = origianlFileName.substring(origianlFileName.lastIndexOf("."));
+                    String uniqueFileName = UUID.randomUUID().toString() + extension;
+                    Path destinationPath = Paths.get(uploadDir.getAbsolutePath(), uniqueFileName);
+
+                    try{
+                        Files.copy(selectedFile.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
+
+                        System.out.println("이미지 업로드 성공" + destinationPath.toString());
+                        Path projectPath = Paths.get(System.getProperty("user.dir"));
+                        Path relativePath = projectPath.relativize(destinationPath);
+                        String dbPathRobust = relativePath.toString().replace('\\', '/');
+
+                        img_tf.setText(dbPathRobust);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        System.out.println("이미지 업로드 실패:" + ex.getMessage());
+                    }
+                }else
+                    System.out.println("이미지 업로드가 취소되었습니다.");
+            }
+        });
         plusBtn.addActionListener(new ActionListener() {//재고 증가 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,13 +176,13 @@ public class StockDialog extends JDialog {
     private void initComponents(ProductsVO pvo){
         main_panel = new JPanel(new BorderLayout());
         info_panel = new JPanel();
+        imgpath_panel = new JPanel();
         code_panel = new JPanel();
         name_panel = new JPanel();
         price_panel = new JPanel();
         stock_panel = new JPanel();
         select_panel = new JPanel();
         image_panel = new JPanel();
-        imgpath_panel = new JPanel();
 
         code_tf = new JTextField();
         name_tf = new JTextField();
@@ -167,7 +219,7 @@ public class StockDialog extends JDialog {
 
         imgpath_panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         imgpathlb = new JLabel("이미지:");
-        img_tf.setEditable(false);
+        img_tf.setEditable(true);
         imgpath_panel.add(imgpathlb);
         img_tf.setColumns(10);
         imgpath_panel.add(img_tf);

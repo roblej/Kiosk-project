@@ -23,7 +23,9 @@ public class StockCard extends JPanel {
 
 
     JCheckBox[] chk_ar;
-    JPanel stockPanel;
+    JPanel mainPanel;
+    JPanel searchPanel;
+    JPanel catPanel;
     JPanel backPanel;
     JLabel s_SearchLb;
     JButton s_SearchBtn;
@@ -110,16 +112,17 @@ public class StockCard extends JPanel {
     }//생성자의 끝
 
     private void initComponents(){
-
-        stockPanel = new JPanel();
+        mainPanel = new JPanel(new BorderLayout());
+        searchPanel = new JPanel(new GridLayout(2,1));
+        catPanel = new JPanel(new GridLayout(0,5));
         backPanel = new JPanel();
         s_SearchLb = new JLabel();
-        s_SearchLb.setText("검색");
+       // s_SearchLb.setText("검색");
         s_addBtn =  new JButton("상품추가");
         stockTable = new JTable();
-        s_SearchBtn = new JButton();
-        s_backBtn = new JButton();
-        ImageIcon search_icon = new ImageIcon("images/search.png");
+        s_SearchBtn = new JButton("검색");
+        s_backBtn = new JButton("뒤로가기");
+       /*ImageIcon search_icon = new ImageIcon("images/search.png");
         ImageIcon back_icon = new ImageIcon("images/back.png");
         Image img = search_icon.getImage().getScaledInstance(
                 40,40,Image.SCALE_SMOOTH);
@@ -133,16 +136,25 @@ public class StockCard extends JPanel {
         s_SearchBtn.setIcon(new ImageIcon(img));
         s_SearchBtn.setPreferredSize(new Dimension(50, 50));
         s_SearchBtn.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
-
+        */
+        s_addBtn.setPreferredSize(new Dimension(100, 30));
+        s_SearchBtn.setPreferredSize(new Dimension(80, 30));
+        catPanel.setPreferredSize(new Dimension(400, 100));
         backPanel.add(s_backBtn);
-        stockPanel.add(s_addBtn);
-        stockPanel.add(s_SearchBtn);
-        stockPanel.add(s_SearchLb);
+        searchPanel.add(s_addBtn);
+        searchPanel.add(s_SearchBtn);
+        //searchPanel.add(s_SearchLb);
+
+        //stockPanel.add(s_addBtn);
+        //stockPanel.add(s_SearchBtn);
+        //stockPanel.add(s_SearchLb);
 
         stockTable.setModel(new DefaultTableModel(data, s_name));
         stockScroll = new JScrollPane(stockTable);
         this.setLayout(new BorderLayout());
-        this.add(stockPanel, BorderLayout.NORTH);
+        this.add(mainPanel, BorderLayout.NORTH);
+        mainPanel.add(searchPanel, BorderLayout.WEST);
+        mainPanel.add(catPanel, BorderLayout.CENTER);
         this.add(backPanel, BorderLayout.SOUTH);
         this.add(stockScroll, BorderLayout.CENTER);
 
@@ -172,12 +184,12 @@ public class StockCard extends JPanel {
         int i = 0;
         for (String ca : cat_list) {
             chk_ar[i] = new JCheckBox(ca);
-            stockPanel.add(chk_ar[i]);
+
+            catPanel.add(chk_ar[i]);
             i++;
         }
-
-        stockPanel.revalidate();
-        stockPanel.repaint();
+        catPanel.revalidate();
+        catPanel.repaint();
 
     }
     private void viewTable(List<ProductsVO> list){
