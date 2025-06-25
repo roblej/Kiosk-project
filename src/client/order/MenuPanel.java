@@ -2,6 +2,7 @@ package client.order;
 
 import client.MainFrame;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import vo.ProductsVO;
 
 import javax.swing.*;
@@ -15,16 +16,16 @@ public class MenuPanel extends JPanel {
 
     private final OrderPanel orderPanel;
     private final MainFrame f;
-    private final ProductsDao productsDao;
 
     private final JPanel gridPanel;
 
     private OptionDialog optionDialog;
+    private SqlSessionFactory factory;
 
     public MenuPanel(OrderPanel orderPanel, MainFrame f, ProductsVO p) {
         this.orderPanel = orderPanel;
         this.f = f;
-        this.productsDao = new ProductsDao(f.factory);
+        this.factory = f.factory;
 
         super.setLayout(new BorderLayout());
         super.setBackground(Color.WHITE);
@@ -90,11 +91,23 @@ public class MenuPanel extends JPanel {
         super.repaint();
     }
 
+    // 1. 모든 상품 조회하는 메소드
+    public List<ProductsVO> all() {
+        try (SqlSession session = factory.openSession()) {
+            return session.selectList("products.all");
+        }
+    }
+
+    // 2. 카테고리별 상품 조회 메소드
+    public List<ProductsVO> getProductsByCategory(String category) {
+        try (SqlSession session = factory.openSession()) {
+            return session.selectList("products.getProductsByCategory", category);
+        }
+    }
     public void updateMenus(String category) {
         gridPanel.removeAll();
 
-        List<ProductsVO> productList = category.equals("모든 메뉴") ?
-                productsDao.all() : productsDao.getProductsByCategory(category);
+        List<ProductsVO> productList = category.equals("모든 메뉴") ? all() : getProductsByCategory(category);
 
         if (productList != null) {
             for (ProductsVO vo : productList) {
