@@ -214,6 +214,7 @@ public class StockCard extends JPanel {
         int cnt = ss.update("products.edit", pvo);
         if(cnt > 0){
             ss.commit();
+            stockTable.setValueAt(pvo.getP_price(), i, 2);
             stockTable.setValueAt(pvo.getP_stock(), i, 3);
             list.set(i,pvo);
         }else

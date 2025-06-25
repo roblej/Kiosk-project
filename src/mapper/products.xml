@@ -24,8 +24,10 @@
 
     <update id="edit" parameterType="vo.ProductsVO">
         UPDATE products
-        SET p_stock = #{p_stock}
-        WHERE p_code = #{p_code}
+        SET p_price = #{p_price},
+            p_stock = #{p_stock},
+            p_image_url = #{p_image_url}
+            WHERE p_code = #{p_code}
     </update>
   
     <select id="getCategories" resultType="String">
