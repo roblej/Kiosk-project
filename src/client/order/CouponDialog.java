@@ -3,16 +3,16 @@ package client.order;
 import client.MainFrame;
 import org.apache.ibatis.session.SqlSession;
 import vo.CouponVO;
+import vo.ProductsVO;
 import vo.order_VO;
+import vo.order_items_VO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class CouponDialog extends JDialog {
     //쿠폰 사용시 총 결제금액이 화면에 표시됨
@@ -28,9 +28,9 @@ public class CouponDialog extends JDialog {
     JLabel couponLabel;
 
     CartPanel p;
-
-
-    List<order_VO> list;
+    List<String[]> cartlist;
+    List<order_VO> o_list;
+    List<order_items_VO> oi_list;
 
     // 쿠폰을 적용했을 때 생성하는 생성자
     public CouponDialog(MainFrame f, CouponVO cvo, OrderPanel orderPanel, CartPanel p){
@@ -39,7 +39,7 @@ public class CouponDialog extends JDialog {
         this.cvo = cvo;
         this.orderPanel = orderPanel;
         this.p = p;
-
+        this.cartlist = p.cartList;
         Dialog = new JDialog();
         north_p = new JPanel();
         center_p = new JPanel();
@@ -78,7 +78,7 @@ public class CouponDialog extends JDialog {
         this.f = f;
         this.orderPanel = orderPanel;
         this.p = p;
-
+        this.cartlist = p.cartList;
         Dialog = new JDialog();
         north_p = new JPanel();
         center_p = new JPanel();
@@ -115,21 +115,80 @@ public class CouponDialog extends JDialog {
 //        returnFinalprice(finalPrice, FP);
         //db에 보내는 로직 들어감
         //o_number, o_total_amount, user_id
-
+        //order(주문)테이블에 사용자 정보 추가
         Map<String,String> map = new HashMap<>();
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyMMdd");
-        String nowDate = LocalDate.now().format(DTF);
+        String nowDate = LocalDate.now().format(DTF); //현재날짜를 형식에 맞게 변환 후 변수에 저장
         int n = (int)(Math.random()*1000+0);
-        map.put("o_number",nowDate + n);
+        String orderNumber = nowDate + n;
+        map.put("o_number",orderNumber);
         map.put("o_total_amount", String.valueOf(totalPrice));
         map.put("user_id", MainFrame.userId);
         map.put("o_is_takeout", String.valueOf(MainFrame.orderType));
         map.put("o_status","조리중");
         SqlSession ss = f.factory.openSession();
-        List<order_VO> list = ss.selectList("orders.addorders",map);
+        int cnt = ss.insert("orders.addorders",map);
+        if(cnt>0){
+            ss.commit();
+            for (int i=0;i<cartlist.size();i++) {
+                Map<String,String> map2 = new HashMap<>();
+
+                String[] currentItem = cartlist.get(i);
+                map2.put("oi_size",currentItem[1]);//사이즈
+                map2.put("oi_quantity",currentItem[2]);//수량
+                map2.put("oi_price",currentItem[3]);//가격
+                map2.put("product_code",currentItem[4]);//코드
+                map2.put("oi_id", orderNumber); //orders테이블의 o_number
+                int cnt2 = ss.insert("order_items.addorder_items",map2);
+                if(cnt2>0){
+                    ss.commit();
+                    Map<String,String> map3 = new HashMap<>();
+                    //상품 코드, 사이즈, 수량
+                    //상품코드에 해당하는 아이템의 수량을 사이즈*수량으로 마이너스 small 1 venti 2 large 3
+                    map3.put("p_code",currentItem[4]);
+                    int a = Integer.parseInt(currentItem[2]);
+                    int b;
+                    switch (currentItem[1]){
+                        case "short":
+                            b = 1;
+                            break;
+                        case "Tall":
+                            b = 2;
+                            break;
+                        case "Venti":
+                            b = 3;
+                            break;
+                        default:
+                            b = 1;
+                    }
+
+                    map3.put("p_stock",String.valueOf(a*b));
+                    int cnt3 = ss.update("products.stockUpdate",map3);
+                    // p_code조건으로 db의 p_stock을 map의 p_stock만큼 --
+                    if(cnt3>0){
+                        ss.commit();
+                    }else
+                        ss.rollback();
+
+                }else {
+                    ss.rollback();
+                    System.out.println("커밋실패");
+                }
+
+            }
+        }else {
+            ss.rollback();
+            System.out.println("커밋실패");
+        }
+        //oi_idx, oi_id, product_code, oi_quantity, oi_price, oi_size, options
+        //order_items(주문상품)테이블에 주문에 대한 정보 추가
+
+
+
         ss.close();
         new FinalDialog(f, p);
         Dialog.dispose();
+
     }
 
     private void clicked_cancel(){

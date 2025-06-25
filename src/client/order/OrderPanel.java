@@ -76,6 +76,7 @@ public class OrderPanel extends JPanel {
 
     // 만약 장바구니에 품목이 담겨있다면 해당 품목의 수량과 금액을 추가함
     public void addToCart(ProductsVO product, int count, int totalPrice, String selectedSize) {
+        // --- 수정된 부분: 배열에 담는 순서를 [상품명, 사이즈, 수량, 가격]으로 변경 ---
         boolean found = false;
 
         for (int i = 0; i < cartList.size(); i++) {
@@ -91,15 +92,16 @@ public class OrderPanel extends JPanel {
                 found = true;
                 break;
             }
-        }
-
+        }        
+  
         // 동일한 상품+옵션 조합이 없었으면 새로 추가
         if (!found) {
-            String[] optionRow = {product.getP_name(), selectedSize, String.valueOf(count), String.valueOf(totalPrice)};
-            cartList.add(optionRow);
+        String[] optionRow = {product.getP_name(), selectedSize, String.valueOf(count), String.valueOf(totalPrice),product.getP_code()};
+        cartList.add(optionRow);
         }
 
         cartPanel.updateTable();      // 테이블 갱신
         cartPanel.calTotalPrice();    // 총 가격 갱신
+        returnPrice = allPrice;
     }
 }

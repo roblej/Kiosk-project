@@ -18,7 +18,7 @@ public class OptionDialog extends JDialog {
     JButton okBtn, cancelBtn;
 
     JButton shortBtn, tallBtn, ventiBtn;
-    private String selectedSize = "Tall";
+    private String selectedSize="";
     private int sizePriceModifier = 0;
 
     JPanel menuCenterPanel, countPanel;
@@ -203,7 +203,7 @@ public class OptionDialog extends JDialog {
     public void resetValue() {
         count = 1;
         totalPrice = 0;
-        selectedSize = "Tall";
+
         sizePriceModifier = 0;
         if (countLabel != null) {
             countLabel.setText(String.valueOf(count));

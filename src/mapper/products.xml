@@ -48,4 +48,7 @@
         VALUES
         (#{p_code}, #{p_name}, #{p_price}, #{p_size}, #{p_options}, #{p_category}, #{p_image_url}, #{p_stock})
     </insert>
+    <update id="stockUpdate" parameterType="map">
+        UPDATE products SET p_stock = p_stock - #{p_stock} WHERE p_code = #{p_code}
+    </update>
 </mapper>
