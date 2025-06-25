@@ -31,7 +31,8 @@ public class OptionDialog extends JDialog {
 
     int defaultPrice;
 
-    public OptionDialog(OrderPanel p, MainFrame f, ProductsVO product) {
+    public OptionDialog(OrderPanel p, MainFrame f, boolean modal, ProductsVO product) {
+
         this.p = p;
         this.f = f;
         this.product = product;
@@ -68,7 +69,7 @@ public class OptionDialog extends JDialog {
                 updateCountAndPrice();
             }
         });
-        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")) {
+        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")||product.getP_category().equals("프라페")) {
             shortBtn.addActionListener(e -> handleSizeSelection("Short", -500));
             tallBtn.addActionListener(e -> handleSizeSelection("Tall", 0));
             ventiBtn.addActionListener(e -> handleSizeSelection("Venti", 500));
@@ -128,7 +129,7 @@ public class OptionDialog extends JDialog {
         // ================= 중앙 패널 (옵션) =================
         centerPanel = new JPanel(new BorderLayout(10, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")) {
+        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")||product.getP_category().equals("프라페")) {
 
             JPanel sizePanel = new JPanel(new GridLayout(1, 3, 10, 0));
             shortBtn = new JButton("Short (-500)");
@@ -157,7 +158,7 @@ public class OptionDialog extends JDialog {
         add(centerPanel, BorderLayout.CENTER);
         add(southPanel, BorderLayout.SOUTH);
 
-        setSize(500, 350); // 다이얼로그 높이 조절
+        setSize(450, 680); // 다이얼로그 높이 조절
         setLocationRelativeTo(null);
         setVisible(true);
     }
