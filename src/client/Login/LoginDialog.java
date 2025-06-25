@@ -30,25 +30,25 @@ public class LoginDialog extends JDialog {
         JPanel userPanel = new JPanel();
         JPanel passPanel = new JPanel();
         JButton loginBtn = new JButton("로그인");
+
         loginBtn.addActionListener(e -> {
-                    // 로그인 처리 로직 추가
-                    username = userField.getText();
-                    password = new String(passField.getPassword());
-                    if (username.isEmpty() || password.isEmpty()) {
-                        JOptionPane.showMessageDialog(f, "사용자 이름과 비밀번호를 입력하세요.", "오류", JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        // 로그인 성공 처리
-                        dispose(); // 대화상자 닫기
-                        //로그인 후 , 주문페이지로 이동
-                        login(username, password);
-//                        f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
-                    }
-                });
+            // 로그인 처리 로직 추가
+            username = userField.getText();
+            password = new String(passField.getPassword());
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(f, "사용자 이름과 비밀번호를 입력하세요.", "오류", JOptionPane.ERROR_MESSAGE);
+            } else {
+                // 로그인 성공 처리
+                login(username, password);
+            }
+        });
+
         passField.addActionListener(e -> {
             loginBtn.doClick();
         });
 
         JButton btn_register = new JButton("회원가입");
+
         btn_register.addActionListener(e -> {
                     // 회원가입 처리 로직 추가
                     // 새 JDilog를 열어 회원가입 폼 표시
@@ -61,6 +61,7 @@ public class LoginDialog extends JDialog {
             }
                 });
         JButton anonBtn = new JButton("비회원주문");
+
         anonBtn.addActionListener(e -> {
             // 비회원 주문 처리 로직 추가
             //db에 비회원용 아이디 하드코딩
@@ -70,6 +71,7 @@ public class LoginDialog extends JDialog {
             MainFrame.userId = username; // 로그인한 사용자 ID 저장
             f.cardLayout.show(f.cardPanel, "orderPanel"); // "orderPanel"로 이동하도록 변경
         });
+
         userPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         passPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
@@ -93,6 +95,7 @@ public class LoginDialog extends JDialog {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE); // 닫기 버튼 클릭 시 대화상자 닫기
     }
+
     public void login(String username, String rawPassword) {
         // 로그인 처리 메서드
             // 1. 입력 유효성 검사
@@ -127,11 +130,6 @@ public class LoginDialog extends JDialog {
                     f.cardLayout.show(f.cardPanel, "orderPanel"); // MainFrame의 cardPanel로 전환
                     // 로그인 다이얼로그는 닫습니다.
                     dispose();
-//                    if (f != null && f.cardLayout != null && f.cardPanel != null) {
-//
-//                    } else {
-//                        System.out.println("MainFrame 인스턴스가 없거나 CardLayout 설정이 올바르지 않습니다.");
-//                    }
                 } else {
                     JOptionPane.showMessageDialog(f, "비밀번호가 일치하지 않습니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
                 }

@@ -2,7 +2,6 @@ package client;
 
 import client.admin.ClosingSalesPanel;
 import client.admin.*;
-import client.Login.LoginDialog;
 import client.Login.LoginPanel;
 import client.order.*;
 import org.apache.ibatis.io.Resources;
@@ -23,6 +22,7 @@ public class MainFrame extends JFrame {
     public SqlSessionFactory factory;
     public static String userId; // 로그인한 사용자 ID를 저장할 변수
     public static int orderType; // 주문 타입을 저장할 변수 (0: 포장 1: 매장)
+
     public MainFrame() {
         Reader r = null;
         try {
@@ -33,14 +33,12 @@ public class MainFrame extends JFrame {
             throw new RuntimeException(e);
         }
 
-        setTitle("CardLayout 팀 프로젝트 예시");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("2조 키오스크 프로그램");
         setSize(500, 800);
         setLocationRelativeTo(null); // 화면 중앙에 배치
 
         // CardLayout을 적용할 패널 생성
         cardLayout = new CardLayout();
-
         cardPanel = new JPanel(cardLayout);
 
         // 각 카드 패널 인스턴스 생성 및 CardLayout에 추가
@@ -52,7 +50,6 @@ public class MainFrame extends JFrame {
         StockCard stockCard = new StockCard(this);
         OrderPanel orderPanel = new OrderPanel(this);
         CouponManagerPanel couponManagerPanel = new CouponManagerPanel(this);
-
 
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(orderPanel, "orderPanel");
