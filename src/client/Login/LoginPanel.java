@@ -29,9 +29,6 @@ public class LoginPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // JOptionPane은 null을 반환할 수 있으므로, 먼저 null 체크를 해야 합니다.
-                String[][] test = new String[2][4];
-                System.out.println(test.length);
-                System.out.println(test[0].length);
                 String str = JOptionPane.showInputDialog(LoginPanel.this,"관리자 인증 번호를 입력하세요","관리자 로그인", javax.swing.JOptionPane.QUESTION_MESSAGE);
                 if(str != null && !str.trim().isEmpty()) { // null 체크 및 빈 문자열 체크
                     // 관리자 인증 로직 추가

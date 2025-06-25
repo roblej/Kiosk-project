@@ -3,6 +3,7 @@ package client.order;
 import client.MainFrame;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
 public class FinalDialog extends JDialog {
@@ -25,6 +26,7 @@ public class FinalDialog extends JDialog {
         FinalDialog.setSize(200, 150);
         FinalDialog.setTitle("결제완료");
         FinalDialog.setLocationRelativeTo(null);
+        FinalDialog.setFont(new Font("Serif", Font.BOLD, 80));
         FinalDialog.setVisible(true);
 
         confirmBt.addActionListener(e -> clickedConfirm());

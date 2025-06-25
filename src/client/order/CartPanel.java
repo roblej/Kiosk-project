@@ -190,23 +190,31 @@ public class CartPanel extends JPanel {
     public void cliked_Payment(MainFrame f) {
         if (!cartList.isEmpty()) {
             int cnt = JOptionPane.showConfirmDialog(null, "쿠폰을 사용하시겠습니까?", "", JOptionPane.YES_NO_OPTION);
-            if (cnt == 0) {
+            if (cnt == JOptionPane.YES_OPTION) {
+                //YES를 선택한 경우 쿠폰 코드 입력창 나타남
                 String coupon_Code = JOptionPane.showInputDialog(null, "코드를 입력하세요", null);
-                CouponVO cvo;
-                Map<String, String> map = new HashMap();
-                map.put("c_code", coupon_Code);
-                SqlSession ss = f.factory.openSession();
-                cvo = ss.selectOne("coupon.couponConfirm", map);
+                    //쿠폰 코드 입력창을 닫지 않았을 경우
+                    CouponVO cvo;
+                    Map<String, String> map = new HashMap();
+                    map.put("c_code", coupon_Code);
+                    SqlSession ss = f.factory.openSession();
+                    cvo = ss.selectOne("coupon.couponConfirm", map);
 
-                ss.close();
-                if (cvo != null && coupon_Code.equals(cvo.getC_code())) {
-                    //쿠폰코드가 사용할 수 있는 경우
-                    JOptionPane.showMessageDialog(null, "쿠폰이 확인되었습니다");
-                    new CouponDialog(f, cvo, orderPanel, CartPanel.this);
-                } else {
-                    //쿠폰코드가 사용할 수 없을 경우
-                    JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
-                }
+                    ss.close();
+                    if (cvo != null && coupon_Code.equals(cvo.getC_code())) {
+                        //쿠폰코드가 사용할 수 있는 경우
+                        JOptionPane.showMessageDialog(null, "쿠폰이 확인되었습니다");
+                        new CouponDialog(f, cvo, orderPanel, CartPanel.this);
+                    } else if ( (cvo != null && !coupon_Code.equals(cvo.getC_code()))) {
+                        //쿠폰코드가 사용할 수 없을 경우
+                        JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
+                    }else {
+                        //X버튼으로 닫을 경우
+
+                    }
+
+            } else if (cnt == JOptionPane.CLOSED_OPTION) {
+
             } else {
                 //NO를 선택할 경우 결제화면으로 넘어감
                 new CouponDialog(f, orderPanel, CartPanel.this);

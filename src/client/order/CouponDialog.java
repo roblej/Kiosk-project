@@ -70,7 +70,7 @@ public class CouponDialog extends JDialog {
         confirmBt.addActionListener(e -> clicked_confirm()); // 확인버튼 눌렀을 시 액션을 감지해서 클릭드_컨펌 이라는 메소드 호출함
         cancelBt.addActionListener(e -> clicked_cancel()); // 취소버튼 눌렀을 시 액션을 감지해서 클릭드_캔슬 이라는 메소드 호출함
     }//생성자의 끝
-    
+
     // 쿠폰을 적용하지 않았을 때 생성하는 생성자
     public CouponDialog(MainFrame f, OrderPanel orderPanel, CartPanel p){
         //총 주문금액, 쿠폰 할인율, 최종 결제금액

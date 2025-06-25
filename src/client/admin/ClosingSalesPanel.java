@@ -50,9 +50,9 @@ public class ClosingSalesPanel extends JPanel {
 
         this.add(new JScrollPane(table = new JTable()));
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {{
-            setHorizontalAlignment(SwingConstants.CENTER);
+            setHorizontalAlignment(SwingConstants.CENTER); //DefaultRenderer를 생성하여 모든 셀에 적용
         }});
-        table.setPreferredScrollableViewportSize(new Dimension(500,600));
+        table.setPreferredScrollableViewportSize(new Dimension(500,600)); //셀 안에 데이터를 가운데 정렬
         table.setModel(new DefaultTableModel(data, item));
 
         this.add(back_btn, BorderLayout.SOUTH);
