@@ -195,7 +195,8 @@ public class CartPanel extends JPanel {
         System.out.println(now);
         if (!cartList.isEmpty()) {
             int cnt = JOptionPane.showConfirmDialog(null, "쿠폰을 사용하시겠습니까?", "", JOptionPane.YES_NO_OPTION);
-            if (cnt == 0) { // 확인 = 0
+
+            if (cnt == JOptionPane.YES_OPTION) { // 확인 = 0
                 String coupon_Code = JOptionPane.showInputDialog(null, "코드를 입력하세요", null);
                 CouponVO cvo;
                 Map<String, String> map = new HashMap();

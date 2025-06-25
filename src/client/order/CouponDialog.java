@@ -70,7 +70,7 @@ public class CouponDialog extends JDialog {
         confirmBt.addActionListener(e -> clicked_confirm()); // 확인 -> 장바구니 값 받아 DB에 INSERT
         cancelBt.addActionListener(e -> clicked_cancel()); // 취소 -> 현재 다이어로그 끔
     }//생성자의 끝
-    
+
     // 쿠폰을 적용하지 않았을 때 생성하는 생성자
     public CouponDialog(MainFrame f, OrderPanel orderPanel, CartPanel p){
         //총 주문금액, 쿠폰 할인율, 최종 결제금액
