@@ -20,7 +20,7 @@ public class ClosingSalesPanel extends JPanel {
 
     JToggleButton today_btn, month_btn, period_btn;
     JButton back_btn;
-    JPanel north_p;
+    JPanel north_p,south_p;
     JTable table;
     String[] item = {"주문번호", "가격", "수량", "할인", "총금액","상태"};
     String[][] data;
@@ -36,7 +36,6 @@ public class ClosingSalesPanel extends JPanel {
         today_btn = new JToggleButton("일정산");
         month_btn = new JToggleButton("월정산");
         period_btn = new JToggleButton("기간별 정산");
-        back_btn = new JButton("뒤로");
 
         ButtonGroup group = new ButtonGroup();
         group.add(today_btn);
@@ -47,15 +46,19 @@ public class ClosingSalesPanel extends JPanel {
         north_p.add(month_btn);
         north_p.add(period_btn);
         this.add(north_p, BorderLayout.NORTH);
+        JPanel centerPanel = new JPanel();
 
-        this.add(new JScrollPane(table = new JTable()));
+        centerPanel.add(new JScrollPane(table = new JTable()));
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {{
             setHorizontalAlignment(SwingConstants.CENTER); //DefaultRenderer를 생성하여 모든 셀에 적용
         }});
-        table.setPreferredScrollableViewportSize(new Dimension(500,600)); //셀 안에 데이터를 가운데 정렬
+        table.setPreferredScrollableViewportSize(new Dimension(500,500)); //셀 안에 데이터를 가운데 정렬
         table.setModel(new DefaultTableModel(data, item));
+        this.add(centerPanel,BorderLayout.CENTER);
 
-        this.add(back_btn, BorderLayout.SOUTH);
+        south_p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        south_p.add(back_btn = new JButton("뒤로가기"));
+        this.add(south_p, BorderLayout.SOUTH);
 
         this.setBounds(500, 150, 500, 800);
         this.setVisible(true);
