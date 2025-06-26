@@ -47,15 +47,14 @@ public class StockCard extends JPanel {
 
         init();//DB연결
 
-        allData();
+        allData();//상품정보관리 첫화면에 모든메뉴 출력
 
         //이벤트감지자 등록
-
         s_addBtn.addActionListener(new ActionListener() {//상품추가 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
-                ProductsVO pvo = new ProductsVO();
-                new AddDialog(f, true, pvo, StockCard.this);
+                //ProductsVO pvo = new ProductsVO();//추가될 상품을 담을 객체 생성
+                new AddDialog(f, true, StockCard.this);//상품추가 다이얼로그 호출, 인자 전달
 
             }
         });
@@ -63,29 +62,27 @@ public class StockCard extends JPanel {
         s_SearchBtn.addActionListener(new ActionListener() {//검색 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
-              ArrayList<String> cat_list = new ArrayList<>();
-                cat_list.clear();
+              ArrayList<String> cat_list = new ArrayList<>();//체크박스의 문자열을 추출해서 카테고리를 만들기 위해 리스트 생성
+                cat_list.clear();//카테고리 리스트 초기화
 
-                for(JCheckBox box : chk_ar){
+                for(JCheckBox box : chk_ar){//체크박스 배열을 하나하나 꺼내서 문자열을 추출 한 다음에 카테고리 리스트에 담는다.
                     if(box.isSelected()){
                         String str = box.getText();
                         cat_list.add(str);
 
                     }
                 }
-                SqlSession ss = factory.openSession();
-
+                SqlSession ss = factory.openSession();// SqlSession을 생성하여 DB에 접근하고 SQL을 실행할 수 있게 함
 
                 if(cat_list != null && cat_list.isEmpty()){
                     //체크한 항목이 없다면 전체목록 조회
                     list = ss.selectList("products.all");
-                }else {
+                }else {//체크한 항목이 있다면
                     Map<String, ArrayList<String>> map = new HashMap<>();
-                    map.put("cat_list", cat_list);
+                    map.put("cat_list", cat_list);//체크한 카테고리에 따라 SQL문을 수행해 list에 담는다.
                     list = ss.selectList("products.search_cat", map);
                 }
-
-                viewTable(list);
+                viewTable(list);//테이블 갱신
                 ss.close();
             }
         });
@@ -102,10 +99,11 @@ public class StockCard extends JPanel {
             public void mouseClicked(MouseEvent e) {//상품 더블클릭 이벤트
                 int cnt = e.getClickCount();
                 if(cnt == 2){
-                    i = stockTable.getSelectedRow();
-                    ProductsVO pvo = list.get(i);
+                    i = stockTable.getSelectedRow();//테이블에서 선택한 행의 값을 멤버변수로 설정. 다른 곳에서도 필요함
+                    ProductsVO pvo = list.get(i);//해당 행의 상품의 정보들을 pvo에 저장한다.
 
                     new StockDialog(f,true, pvo, StockCard.this);
+                    //재고다이얼로그에 더블클릭한 상품의 정보가 필요하기 때문에 선택된 pvo 인자를 넘겨준다.
                 }
             }
         });
@@ -139,7 +137,7 @@ public class StockCard extends JPanel {
         */
         s_addBtn.setPreferredSize(new Dimension(100, 30));
         s_SearchBtn.setPreferredSize(new Dimension(80, 30));
-        catPanel.setPreferredSize(new Dimension(400, 100));
+        catPanel.setPreferredSize(new Dimension(400, 100));//카테고리 패널
         backPanel.add(s_backBtn);
         searchPanel.add(s_addBtn);
         searchPanel.add(s_SearchBtn);

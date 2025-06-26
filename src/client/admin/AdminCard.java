@@ -16,6 +16,7 @@ public class AdminCard extends JPanel {
         this.f = f;
 //        this.factory = factory;
 
+        //화면구성
         setLayout(new GridLayout(4, 2, 10, 10));
         //버튼생성
         JButton openBtn = new JButton("오픈");
@@ -85,21 +86,21 @@ public class AdminCard extends JPanel {
             }
         });
 
-        customBtn.addActionListener(new ActionListener() {//회원관리
+        customBtn.addActionListener(new ActionListener() {//회원관리 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.cardLayout.show(f.cardPanel, "userManagerPanel");
             }
         });
 
-        orderBtn.addActionListener(new ActionListener() {//주문처리
+        orderBtn.addActionListener(new ActionListener() {//주문처리 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
                 new OrderManager(f);
             }
         });
 
-        closeBtn.addActionListener(new ActionListener() {//종료
+        closeBtn.addActionListener(new ActionListener() {//종료 버튼
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);//종료

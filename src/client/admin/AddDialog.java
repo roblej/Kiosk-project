@@ -56,7 +56,7 @@ public class AddDialog extends JDialog {
 
     private StockCard callingStockCard;
 
-    public AddDialog(MainFrame f, boolean modal, ProductsVO pvo, StockCard callingStock){
+    public AddDialog(MainFrame f, boolean modal, StockCard callingStock){
 
         super(f, modal);
         this.callingStockCard = callingStock;
@@ -65,7 +65,7 @@ public class AddDialog extends JDialog {
         setSize(200, 300);
         setLocationRelativeTo(null);
         initComponents();//화면구성
-        code_tf.setText(pvo.getP_code());
+        /*code_tf.setText(pvo.getP_code());
         name_tf.setText(pvo.getP_name());
         price_tf.setText(pvo.getP_price());
         size_tf.setText(pvo.getP_size());
@@ -73,7 +73,7 @@ public class AddDialog extends JDialog {
         cat_tf.setText(pvo.getP_category());
         img_tf.setText(pvo.getP_image_url());
         stock_tf.setText(pvo.getP_stock());
-
+        */
         //이벤트 감지자 등록
         img_tf.addMouseListener(new MouseAdapter() {
             @Override
@@ -218,10 +218,10 @@ public class AddDialog extends JDialog {
         code_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         codelb.setText("상품코드:");
         code_panel.add(codelb);
-        code_tf.setEditable(true);
-        code_tf.setColumns(10);
+        code_tf.setEditable(true);//수정가능여부
+        code_tf.setColumns(10);//텍스트박스 길이수정
         code_panel.add(code_tf);
-        getContentPane().add(code_panel);
+        getContentPane().add(code_panel);//다이얼로그에 패널 등록
 
         name_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         namelb.setText("상품명:");
