@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- analysis 라는 네임스페이스를 가진 매퍼 -->
+<mapper namespace="analysis">
+    <!--
+      동적 판매 분석 쿼리
+      - parameterType="map": 여러 개의 파라미터를 Map 객체로 받습니다. (예: ageRange, gender, userId)
+      - resultType="map": 조회 결과를 VO가 아닌 Map 객체로 받습니다. 유연한 결과 처리에 용이합니다.
+    -->
+    <select id="selectSalesAnalysis" parameterType="map" resultType="map">
+        SELECT
+        p.p_name,
+        SUM(oi.oi_quantity) AS total_quantity <!-- 제품별 총 주문 수량 -->
+        FROM
+        users u
+        JOIN
+        orders o ON u.u_id = o.user_id
+        JOIN
+        order_items oi ON o.o_number = oi.oi_id
+        JOIN
+        products p ON oi.product_code = p.p_code
+        <where>
+            <!-- userId 파라미터가 null이 아니고 비어있지 않을 경우에만 이 조건을 추가합니다. -->
+            <if test="userId != null and userId != ''">
+                AND u.u_id = #{userId}
+            </if>
+            <!-- gender 파라미터가 null이 아니고 비어있지 않을 경우에만 이 조건을 추가합니다. -->
+            <if test="gender != null and gender != ''">
+                AND u.u_gender = #{gender}
+            </if>
+            <!-- ageRange 파라미터가 null이 아니고 비어있지 않을 경우에만 나이대 조건을 추가합니다. -->
+            <!-- ageRanges 리스트가 null이 아니고 비어있지 않을 경우에만 이 조건을 추가합니다. -->
+            <if test="ageRanges != null and !ageRanges.isEmpty()">
+                AND (
+                <!-- ageRanges 리스트를 순회하며 OR 조건으로 묶습니다. item="age"는 변수명입니다. -->
+                <foreach collection="ageRanges" item="age" separator=" OR ">
+                    <choose>
+                        <when test="age == '10대'">
+                            YEAR(u.u_birth) BETWEEN (YEAR(NOW()) - 19) AND (YEAR(NOW()) - 10)
+                        </when>
+                        <when test="age == '20대'">
+                            YEAR(u.u_birth) BETWEEN (YEAR(NOW()) - 29) AND (YEAR(NOW()) - 20)
+                        </when>
+                        <when test="age == '30대'">
+                            YEAR(u.u_birth) BETWEEN (YEAR(NOW()) - 39) AND (YEAR(NOW()) - 30)
+                        </when>
+                        <when test="age == '40대'">
+                            YEAR(u.u_birth) BETWEEN (YEAR(NOW()) - 49) AND (YEAR(NOW()) - 40)
+                        </when>
+                        <when test="age == '50대'">
+                            YEAR(u.u_birth) BETWEEN (YEAR(NOW()) - 59) AND (YEAR(NOW()) - 50)
+                        </when>
+                    </choose>
+                </foreach>
+                )
+            </if>
+        </where>
+        GROUP BY
+        p.p_name
+        ORDER BY
+        total_quantity DESC
+    </select>
+
+</mapper>

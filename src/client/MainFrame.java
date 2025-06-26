@@ -50,6 +50,7 @@ public class MainFrame extends JFrame {
         StockCard stockCard = new StockCard(this);
         OrderPanel orderPanel = new OrderPanel(this);
         CouponManagerPanel couponManagerPanel = new CouponManagerPanel(this);
+        AnalyzePanel analyzePanel = new AnalyzePanel(this);
 
         cardPanel.add(loginPanel, "LoginPanel"); // "LoginPanel" 이름으로 추가
         cardPanel.add(orderPanel, "orderPanel");
@@ -58,6 +59,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(userManagerPanel, "userManagerPanel");
         cardPanel.add(couponManagerPanel, "CouponManagerPanel"); // "CouponManagerPanel" 이름으로 추가
         cardPanel.add(stockCard,"StockCard");
+        cardPanel.add(analyzePanel, "AnalyzePanel");
 
         this.add(cardPanel, BorderLayout.CENTER);
 
