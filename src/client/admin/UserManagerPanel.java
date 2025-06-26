@@ -36,7 +36,7 @@ public class UserManagerPanel extends JPanel {
         northPanel.add(searchBtn = new JButton("검색"));
         this.add(northPanel, BorderLayout.NORTH);
 
-        southPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        southPanel = new JPanel();
         southPanel.add(backBtn = new JButton("뒤로가기"));
         this.add(southPanel, BorderLayout.SOUTH);
 

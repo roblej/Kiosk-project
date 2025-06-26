@@ -52,11 +52,11 @@ public class ClosingSalesPanel extends JPanel {
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {{
             setHorizontalAlignment(SwingConstants.CENTER); //DefaultRenderer를 생성하여 모든 셀에 적용
         }});
-        table.setPreferredScrollableViewportSize(new Dimension(500,500)); //셀 안에 데이터를 가운데 정렬
+        table.setPreferredScrollableViewportSize(new Dimension(500,550)); //셀 안에 데이터를 가운데 정렬
         table.setModel(new DefaultTableModel(data, item));
         this.add(centerPanel,BorderLayout.CENTER);
 
-        south_p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        south_p = new JPanel();
         south_p.add(back_btn = new JButton("뒤로가기"));
         this.add(south_p, BorderLayout.SOUTH);
 

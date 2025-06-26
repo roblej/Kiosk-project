@@ -65,19 +65,31 @@ public class CouponManagerPanel extends JPanel {
                 }
             }
         });
-        southPanel = new JPanel();
-        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
-        southPanel.setBorder((new EmptyBorder(0,50,0,150)));
-        southPanel.add(nameLabel = new JLabel("아이디 :"));
-        southPanel.add(nameTextField = new JTextField(10));
-        southPanel.add(rateLabel = new JLabel("할인율 :"));
-        southPanel.add(rateTextField = new JTextField(10));
-        southPanel.add(createDateLabel = new JLabel("발급일 :"));
-        southPanel.add(createDateTextField = new JTextField(10));
+        southPanel = new JPanel(new GridLayout(5,1));
+//        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
+//        southPanel.setBorder((new EmptyBorder(0,50,0,50)));
+        JPanel namePanel = new JPanel();
+        namePanel.add(nameLabel = new JLabel("아이디 :"));
+        namePanel.add(nameTextField = new JTextField(10));
+        southPanel.add(namePanel);
+
+        JPanel ratePanel = new JPanel();
+        ratePanel.add(rateLabel = new JLabel("할인율 :"));
+        ratePanel.add(rateTextField = new JTextField(10));
+        southPanel.add(ratePanel);
+
+        JPanel createPanel = new JPanel();
+        createPanel.add(createDateLabel = new JLabel("발급일 :"));
+        createPanel.add(createDateTextField = new JTextField(10));
         createDateTextField.setText(now().toString());
-        southPanel.add(expiryDateLabel = new JLabel("만료일 :"));
-        southPanel.add(expiryDateTextField = new JTextField(10));
-        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        southPanel.add(createPanel);
+
+        JPanel expiryPanel = new JPanel();
+        expiryPanel.add(expiryDateLabel = new JLabel("만료일 :"));
+        expiryPanel.add(expiryDateTextField = new JTextField(10));
+        southPanel.add(expiryPanel);
+
+        JPanel btnPanel = new JPanel();
         btnPanel.add(backBtn = new JButton("뒤로가기"));
         btnPanel.add(createBtn= new JButton("쿠폰 발급"));
         southPanel.add(btnPanel);

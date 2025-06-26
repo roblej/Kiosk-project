@@ -72,7 +72,7 @@ public class AnalyzePanel extends JPanel {
         }
         });
         backBtn = new JButton("뒤로가기");
-        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel southPanel = new JPanel();
         southPanel.add(backBtn);
         this.add(southPanel, BorderLayout.SOUTH);
         backBtn.addActionListener(new ActionListener() {
