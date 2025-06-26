@@ -45,7 +45,7 @@ public class OrderManager extends JDialog {
         this.setSize(600, 400);
         this.setLocationRelativeTo(null); // 화면 가운데
 
-        
+
         // 이벤트 감지자 설정
         this.addWindowListener(new WindowAdapter() { // 창 x버튼 누를 때
             @Override
@@ -85,14 +85,14 @@ public class OrderManager extends JDialog {
         int cnt = ss.update("orders.update", vo);
         if(cnt > 0){
             ss.commit();
-            table.setValueAt(vo.getO_status(),i,2); // 테이블 컬럼의 2번째 자리
+            table.setValueAt(vo.getO_status(),i,4); // 테이블 컬럼의 2번째 자리
             list.set(i, vo); // list의 vo에 넣음
         }else
             ss.rollback();
         ss.close();
     }
 
-    String[] o_name = {"주문번호", "결제금액", "주문상태", "고객ID", "주문유형"};
+    String[] o_name = {"주문번호", "결제금액", "주문고객", "매장/포장", "조리상태"};
     String[][] data;
     public List<order_VO> getData(){
         SqlSession ss = f.factory.openSession();
@@ -111,7 +111,6 @@ public class OrderManager extends JDialog {
         ss.close();
         return list;
     }
-
     boolean cnt;
     public class autoData extends Thread {
         @Override
