@@ -65,7 +65,7 @@ public class StockDialog extends JDialog {
         setTitle("재고수정");
         setSize(400, 300);
         setLocationRelativeTo(null);
-        getImage(pvo);
+
         initComponents(pvo);//화면구성
         code_tf.setText(pvo.getP_code());
         name_tf.setText(pvo.getP_name());
@@ -88,7 +88,8 @@ public class StockDialog extends JDialog {
                 if(result == JFileChooser.APPROVE_OPTION){
                     File selectedFile = fileChooser.getSelectedFile();
 
-                    String uploadDirPath = System.getProperty("user.dir") +"/src/images";
+                    String uploadDirPath = System.getProperty("user.dir") + "/src/images";
+                    System.out.println(uploadDirPath);
                     File uploadDir = new File(uploadDirPath);
                     if(!uploadDir.exists()){
                         uploadDir.mkdirs();
@@ -286,12 +287,25 @@ public class StockDialog extends JDialog {
 
     }
     public void getImage(ProductsVO pvo){
-        String s_img = pvo.getP_image_url();
-        String fullpath = System.getProperty("user.dir") + "/src/" + s_img;
-        ImageIcon icon = new ImageIcon(fullpath);
-        Image img = icon.getImage();
-        Image scaledImg = img.getScaledInstance(150,250,Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImg);
-        imagelb = new JLabel(scaledIcon);
+            String s_img = pvo.getP_image_url();
+            String fullpath = Paths.get(System.getProperty("user.dir"), "src", s_img).toString();
+            System.out.println("가져올이미지경로:" + fullpath);
+
+            ImageIcon icon = new ImageIcon(fullpath);
+            Image img = icon.getImage();
+            Image scaledImg = img.getScaledInstance(150, 250, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImg);
+
+            if (imagelb != null) {
+                imagelb.setIcon(scaledIcon); // 기존 라벨 아이콘만 교체
+            } else {
+                imagelb = new JLabel(scaledIcon);
+                image_panel.add(imagelb);
+            }
+
+            image_panel.revalidate();
+            image_panel.repaint();
+
+
     }
 }

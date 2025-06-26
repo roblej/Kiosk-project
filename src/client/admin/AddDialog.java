@@ -51,6 +51,8 @@ public class AddDialog extends JDialog {
     private JButton addBtn;
     private JButton ccBtn;
 
+    private Path destinationPath;
+    private String dbPath;
 
     private StockCard callingStockCard;
 
@@ -86,7 +88,7 @@ public class AddDialog extends JDialog {
                 if(result == JFileChooser.APPROVE_OPTION){
                     File selectedFile = fileChooser.getSelectedFile();
 
-                    String uploadDirPath = System.getProperty("user.dir") +"/images";
+                    String uploadDirPath = System.getProperty("user.dir") + "/src/images";
                     File uploadDir = new File(uploadDirPath);
                     if(!uploadDir.exists()){
                         uploadDir.mkdirs();
@@ -95,7 +97,7 @@ public class AddDialog extends JDialog {
                     String origianlFileName = selectedFile.getName();
                     String extension = origianlFileName.substring(origianlFileName.lastIndexOf("."));
                     String uniqueFileName = UUID.randomUUID().toString() + extension;
-                    Path destinationPath = Paths.get(uploadDir.getAbsolutePath(), uniqueFileName);
+                    destinationPath = Paths.get(uploadDir.getAbsolutePath(), uniqueFileName);
 
                     try{
                         Files.copy(selectedFile.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
@@ -105,7 +107,16 @@ public class AddDialog extends JDialog {
                         Path relativePath = projectPath.relativize(destinationPath);
                         String dbPathRobust = relativePath.toString().replace('\\', '/');
 
-                        img_tf.setText(dbPathRobust);
+                        int srcIndex = dbPathRobust.indexOf("src/");
+                        if(srcIndex != -1){
+                            dbPath = dbPathRobust.substring(srcIndex +4);
+
+
+                        }else {
+                            dbPath = dbPathRobust;
+                        }
+                        System.out.println("DB에 저장될 경로:" + dbPath);
+                        img_tf.setText(dbPath);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                         System.out.println("이미지 업로드 실패:" + ex.getMessage());
