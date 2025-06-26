@@ -20,7 +20,7 @@ public class AdminCard extends JPanel {
         //버튼생성
         JButton openBtn = new JButton("오픈");
         JButton setBtn = new JButton("마감/정산");
-        JButton payBtn = new JButton("결제관리");
+        JButton payBtn = new JButton("판매분석");
         JButton couponBtn = new JButton("쿠폰사용내역");
         JButton productBtn = new JButton("상품정보관리");
         JButton customBtn = new JButton("회원관리");
@@ -66,7 +66,7 @@ public class AdminCard extends JPanel {
         payBtn.addActionListener(new ActionListener() {//결제관리
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                f.cardLayout.show(f.cardPanel, "AnalyzePanel");
             }
         });
 

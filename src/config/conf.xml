@@ -21,5 +21,6 @@
         <mapper resource="mapper/coupon.xml"/>
         <mapper resource="mapper/products.xml"/>
         <mapper resource="mapper/order_items.xml"/>
+        <mapper resource="mapper/analyze.xml"/>
     </mappers>
 </configuration>
