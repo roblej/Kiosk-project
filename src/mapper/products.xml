@@ -32,6 +32,7 @@
   
     <select id="getCategories" resultType="String">
         SELECT DISTINCT p_category FROM products WHERE p_category IS NOT NULL
+        <!-- Distinct = 중복 없이 뽑아옴 -->
     </select>
 
     <select id="update_stock" resultType="Map">

@@ -83,7 +83,7 @@ public class AddDialog extends JDialog {
                         "이미지 파일 (jpg, png, gif)", "jpg", "jpeg", "png", "gif");
                 fileChooser.setFileFilter(imageFilter);
 
-                int result = fileChooser.showOpenDialog(null);
+                int result = fileChooser.showOpenDialog(null); //모르겠다
 
                 if(result == JFileChooser.APPROVE_OPTION){
                     File selectedFile = fileChooser.getSelectedFile();
