@@ -69,7 +69,7 @@ public class OptionDialog extends JDialog {
                 updateCountAndPrice();
             }
         });
-        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")||product.getP_category().equals("프라페")) {
+        if(!product.getP_category().equals("디저트")){
             shortBtn.addActionListener(e -> handleSizeSelection("Short", -500));
             tallBtn.addActionListener(e -> handleSizeSelection("Tall", 0));
             ventiBtn.addActionListener(e -> handleSizeSelection("Venti", 500));
@@ -129,7 +129,7 @@ public class OptionDialog extends JDialog {
         // ================= 중앙 패널 (옵션) =================
         centerPanel = new JPanel(new BorderLayout(10, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")||product.getP_category().equals("프라페")) {
+        if(!product.getP_category().equals("디저트")) {
 
             JPanel sizePanel = new JPanel(new GridLayout(1, 3, 10, 0));
             shortBtn = new JButton("Short (-500)");
@@ -204,7 +204,7 @@ public class OptionDialog extends JDialog {
     public void resetValue() {
         count = 1;
         totalPrice = 0;
-        if(product.getP_category().equals("커피")||product.getP_category().equals("라떼")||product.getP_category().equals("스무디")) {
+        if(!product.getP_category().equals("디저트")) {
             selectedSize = "Tall"; // 기본 사이즈를 Tall로 설정
         }
         sizePriceModifier = 0;

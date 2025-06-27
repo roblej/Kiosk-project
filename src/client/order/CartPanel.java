@@ -109,6 +109,8 @@ public class CartPanel extends JPanel {
                         clearCartList();
                     }
                     MainFrame.userId ="";
+                    CategoryPanel.allButton.doClick();
+                    orderPanel.menuPanel.updateMenus("모든 메뉴");
                     f.cardLayout.show(f.cardPanel, "LoginPanel");
                 }
             }

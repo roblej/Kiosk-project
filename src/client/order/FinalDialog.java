@@ -36,6 +36,8 @@ public class FinalDialog extends JDialog {
         FinalDialog.dispose();
         MainFrame.userId = "";
         p.clearCartList();
+        CategoryPanel.allButton.doClick();
+        f.orderPanel.menuPanel.updateMenus("모든 메뉴");
         f.cardLayout.show(f.cardPanel, "LoginPanel");
     }
 }

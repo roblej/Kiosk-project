@@ -51,7 +51,7 @@ public class MenuPanel extends JPanel {
                 if (optionDialog != null && optionDialog.isShowing()) {
                     return;
                 }
-                // ✅ 새로 열고, 닫힐 때 optionDialog = null 처리
+                // 새로 열고, 닫힐 때 optionDialog = null 처리
                 optionDialog = new OptionDialog(orderPanel, f, true, vo);
                 optionDialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
@@ -108,7 +108,6 @@ public class MenuPanel extends JPanel {
         gridPanel.removeAll();
 
         List<ProductsVO> productList = category.equals("모든 메뉴") ? all() : getProductsByCategory(category);
-
         if (productList != null) {
             for (ProductsVO vo : productList) {
                 addMenuButton(vo);
