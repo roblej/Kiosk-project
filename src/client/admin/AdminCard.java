@@ -8,12 +8,13 @@ import java.awt.event.ActionListener;
 
 public class AdminCard extends JPanel {
 
-    OrderManager dialog;
     MainFrame f;
+    UserManagerPanel UMP;
 
 
-    public AdminCard(MainFrame f) {
+    public AdminCard(MainFrame f, UserManagerPanel ump) {
         this.f = f;
+        this.UMP = ump;
 //        this.factory = factory;
 
         setLayout(new GridLayout(4, 2, 10, 10));
@@ -87,7 +88,9 @@ public class AdminCard extends JPanel {
 
         customBtn.addActionListener(new ActionListener() {//회원관리
             @Override
+
             public void actionPerformed(ActionEvent e) {
+                UMP.viewAll();
                 f.cardLayout.show(f.cardPanel, "userManagerPanel");
             }
         });
