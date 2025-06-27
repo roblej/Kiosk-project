@@ -84,10 +84,11 @@ public class RegisterDialog extends JDialog {
         registerBtn.addActionListener(e -> {
                     // 회원가입 처리 로직 추가
                     username = userField.getText();
+            if(username == null || username.trim().isEmpty()){JOptionPane.showMessageDialog(null, "이름을 입력하세요");
+                return;}
                     rawPassword = new String(passField.getPassword());
                     register(username);
-                    //회원가입 이후 로그인페이지로
-                    dispose();
+                    //회원가입 이후 로그인페이지
                 });
 
         panel.add(userPanel);
@@ -112,34 +113,44 @@ public class RegisterDialog extends JDialog {
             // 비밀번호 해싱
             password = PasswordUtil.hashPassword(rawPassword);// 해싱된 비밀번호를 저장
             gender = (maleRadio.isSelected() ? "M" : (femaleRadio.isSelected() ? "F" : "선택 안됨"));
+
             phone = phoneField.getText(); // 전화번호 가져오기
             birth = birthField.getText(); // 생년월일 가져오기
-
-            // TODO: 여기에 실제 DB 저장 로직 (MyBatis Mapper 호출 등) 구현
-            SqlSession ss = D.f.factory.openSession();
-            Map<String,String> map = new HashMap<>();
-            map.put("u_id", username);
-            map.put("u_password", password);
-            map.put("u_gender", gender);
-            map.put("u_phone", phone);
-            map.put("u_birth", birth);
-            // MyBatis Mapper 호출
-            try {
-                int result = ss.insert("user.register", map); // UserMapper.xml에 정의된 insertUser 메서드 호출
-                if (result > 0) {
-                    ss.commit(); // 트랜잭션 커밋
-                    System.out.println("회원가입 성공");
-                    JOptionPane.showMessageDialog(RegisterDialog.this, "회원가입이 완료되었습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    System.out.println("회원가입 실패");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                ss.rollback(); // 예외 발생 시 롤백
-            } finally {
-                ss.close(); // SqlSession 닫기
-                dispose();
+            if(phone == null || phone.trim().isEmpty()){JOptionPane.showMessageDialog(null, "전화번호를 입력하세요");
+                return;}
+            if(birth == null || birth.trim().isEmpty()){JOptionPane.showMessageDialog(null, "생년월일을 입력하세요");
+                return;}
+            if(gender.equals("선택 안됨")){
+                JOptionPane.showMessageDialog(RegisterDialog.this, "성별을 체크해주세요", "경고", JOptionPane.WARNING_MESSAGE);
+                return;
             }
+
+
+                // TODO: 여기에 실제 DB 저장 로직 (MyBatis Mapper 호출 등) 구현
+                SqlSession ss = D.f.factory.openSession();
+                Map<String, String> map = new HashMap<>();
+                map.put("u_id", username);
+                map.put("u_password", password);
+                map.put("u_gender", gender);
+                map.put("u_phone", phone);
+                map.put("u_birth", birth);
+                // MyBatis Mapper 호출
+                try {
+                    int result = ss.insert("user.register", map); // UserMapper.xml에 정의된 insertUser 메서드 호출
+                    if (result > 0) {
+                        ss.commit(); // 트랜잭션 커밋
+                        System.out.println("회원가입 성공");
+                        JOptionPane.showMessageDialog(RegisterDialog.this, "회원가입이 완료되었습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        System.out.println("회원가입 실패");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ss.rollback(); // 예외 발생 시 롤백
+                } finally {
+                    ss.close(); // SqlSession 닫기
+                    dispose();
+                }
     }
 
 }
