@@ -82,7 +82,6 @@ public class UserManagerPanel extends JPanel {
             @Override
 
             public void actionPerformed(ActionEvent e) {
-                viewAll();
                 inputTextField.setText("");
                 f.cardLayout.show(f.cardPanel, "AdminCard");
             }

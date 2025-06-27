@@ -34,7 +34,7 @@
     <select id="month" resultMap="month1">
         SELECT * FROM
         ( SELECT * FROM orders where substring(o_number,1,4) = date_format(now(),"%y%m")
-        AND o_status IN ('처리완료','취소'))
+        AND o_status = '처리완료')
         od inner join order_items oi on
         od.o_number = oi.oi_id
     </select>
@@ -43,8 +43,8 @@
         SELECT * FROM (
         SELECT * FROM orders
         WHERE SUBSTRING(o_number, 1, 6) BETWEEN #{start_date} AND #{end_date}
-        AND o_status IN ('처리완료', '취소')
-        ) od INNER JOIN order_items oi ON
+        AND o_status = '처리완료')
+        od INNER JOIN order_items oi ON
         od.o_number = oi.oi_id
     </select>
 
@@ -62,7 +62,7 @@
     <select id="today" resultMap="today1">
         SELECT * FROM
         ( SELECT * FROM orders where substring(o_number,1,6) = date_format(now(),"%y%m%d")
-        AND o_status IN ('처리완료','취소'))
+        AND o_status = '처리완료')
         od inner join order_items oi on
         od.o_number = oi.oi_id
     </select>
