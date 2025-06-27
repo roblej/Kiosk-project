@@ -102,7 +102,7 @@ public class UserManagerPanel extends JPanel {
         userList = ss.selectList("user.getAllUserInfo");
         viewTable(userList);
     }
-    private void viewTable(List<UserVO> list){
+    public void viewTable(List<UserVO> list){
         String[][] data = new String[list.size()][c_name.length];
         for(int i=0; i<list.size(); i++){
             UserVO vo = list.get(i);
