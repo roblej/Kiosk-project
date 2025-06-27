@@ -13,6 +13,7 @@ public class CategoryPanel extends JPanel {
     private final MenuPanel menuPanel;
     private String currentCategory;
     SqlSessionFactory factory;
+    static JButton allButton;
 
     public CategoryPanel(MenuPanel menuPanel, MainFrame mainFrame) {
         this.menuPanel = menuPanel;
@@ -26,7 +27,7 @@ public class CategoryPanel extends JPanel {
 
         buttonContainerPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-        JButton allButton = new JButton("모든 메뉴");
+        allButton = new JButton("모든 메뉴");
         allButton.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         allButton.addActionListener(e -> {
             if (!"모든 메뉴".equals(currentCategory)) {

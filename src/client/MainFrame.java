@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
     public static String userId; // 로그인한 사용자 ID를 저장할 변수
     public static int orderType; // 주문 타입을 저장할 변수 (0: 포장 1: 매장)
     public UserManagerPanel userManagerPanel;
+    public OrderPanel orderPanel;
     public MainFrame() {
         Reader r = null;
         try {
@@ -48,7 +49,7 @@ public class MainFrame extends JFrame {
         AdminCard adminCard = new AdminCard(this, userManagerPanel);
         ClosingSalesPanel closingSalesPanel = new ClosingSalesPanel(this);
         StockCard stockCard = new StockCard(this);
-        OrderPanel orderPanel = new OrderPanel(this);
+        orderPanel = new OrderPanel(this);
         CouponManagerPanel couponManagerPanel = new CouponManagerPanel(this);
         AnalyzePanel analyzePanel = new AnalyzePanel(this);
 

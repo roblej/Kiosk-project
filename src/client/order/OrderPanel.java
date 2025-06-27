@@ -11,7 +11,7 @@ import java.util.List;
 public class OrderPanel extends JPanel {
 
     private CategoryPanel categoryPanel;
-    private MenuPanel menuPanel;
+    public MenuPanel menuPanel;
     private CartPanel cartPanel;
     int allPrice = 0;
 
