@@ -264,8 +264,8 @@ public class StockCard extends JPanel {
             map.put("p_code", pvo.getP_code());
             map.put("p_name", pvo.getP_name());
             map.put("p_price", pvo.getP_price());
-            map.put("p_size", pvo.getP_size());
-            map.put("p_options", pvo.getP_options());
+//            map.put("p_size", pvo.getP_size());
+//            map.put("p_options", pvo.getP_options());
             map.put("p_category", pvo.getP_category());
             map.put("p_image_url", pvo.getP_image_url());
             map.put("p_stock", pvo.getP_stock());

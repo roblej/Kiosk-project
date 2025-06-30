@@ -146,8 +146,8 @@ public class AddDialog extends JDialog {
                 String price = price_tf.getText().trim();
                 if(price == null || price.trim().isEmpty()){JOptionPane.showMessageDialog(null, "가격을 입력하세요");
                 return;}
-                String size = size_tf.getText().trim();
-                if(size == null) size = "";
+//                String size = size_tf.getText().trim();
+//                if(size == null) size = "";
 
                 String option = option_tf.getText().trim();
                 if(option == null) option = "";
@@ -166,7 +166,7 @@ public class AddDialog extends JDialog {
                 pvo.setP_code(code);
                 pvo.setP_name(name);
                 pvo.setP_price(price);
-                pvo.setP_size(size);
+//                pvo.setP_size(size);
                 pvo.setP_options(option);
                 pvo.setP_category(category);
                 pvo.setP_image_url(img);
@@ -239,13 +239,13 @@ public class AddDialog extends JDialog {
         price_panel.add(price_tf);
         getContentPane().add(price_panel);
 
-        size_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        sizelb.setText("사이즈:");
-        size_panel.add(sizelb);
-        size_tf.setEditable(true);
-        size_tf.setColumns(10);
-        size_panel.add(size_tf);
-        getContentPane().add(size_panel);
+//        size_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+//        sizelb.setText("사이즈:");
+//        size_panel.add(sizelb);
+//        size_tf.setEditable(true);
+//        size_tf.setColumns(10);
+//        size_panel.add(size_tf);
+//        getContentPane().add(size_panel);
 
         option_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         optionlb.setText("옵션:");
@@ -253,7 +253,7 @@ public class AddDialog extends JDialog {
         option_tf.setEditable(true);
         option_tf.setColumns(10);
         option_panel.add(option_tf);
-        getContentPane().add(option_panel);
+//        getContentPane().add(option_panel);
 
         cat_panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         catlb.setText("카테고리:");
