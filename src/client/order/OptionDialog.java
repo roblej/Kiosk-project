@@ -80,6 +80,7 @@ public class OptionDialog extends JDialog {
         // ================= 상단 패널 =================
         northPanel = new JPanel(new GridLayout(1, 3, 10, 0));
         northPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+        northPanel.setBackground(Color.white);
 
         try {
             String imagePath = product.getP_image_url();
@@ -105,30 +106,60 @@ public class OptionDialog extends JDialog {
 
         menuCenterPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         menuLabel = new JLabel(product.getP_name(), SwingConstants.CENTER);
-        menuLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+        menuLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
         menuCenterPanel.add(menuLabel);
+        menuCenterPanel.setBackground(Color.white);
 
-        countPanel = new JPanel(new GridLayout(1, 3, 5, 0));
-        minusBtn = new JButton("-");
-        minusBtn.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+        countPanel = new JPanel(new GridLayout(1, 3, 0, 0));
+
+        // PLUS 버튼
+        ImageIcon rawPlusIcon = new ImageIcon("src/images/plus.jpg");
+        Image plusImg = rawPlusIcon.getImage();
+        Image scaledPlusImg = plusImg.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon plusIcon = new ImageIcon(scaledPlusImg);
+
+        plusBtn = new JButton(plusIcon);
+
+        // 버튼 프레임 숨기기
+        plusBtn.setBorderPainted(false);
+        plusBtn.setContentAreaFilled(false);
+        plusBtn.setFocusPainted(false);
+        plusBtn.setOpaque(false);
+
         countLabel = new JLabel("1", SwingConstants.CENTER);
-        plusBtn = new JButton("+");
-        plusBtn.setFont(new Font("맑은 고딕", Font.BOLD, 8));
         countLabel.setOpaque(true);
-        countLabel.setBackground(Color.WHITE);
+        countLabel.setFont(new Font("맑은 고딕", Font.BOLD, 17));
+        countLabel.setBackground(Color.white);
+
+        // MINUS 버튼
+        ImageIcon rawMinusIcon = new ImageIcon("src/images/minus.png");
+        Image minusImg = rawMinusIcon.getImage();
+        Image scaledMinusImg = minusImg.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon minusIcon = new ImageIcon(scaledMinusImg);
+
+        minusBtn = new JButton(minusIcon);
+
+        // 버튼 프레임 숨기기
+        minusBtn.setBorderPainted(false);
+        minusBtn.setContentAreaFilled(false);
+        minusBtn.setFocusPainted(false);
+        minusBtn.setOpaque(false);
+
         countPanel.add(minusBtn);
         countPanel.add(countLabel);
         countPanel.add(plusBtn);
+        countPanel.setBackground(Color.white);
         menuCenterPanel.add(countPanel);
         northPanel.add(menuCenterPanel);
 
         priceLabel = new JLabel("", SwingConstants.CENTER);
-        priceLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+        priceLabel.setFont(new Font("맑은 고딕", Font.BOLD, 22));
         northPanel.add(priceLabel);
 
         // ================= 중앙 패널 (옵션) =================
         centerPanel = new JPanel(new BorderLayout(10, 10));
-        centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 10, 20));
+        centerPanel.setBackground(Color.white);
         if(!product.getP_category().equals("디저트")) {
 
             JPanel sizePanel = new JPanel(new GridLayout(1, 3, 10, 0));
@@ -148,6 +179,7 @@ public class OptionDialog extends JDialog {
         // ================= 하단 패널 (버튼) =================
         southPanel = new JPanel(new GridLayout(1, 2, 10, 0));
         southPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+        southPanel.setBackground(Color.white);
         okBtn = new JButton("담기");
         cancelBtn = new JButton("취소");
         southPanel.add(okBtn);
