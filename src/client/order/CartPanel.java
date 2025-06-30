@@ -200,7 +200,10 @@ public class CartPanel extends JPanel {
 
             if (cnt == JOptionPane.YES_OPTION) { // 확인 = 0
                 String coupon_Code = JOptionPane.showInputDialog(null, "코드를 입력하세요", null);
-                coupon_Code = coupon_Code.toUpperCase();
+                if(coupon_Code == null){}
+                else
+                {
+                    coupon_Code = coupon_Code.toUpperCase();
                 CouponVO cvo;
                 Map<String, String> map = new HashMap();
                 map.put("u_id",MainFrame.userId); // tein...
@@ -208,29 +211,29 @@ public class CartPanel extends JPanel {
                 SqlSession ss = f.factory.openSession();
                 cvo = ss.selectOne("coupon.couponConfirm", map);
                 ss.close();
+                    if (cvo != null && coupon_Code.equals(cvo.getC_code())) {
+                        //쿠폰코드가 사용할 수 있는 경우
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        LocalDate endDate = LocalDate.parse(cvo.getC_end(), formatter); // LocalDate 형으로 맞춰준다
 
+                        if (endDate.isBefore(now) || endDate.isEqual(now)) {
+                            JOptionPane.showMessageDialog(null, "기간 만료된 쿠폰입니다");
+                            return; // 없으면 아래 다 수행함
+                        }
 
-                if (cvo != null && coupon_Code.equals(cvo.getC_code())) {
-                    //쿠폰코드가 사용할 수 있는 경우
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    LocalDate endDate = LocalDate.parse(cvo.getC_end(), formatter); // LocalDate 형으로 맞춰준다
-
-                    if (endDate.isBefore(now) || endDate.isEqual(now)) {
-                        JOptionPane.showMessageDialog(null, "기간 만료된 쿠폰입니다");
-                        return; // 없으면 아래 다 수행함
+                        if (Integer.parseInt(cvo.getIs_coupon_used()) == 1) {
+                            JOptionPane.showMessageDialog(null, "이미 사용한 쿠폰입니다");
+                            return;
+                        }
+                        JOptionPane.showMessageDialog(null, "쿠폰이 확인되었습니다");
+                        System.out.println(now);
+                        new CouponDialog(f, cvo, orderPanel, CartPanel.this);
+                    } else {
+                        //쿠폰코드가 사용할 수 없을 경우
+                        JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
                     }
+}
 
-                    if (Integer.parseInt(cvo.getIs_coupon_used()) == 1) {
-                        JOptionPane.showMessageDialog(null, "이미 사용한 쿠폰입니다");
-                        return;
-                    }
-                    JOptionPane.showMessageDialog(null, "쿠폰이 확인되었습니다");
-                    System.out.println(now);
-                    new CouponDialog(f, cvo, orderPanel, CartPanel.this);
-                } else {
-                    //쿠폰코드가 사용할 수 없을 경우
-                    JOptionPane.showMessageDialog(null, "사용할 수 없는 쿠폰코드입니다");
-                }
             } else {
                 //NO를 선택할 경우 결제화면으로 넘어감
                 new CouponDialog(f, orderPanel, CartPanel.this);
