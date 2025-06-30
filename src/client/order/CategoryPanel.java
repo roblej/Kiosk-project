@@ -28,6 +28,7 @@ public class CategoryPanel extends JPanel {
         buttonContainerPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
         allButton = new JButton("모든 메뉴");
+        allButton.setBackground(Color.WHITE);
         allButton.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         allButton.addActionListener(e -> {
             if (!"모든 메뉴".equals(currentCategory)) {
@@ -41,6 +42,7 @@ public class CategoryPanel extends JPanel {
         if (categories != null && !categories.isEmpty()) {
             for (String categoryName : categories) {
                 JButton categoryButton = new JButton(categoryName);
+                categoryButton.setBackground(Color.WHITE);
                 categoryButton.setFont(new Font("맑은 고딕", Font.BOLD, 14));
 
                 categoryButton.addActionListener(e -> {
