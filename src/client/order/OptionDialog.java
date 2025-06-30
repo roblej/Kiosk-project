@@ -103,7 +103,7 @@ public class OptionDialog extends JDialog {
         JPanel imageWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         imageWrapper.add(imgLabel);
         northPanel.add(imageWrapper);
-
+        imageWrapper.setBackground(Color.white);
         menuCenterPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         menuLabel = new JLabel(product.getP_name(), SwingConstants.CENTER);
         menuLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
@@ -163,6 +163,7 @@ public class OptionDialog extends JDialog {
         if(!product.getP_category().equals("디저트")) {
 
             JPanel sizePanel = new JPanel(new GridLayout(1, 3, 10, 0));
+            sizePanel.setBackground(Color.white);
             shortBtn = new JButton("Short (-500)");
             tallBtn = new JButton("Tall (기본)");
             ventiBtn = new JButton("Venti (+500)");
@@ -170,11 +171,11 @@ public class OptionDialog extends JDialog {
             sizePanel.add(tallBtn);
             sizePanel.add(ventiBtn);
             JPanel sizeWrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            sizeWrapperPanel.setBackground(Color.white);
             sizeWrapperPanel.add(sizePanel);
             centerPanel.add(sizeWrapperPanel, BorderLayout.CENTER);
             updateSizeButtonUI();
         }
-
 
         // ================= 하단 패널 (버튼) =================
         southPanel = new JPanel(new GridLayout(1, 2, 10, 0));

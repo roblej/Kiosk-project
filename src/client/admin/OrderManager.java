@@ -103,7 +103,6 @@ public class OrderManager extends JDialog {
             data[i][0] = vo.getO_number();            // 주문번호
             data[i][1] = vo.getO_total_amount();   // 결제금액
             data[i][2] = vo.getUser_id();          // 고객ID
-            System.out.println(vo.getO_is_takeout());
             data[i][3] = "1".equals(vo.getO_is_takeout()) ? "매장":"포장";           // 주문유형
             data[i][4] = vo.getO_status();         // 주문상태
             i++;

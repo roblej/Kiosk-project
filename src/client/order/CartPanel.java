@@ -200,6 +200,7 @@ public class CartPanel extends JPanel {
 
             if (cnt == JOptionPane.YES_OPTION) { // 확인 = 0
                 String coupon_Code = JOptionPane.showInputDialog(null, "코드를 입력하세요", null);
+                coupon_Code = coupon_Code.toUpperCase();
                 CouponVO cvo;
                 Map<String, String> map = new HashMap();
                 map.put("u_id",MainFrame.userId); // tein...
