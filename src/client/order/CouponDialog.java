@@ -112,9 +112,18 @@ public class CouponDialog extends JDialog {
 
         DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyMMdd");
         String nowDate = LocalDate.now().format(DTF); //현재날짜를 형식에 맞게 변환 후 변수에 저장
-        int n = (int)(Math.random()*1000+0);
-        String orderNumber = nowDate + n;
-
+        StringBuffer sb = new StringBuffer();
+        while (true) {
+            int n = (int) (Math.random() * 1000 + 0);
+            String random = nowDate + n;
+            SqlSession ss = f.factory.openSession();
+            int cnt = ss.selectOne("orders.checkOrderNumberExist",random);
+            if(cnt ==0) {
+                sb.append(random);
+                break;
+            }
+        }
+        String orderNumber = sb.toString();
         map.put("o_number",orderNumber);
         map.put("o_total_amount", String.valueOf(finalPrice));
         map.put("user_id", MainFrame.userId);

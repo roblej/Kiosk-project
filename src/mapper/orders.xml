@@ -66,5 +66,8 @@
         od inner join order_items oi on
         od.o_number = oi.oi_id
     </select>
+    <select id="checkOrderNumberExist" resultType="int">
+        select count(*) from orders where o_number = #{o_number}
+    </select>
 </mapper>
 
