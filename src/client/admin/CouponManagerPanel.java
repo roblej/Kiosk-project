@@ -170,44 +170,46 @@ public class CouponManagerPanel extends JPanel {
 
             while (true) {
                 newCouponCode = generateRandomAlphanumericString(10); // 8자리 난수 생성
-                String newUserid = nameTextField.getText().trim();
                 // 2. MyBatis를 통해 DB에 코드가 존재하는지 확인
                 int count = ss.selectOne("coupon.checkCodeExists", newCouponCode);
-                int cnt = ss.selectOne("coupon.checkUserid",newUserid);
                 // 3. 코드가 존재하지 않으면(count가 0이면) 루프 탈출
-                if (count == 0 && cnt >= 1) {
+                if (count == 0) {
                  break;
-                }else{
-                 JOptionPane.showMessageDialog(null,"존재하지 않는 아이디입니다");
-                 return;
                 }
+//                else{
+//                 JOptionPane.showMessageDialog(null,"존재하지 않는 아이디입니다");
+//                 return;
+//                }
 //                if(cnt == 0) { //사용자 아이디가 존재하는지 확인
 //                 return;
 //                }
                 // 코드가 존재하면 루프를 다시 실행하여 새로운 코드를 생성
-
             }
+        String newUserid = nameTextField.getText().trim();
+                int cnt = ss.selectOne("coupon.checkUserid",newUserid);
+            if (cnt==0){
+                JOptionPane.showMessageDialog(this,"아이디가 존재하지 않습니다");
+            }else {
+                coupon.setC_code(newCouponCode);
+                coupon.setU_id(nameTextField.getText());
+                coupon.setC_discount_rate(rateTextField.getText());
+                coupon.setIs_coupon_used("0");
+                coupon.setC_start(String.valueOf(now()));
+                coupon.setC_end(expiryDateTextField.getText());
+                int result = ss.insert("coupon.create", coupon);
+                if (result > 0) {
+                    ss.commit();
+                    JOptionPane.showMessageDialog(this, "쿠폰이 성공적으로 발급되었습니다.");
+                    showAll(); // 쿠폰 목록 갱신
+                } else {
+                    ss.rollback();
+                    JOptionPane.showMessageDialog(this, "쿠폰 발급에 실패했습니다.");
 
-
-            coupon.setC_code(newCouponCode);
-            coupon.setU_id(nameTextField.getText());
-            coupon.setC_discount_rate(rateTextField.getText());
-            coupon.setIs_coupon_used("0");
-            coupon.setC_start(String.valueOf(now()));
-            coupon.setC_end(expiryDateTextField.getText());
-            int result = ss.insert("coupon.create", coupon);
-            if (result > 0) {
-                ss.commit();
-                JOptionPane.showMessageDialog(this, "쿠폰이 성공적으로 발급되었습니다.");
-                showAll(); // 쿠폰 목록 갱신
-            } else {
-                ss.rollback();
-                JOptionPane.showMessageDialog(this, "쿠폰 발급에 실패했습니다.");
-
-        }
-            nameTextField.setText("");
-            rateTextField.setText("");
-            expiryDateTextField.setText("");
+                }
+                nameTextField.setText("");
+                rateTextField.setText("");
+                expiryDateTextField.setText("");
+            }
 
     }
     private String generateRandomAlphanumericString(int length) {
