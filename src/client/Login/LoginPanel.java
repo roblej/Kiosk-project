@@ -25,6 +25,7 @@ public class LoginPanel extends JPanel {
 //        northPanel.setOpaque(false);
 
         adminBtn = new JButton("관리자");
+        adminBtn.setBackground( Color.WHITE);
         adminBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,7 +65,9 @@ public class LoginPanel extends JPanel {
         gbc.insets = new Insets(10, 15, 20, 15); // 컴포넌트 외부 여백 설정 (상, 좌, 하, 우)
 
         inBtn = new JButton("매장");
+        inBtn.setBackground( Color.WHITE);
         outBtn = new JButton("포장");
+        outBtn.setBackground( Color.WHITE);
 
         // 버튼들의 선호 크기를 지정하여 크기를 유지하도록 합니다.
         Dimension buttonSize = new Dimension(150, 60);

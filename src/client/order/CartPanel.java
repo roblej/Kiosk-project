@@ -60,6 +60,8 @@ public class CartPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         table.setBackground(Color.WHITE);
+        table.getTableHeader().setReorderingAllowed(false); // 컬럼 수정 방지
+        table.getTableHeader().setBackground(Color.WHITE); // 컬럼 배경 힌색
         table.setShowGrid(false);
         table.setIntercellSpacing(new Dimension(0, 0));
         table.setRowHeight(25);

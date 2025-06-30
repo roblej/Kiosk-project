@@ -27,6 +27,11 @@ public class AdminCard extends JPanel {
         JButton customBtn = new JButton("회원관리");
         JButton orderBtn = new JButton("주문처리");
         JButton closeBtn = new JButton("종료");
+        JButton[] buttons = {openBtn, setBtn, payBtn, couponBtn, productBtn, customBtn, orderBtn, closeBtn};
+        // 2. 반복문으로 배열을 순회하며 배경색을 흰색으로 설정합니다.
+        for (JButton btn : buttons) {
+            btn.setBackground(Color.WHITE);
+        }
 
         //화면에 버튼 삽입
         add(openBtn);
