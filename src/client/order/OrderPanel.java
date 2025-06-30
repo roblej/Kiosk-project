@@ -13,6 +13,7 @@ public class OrderPanel extends JPanel {
     private CategoryPanel categoryPanel;
     public MenuPanel menuPanel;
     private CartPanel cartPanel;
+    JScrollPane menuScrollPane;
     int allPrice = 0;
 
     List<String[]> cartList = new ArrayList<>();
@@ -41,7 +42,7 @@ public class OrderPanel extends JPanel {
         categoryPanel = new CategoryPanel(menuPanel, f);
 
         // 3. MenuPanel은 내용이 많아질 수 있으므로 스크롤 가능하도록 JScrollPane에 추가합니다.
-        JScrollPane menuScrollPane = new JScrollPane(menuPanel);
+        menuScrollPane = new JScrollPane(menuPanel);
         menuScrollPane.setBorder(null); // 스크롤 패널의 테두리를 없애 깔끔하게 만듭니다.
         menuScrollPane.getVerticalScrollBar().setUnitIncrement(16); // 스크롤 속도를 적절하게 조절합니다.
 

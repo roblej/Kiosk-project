@@ -113,6 +113,9 @@ public class CartPanel extends JPanel {
                     MainFrame.userId ="";
                     CategoryPanel.allButton.doClick();
                     orderPanel.menuPanel.updateMenus("모든 메뉴");
+                    if (f.orderPanel.menuScrollPane.getVerticalScrollBar().getValue() >0) {
+                        f.orderPanel.menuScrollPane.getVerticalScrollBar().setValue(0);
+                    }
                     f.cardLayout.show(f.cardPanel, "LoginPanel");
                 }
             }
