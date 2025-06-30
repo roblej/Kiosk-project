@@ -17,6 +17,9 @@
     <select id="checkCodeExists" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM coupons WHERE c_code = #{c_code}
     </select>
+    <select id="checkUserid" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM coupons WHERE u_id = #{u_id}
+    </select>
 
     <select id="couponConfirm" resultType="vo.CouponVO" parameterType="map">
         SELECT * FROM coupons
