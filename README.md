@@ -16,7 +16,7 @@ Java로 개발된 키오스크 애플리케이션입니다. 데이터베이스�
 
 - **언어**: Java
 - **데이터베이스**: SQL (MySQL)
-- **UI**: Java Swing 또는 JavaFX (추정)
+- **UI**: Java Swing
 
 ## 설정 방법
 
