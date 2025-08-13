@@ -1,7 +1,37 @@
 # Kiosk-project
-SiST 1st 프로젝트
 
-Java & Mybatis & MySQL 를 활용한 키오스크 프로그램<br/>
-IntelliJ / MySQL workbench / AWS EC2(ubuntu) - db서버용<br/>
-제작 기간 : 250618~250630<br/>
+## 프로젝트 소개
 
+Java로 개발된 키오스크 애플리케이션입니다. 데이터베이스와 연동하여 상품 주문, 결제, 쿠폰 관리 등의 기능을 제공합니다.
+
+## 주요 기능
+
+- **상품 주문**: 카테고리별 상품 조회 및 주문
+- **결제**: 현금 및 카드 결제
+- **쿠폰 시스템**: 쿠폰 발급 및 사용
+- **사용자 관리**: 사용자 정보 조회 및 관리
+- **주문 관리**: 주문 내역 조회 및 관리
+
+## 사용 기술
+
+- **언어**: Java
+- **데이터베이스**: SQL (MySQL)
+- **UI**: Java Swing 또는 JavaFX (추정)
+
+## 설정 방법
+
+1.  `createDB.sql` 파일을 사용하여 데이터베이스와 테이블을 생성합니다.
+2.  `src/config` 디렉토리의 설정 파일에서 데이터베이스 연결 정보를 수정합니다.
+3.  프로젝트를 IDE(IntelliJ, Eclipse 등)에서 열고 빌드합니다.
+4.  애플리케이션을 실행합니다.
+
+## 파일 구조
+
+- `createDB.sql`: 데이터베이스 테이블 생성 스크립트
+- `src/`: 소스 코드
+    - `client/`: 클라이언트 관련 코드
+    - `config/`: 설정 파일
+    - `images/`: 이미지 리소스
+    - `mapper/`: 데이터베이스 매퍼 (XML)
+    - `vo/`: Value Object (데이터 전송 객체)
+- `Kiosk-project.iml`: IntelliJ IDEA 프로젝트 파일
